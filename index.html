@@ -114,9 +114,10 @@
 
 <script>
 const STALE_DAYS = 5;          // a rate older than this flags as stale
-const RATE_ORDER = ["SOFR","EFFR","ESTR","SONIA","TONA","XAUUSD","WTI","BRENT"];
-const COMMODITIES = new Set(["XAUUSD","WTI","BRENT"]);
-const LABELS = { XAUUSD:"Gold", WTI:"WTI", BRENT:"Brent" };
+const STALE = { TONA: 45 };    // TONA is a monthly series; allow a longer gap
+const RATE_ORDER = ["SOFR","EFFR","ESTR","SONIA","TONA","WTI","BRENT"];
+const COMMODITIES = new Set(["WTI","BRENT"]);
+const LABELS = { WTI:"WTI", BRENT:"Brent" };
 
 const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const daysSince = d => (Date.now() - new Date(d + "T00:00:00Z").getTime()) / 86400000;
@@ -159,7 +160,8 @@ function renderCards(payload) {
     const r = payload.rates[code];
     if (!r) return;
     const hasVal = r.value !== null && r.value !== undefined && r.ok !== false;
-    const stale = hasVal && r.date && daysSince(r.date) > STALE_DAYS;
+    const limit = STALE[code] || STALE_DAYS;
+    const stale = hasVal && r.date && daysSince(r.date) > limit;
     if (stale || r.ok === false) anyStale = true;
 
     const card = document.createElement("div");
