@@ -24,6 +24,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Fetch rates
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python fetch_rates.py
 
       - name: Commit updated data
