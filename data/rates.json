@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-10T18:42:42Z",
+  "as_of": "2026-06-10T22:32:59Z",
   "rates": {
     "SOFR": {
       "value": 3.6,
@@ -30,32 +30,25 @@
       "ok": true
     },
     "TONA": {
-      "value": null,
-      "date": null,
+      "value": 0.727,
+      "date": "2026-04-01",
       "unit": "%",
-      "source": "BoJ",
-      "ok": false
-    },
-    "XAUUSD": {
-      "value": 2410.5,
-      "date": "2026-06-10",
-      "unit": "$",
-      "source": "Stooq",
-      "ok": false
+      "source": "FRED",
+      "ok": true
     },
     "WTI": {
-      "value": 68.4,
-      "date": "2026-06-10",
+      "value": 95.0,
+      "date": "2026-06-08",
       "unit": "$",
-      "source": "Stooq",
-      "ok": false
+      "source": "FRED",
+      "ok": true
     },
     "BRENT": {
-      "value": 72.15,
-      "date": "2026-06-10",
+      "value": 97.46,
+      "date": "2026-06-08",
       "unit": "$",
-      "source": "Stooq",
-      "ok": false
+      "source": "FRED",
+      "ok": true
     }
   }
 }
