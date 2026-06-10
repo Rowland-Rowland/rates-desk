@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Benchmark Desk</title>
-<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
   :root {
     --bg:#0e1320; --panel:#141a2a; --hdr:#1b2336; --line:#283248; --frame:#3a4660;
@@ -114,7 +114,7 @@
 
 <script>
 const STALE_DAYS = 5;          // a rate older than this flags as stale
-const STALE = { TONA: 45 };    // TONA is a monthly series; allow a longer gap
+const STALE = { TONA: 120 };   // TONA is a monthly series that can lag 2-3 months
 const RATE_ORDER = ["SOFR","EFFR","ESTR","SONIA","TONA","WTI","BRENT"];
 const COMMODITIES = new Set(["WTI","BRENT"]);
 const LABELS = { WTI:"WTI", BRENT:"Brent" };
@@ -222,7 +222,7 @@ async function load() {
     ]);
     parseHistory(hist);
     renderCards(rates);
-    buildChart();
+    try { buildChart(); } catch (ce) { console.error("chart:", ce); }
   } catch (e) {
     document.getElementById("asof").textContent = "could not load data/ — run the fetcher first";
     console.error(e);
