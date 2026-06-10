@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
 """
-fetch_rates.py - pull free benchmark rates + commodity spot prices, then write
-data/rates.json (latest snapshot) and append data/history.csv (long format).
+fetch_rates.py - pull free benchmark rates + oil, then write data/rates.json
+(latest snapshot) and append data/history.csv (long format).
 
-WHAT IS SOURCED HERE (free, no paid keys):
-  SOFR, EFFR          -> New York Fed Markets API   (solid, no key, JSON)
-  ESTR                -> ECB Data Portal SDMX API    (solid, no key, JSON)
-  SONIA               -> Bank of England IADB CSV     (works; verify the URL)
-  TONA                -> Bank of Japan                (stub; wire up + verify)
-  Gold / WTI / Brent  -> Stooq CSV spot               (solid, no key; unofficial)
+SOURCED HERE (free):
+  SOFR, EFFR  -> New York Fed Markets API   (solid, no key, JSON)
+  ESTR        -> ECB Data Portal SDMX API    (solid, no key, JSON)
+  SONIA       -> Bank of England IADB CSV     (works; verify URL if it breaks)
+  TONA        -> FRED (Japan overnight call money rate) - MONTHLY proxy for TONA
+  WTI, Brent  -> FRED (EIA daily spot)        (official, daily)
 
-DELIBERATELY NOT INCLUDED (redistribution is licensed/restricted - do not
-publish these even though you can see them): Term SOFR, Term SONIA, EURIBOR,
-SARON, the LBMA gold AM/PM fixes, and exchange settlement prices. Your engine
-already handles those as on-chart time-window proxies, which need no feed.
+FRED needs a FREE api key. Get one at https://fred.stlouisfed.org (My Account
+-> API Keys), then add it to the repo as a Secret named FRED_API_KEY. The
+GitHub Action passes it in; locally, set it in your shell:  export FRED_API_KEY=xxxx
 
-DESIGN: every fetcher returns (float value, str date) or raises. A raise is
-caught, logged, and the last-known value from history.csv is reused so one
-broken source never blanks the dashboard. The two flagged sources (SONIA, TONA)
-are the only ones likely to need a tweak when a site changes its format.
+NOT INCLUDED (redistribution licensed): Term SOFR/SONIA, EURIBOR, SARON, gold
+spot/LBMA fixes, exchange settlement prices. Gold has no free server-friendly
+source, so it is intentionally left out rather than shown broken.
+
+Each fetcher returns (float value, str date) or raises. A raise is caught,
+logged, and the last-known value from history.csv is reused so one bad source
+never blanks the dashboard.
 """
 
 import csv
@@ -70,7 +72,7 @@ def fetch_estr():
     return value, date
 
 
-# --- Bank of England: SONIA (series IUDSOIA). Free CSV. VERIFY this URL. -------
+# --- Bank of England: SONIA (series IUDSOIA). Free CSV. VERIFY if it breaks. ---
 def fetch_sonia():
     url = (
         "https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp"
@@ -83,33 +85,31 @@ def fetch_sonia():
     return float(last[1]), last[0]
 
 
-# --- Bank of Japan: TONA. Least reliable free path; wire up + verify. ---------
-def fetch_tona():
-    # BOJ's time-series CSV endpoint/codes shift periodically and there is no
-    # clean public REST API. Find a current free TONA source, parse it here,
-    # and return (value, "YYYY-MM-DD"). Until then this raises, and the script
-    # keeps the last-known value (flagging it stale on the dashboard).
-    raise NotImplementedError("Wire up a current free BOJ TONA source")
-
-
-# --- Stooq: commodity spot close. Free CSV, no key (unofficial). ---------------
-def fetch_stooq(symbol):
-    url = f"https://stooq.com/q/l/?s={symbol}&f=sd2t2ohlc&h&e=csv"
-    rows = list(csv.reader(io.StringIO(_get(url).text)))
-    rec = dict(zip([h.lower() for h in rows[0]], rows[1]))
-    return float(rec["close"]), rec["date"]
+# --- FRED: free key required. Used for TONA proxy + WTI + Brent. ---------------
+def fetch_fred(series_id):
+    key = os.environ.get("FRED_API_KEY", "").strip()
+    if not key:
+        raise RuntimeError("FRED_API_KEY not set - add it as a repo Secret")
+    url = (
+        "https://api.stlouisfed.org/fred/series/observations"
+        f"?series_id={series_id}&api_key={key}&file_type=json"
+        "&sort_order=desc&limit=12"
+    )
+    for o in _get(url).json()["observations"]:
+        if o["value"] not in (".", "", None):       # newest first; skip gaps
+            return float(o["value"]), o["date"]
+    raise RuntimeError("no numeric observation returned")
 
 
 # name, unit, source label, fetcher
 SOURCES = [
-    ("SOFR",   "%", "NY Fed", lambda: fetch_nyfed("sofr", True)),
-    ("EFFR",   "%", "NY Fed", lambda: fetch_nyfed("effr", False)),
-    ("ESTR",   "%", "ECB",    fetch_estr),
-    ("SONIA",  "%", "BoE",    fetch_sonia),
-    ("TONA",   "%", "BoJ",    fetch_tona),
-    ("XAUUSD", "$", "Stooq",  lambda: fetch_stooq("xauusd")),
-    ("WTI",    "$", "Stooq",  lambda: fetch_stooq("cl.f")),
-    ("BRENT",  "$", "Stooq",  lambda: fetch_stooq("cb.f")),
+    ("SOFR",  "%", "NY Fed", lambda: fetch_nyfed("sofr", True)),
+    ("EFFR",  "%", "NY Fed", lambda: fetch_nyfed("effr", False)),
+    ("ESTR",  "%", "ECB",    fetch_estr),
+    ("SONIA", "%", "BoE",    fetch_sonia),
+    ("TONA",  "%", "FRED",   lambda: fetch_fred("IRSTCI01JPM156N")),  # monthly
+    ("WTI",   "$", "FRED",   lambda: fetch_fred("DCOILWTICO")),
+    ("BRENT", "$", "FRED",   lambda: fetch_fred("DCOILBRENTEU")),
 ]
 
 
