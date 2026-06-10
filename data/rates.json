@@ -1,0 +1,14 @@
+{
+  "as_of": "2026-06-10T13:05:00Z",
+  "_note": "PLACEHOLDER sample so the dashboard renders before the first real run. The GitHub Action overwrites this file with live values.",
+  "rates": {
+    "SOFR":   {"value": 4.30, "date": "2026-06-09", "unit": "%", "source": "NY Fed", "ok": true},
+    "EFFR":   {"value": 4.33, "date": "2026-06-09", "unit": "%", "source": "NY Fed", "ok": true},
+    "ESTR":   {"value": 1.90, "date": "2026-06-09", "unit": "%", "source": "ECB",    "ok": true},
+    "SONIA":  {"value": 4.20, "date": "2026-06-09", "unit": "%", "source": "BoE",    "ok": true},
+    "TONA":   {"value": 0.48, "date": "2026-06-09", "unit": "%", "source": "BoJ",    "ok": false},
+    "XAUUSD": {"value": 2410.50, "date": "2026-06-10", "unit": "$", "source": "Stooq", "ok": true},
+    "WTI":    {"value": 68.40, "date": "2026-06-10", "unit": "$", "source": "Stooq", "ok": true},
+    "BRENT":  {"value": 72.15, "date": "2026-06-10", "unit": "$", "source": "Stooq", "ok": true}
+  }
+}
