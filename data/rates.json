@@ -1,14 +1,61 @@
 {
-  "as_of": "2026-06-10T13:05:00Z",
-  "_note": "PLACEHOLDER sample so the dashboard renders before the first real run. The GitHub Action overwrites this file with live values.",
+  "as_of": "2026-06-10T18:42:42Z",
   "rates": {
-    "SOFR":   {"value": 4.30, "date": "2026-06-09", "unit": "%", "source": "NY Fed", "ok": true},
-    "EFFR":   {"value": 4.33, "date": "2026-06-09", "unit": "%", "source": "NY Fed", "ok": true},
-    "ESTR":   {"value": 1.90, "date": "2026-06-09", "unit": "%", "source": "ECB",    "ok": true},
-    "SONIA":  {"value": 4.20, "date": "2026-06-09", "unit": "%", "source": "BoE",    "ok": true},
-    "TONA":   {"value": 0.48, "date": "2026-06-09", "unit": "%", "source": "BoJ",    "ok": false},
-    "XAUUSD": {"value": 2410.50, "date": "2026-06-10", "unit": "$", "source": "Stooq", "ok": true},
-    "WTI":    {"value": 68.40, "date": "2026-06-10", "unit": "$", "source": "Stooq", "ok": true},
-    "BRENT":  {"value": 72.15, "date": "2026-06-10", "unit": "$", "source": "Stooq", "ok": true}
+    "SOFR": {
+      "value": 3.6,
+      "date": "2026-06-09",
+      "unit": "%",
+      "source": "NY Fed",
+      "ok": true
+    },
+    "EFFR": {
+      "value": 3.62,
+      "date": "2026-06-09",
+      "unit": "%",
+      "source": "NY Fed",
+      "ok": true
+    },
+    "ESTR": {
+      "value": 1.93,
+      "date": "2026-06-09",
+      "unit": "%",
+      "source": "ECB",
+      "ok": true
+    },
+    "SONIA": {
+      "value": 3.73,
+      "date": "08 Jun 2026",
+      "unit": "%",
+      "source": "BoE",
+      "ok": true
+    },
+    "TONA": {
+      "value": null,
+      "date": null,
+      "unit": "%",
+      "source": "BoJ",
+      "ok": false
+    },
+    "XAUUSD": {
+      "value": 2410.5,
+      "date": "2026-06-10",
+      "unit": "$",
+      "source": "Stooq",
+      "ok": false
+    },
+    "WTI": {
+      "value": 68.4,
+      "date": "2026-06-10",
+      "unit": "$",
+      "source": "Stooq",
+      "ok": false
+    },
+    "BRENT": {
+      "value": 72.15,
+      "date": "2026-06-10",
+      "unit": "$",
+      "source": "Stooq",
+      "ok": false
+    }
   }
 }
