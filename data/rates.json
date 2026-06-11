@@ -1,16 +1,16 @@
 {
-  "as_of": "2026-06-10T22:32:59Z",
+  "as_of": "2026-06-11T16:58:12Z",
   "rates": {
     "SOFR": {
-      "value": 3.6,
-      "date": "2026-06-09",
+      "value": 3.59,
+      "date": "2026-06-10",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.62,
-      "date": "2026-06-09",
+      "date": "2026-06-10",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
@@ -20,11 +20,11 @@
       "date": "2026-06-09",
       "unit": "%",
       "source": "ECB",
-      "ok": true
+      "ok": false
     },
     "SONIA": {
-      "value": 3.73,
-      "date": "08 Jun 2026",
+      "value": 3.7271,
+      "date": "09 Jun 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
