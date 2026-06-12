@@ -40,6 +40,10 @@ DATA_DIR = os.path.join(ROOT, "data")
 RATES_JSON = os.path.join(DATA_DIR, "rates.json")
 HISTORY_CSV = os.path.join(DATA_DIR, "history.csv")
 
+# Free, no-key weekly economic calendar (ForexFactory data via Fair Economy CDN).
+NEWS_URL = "https://cdn-nfs.faireconomy.media/ff_calendar_thisweek.json"
+NEWS_MAJORS = {"USD", "EUR", "GBP", "JPY", "CHF", "CAD", "AUD", "NZD", "CNY"}
+
 
 def _get(url):
     r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
@@ -101,6 +105,42 @@ def fetch_fred(series_id):
     raise RuntimeError("no numeric observation returned")
 
 
+# --- ForexFactory/Fair Economy weekly calendar. Free, no key. -----------------
+def _parse_iso(s):
+    s = (s or "").strip()
+    if s.endswith("Z"):
+        s = s[:-1] + "+00:00"
+    return datetime.fromisoformat(s)
+
+
+def fetch_news():
+    """Return this week's HIGH-impact events for major economies, soonest first.
+    Each item: {time (UTC ISO), currency, title, forecast, previous}. Network or
+    format failures raise; main() catches them and writes an empty list so a bad
+    news feed never blocks the rates."""
+    raw = _get(NEWS_URL).json()
+    events = []
+    for e in raw:
+        if (e.get("impact") or "").lower() != "high":
+            continue
+        cur = (e.get("country") or "").upper()
+        if cur not in NEWS_MAJORS:
+            continue
+        try:
+            when = _parse_iso(e.get("date"))
+        except (ValueError, TypeError):
+            continue
+        events.append({
+            "time": when.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "currency": cur,
+            "title": (e.get("title") or "").strip(),
+            "forecast": (e.get("forecast") or "").strip(),
+            "previous": (e.get("previous") or "").strip(),
+        })
+    events.sort(key=lambda x: x["time"])
+    return events
+
+
 # name, unit, source label, fetcher
 SOURCES = [
     ("SOFR",  "%", "NY Fed", lambda: fetch_nyfed("sofr", True)),
@@ -145,6 +185,13 @@ def main():
             "value": value, "date": date, "unit": unit,
             "source": source, "ok": ok,
         }
+
+    try:
+        out["news"] = fetch_news()
+        print(f"news: {len(out['news'])} high-impact events this week")
+    except Exception as exc:  # noqa: BLE001 - news must never block rates
+        out["news"] = []
+        print(f"[warn] news: {exc}", file=sys.stderr)
 
     with open(RATES_JSON, "w") as f:
         json.dump(out, f, indent=2)
