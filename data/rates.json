@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-12T13:43:53Z",
+  "as_of": "2026-06-12T15:39:27Z",
   "rates": {
     "SOFR": {
       "value": 3.6,
@@ -51,5 +51,97 @@
       "ok": true
     }
   },
-  "news": []
+  "news": [
+    {
+      "time": "2026-06-10T12:30:00Z",
+      "currency": "USD",
+      "title": "Core CPI m/m",
+      "forecast": "0.3%",
+      "previous": "0.4%"
+    },
+    {
+      "time": "2026-06-10T12:30:00Z",
+      "currency": "USD",
+      "title": "Core CPI y/y",
+      "forecast": "2.9%",
+      "previous": "2.8%"
+    },
+    {
+      "time": "2026-06-10T12:30:00Z",
+      "currency": "USD",
+      "title": "CPI m/m",
+      "forecast": "0.5%",
+      "previous": "0.6%"
+    },
+    {
+      "time": "2026-06-10T12:30:00Z",
+      "currency": "USD",
+      "title": "CPI y/y",
+      "forecast": "4.2%",
+      "previous": "3.8%"
+    },
+    {
+      "time": "2026-06-10T13:45:00Z",
+      "currency": "CAD",
+      "title": "BOC Rate Statement",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-10T13:45:00Z",
+      "currency": "CAD",
+      "title": "Overnight Rate",
+      "forecast": "2.25%",
+      "previous": "2.25%"
+    },
+    {
+      "time": "2026-06-10T14:30:00Z",
+      "currency": "CAD",
+      "title": "BOC Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-11T12:15:00Z",
+      "currency": "EUR",
+      "title": "Main Refinancing Rate",
+      "forecast": "2.40%",
+      "previous": "2.15%"
+    },
+    {
+      "time": "2026-06-11T12:15:00Z",
+      "currency": "EUR",
+      "title": "Monetary Policy Statement",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-11T12:30:00Z",
+      "currency": "USD",
+      "title": "Core PPI m/m",
+      "forecast": "0.5%",
+      "previous": "1.0%"
+    },
+    {
+      "time": "2026-06-11T12:30:00Z",
+      "currency": "USD",
+      "title": "PPI m/m",
+      "forecast": "0.7%",
+      "previous": "1.4%"
+    },
+    {
+      "time": "2026-06-11T12:45:00Z",
+      "currency": "EUR",
+      "title": "ECB Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-12T06:00:00Z",
+      "currency": "GBP",
+      "title": "GDP m/m",
+      "forecast": "-0.1%",
+      "previous": "0.3%"
+    }
+  ]
 }
