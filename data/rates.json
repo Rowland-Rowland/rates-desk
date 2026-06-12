@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-06-11T16:58:12Z",
+  "as_of": "2026-06-12T13:43:53Z",
   "rates": {
     "SOFR": {
-      "value": 3.59,
-      "date": "2026-06-10",
+      "value": 3.6,
+      "date": "2026-06-11",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.62,
-      "date": "2026-06-10",
+      "date": "2026-06-11",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 1.93,
-      "date": "2026-06-09",
+      "value": 1.931,
+      "date": "2026-06-11",
       "unit": "%",
       "source": "ECB",
-      "ok": false
+      "ok": true
     },
     "SONIA": {
-      "value": 3.7271,
-      "date": "09 Jun 2026",
+      "value": 3.7296,
+      "date": "10 Jun 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -50,5 +50,6 @@
       "source": "FRED",
       "ok": true
     }
-  }
+  },
+  "news": []
 }
