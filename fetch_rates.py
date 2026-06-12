@@ -41,7 +41,7 @@ RATES_JSON = os.path.join(DATA_DIR, "rates.json")
 HISTORY_CSV = os.path.join(DATA_DIR, "history.csv")
 
 # Free, no-key weekly economic calendar (ForexFactory data via Fair Economy CDN).
-NEWS_URL = "https://cdn-nfs.faireconomy.media/ff_calendar_thisweek.json"
+NEWS_URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
 NEWS_MAJORS = {"USD", "EUR", "GBP", "JPY", "CHF", "CAD", "AUD", "NZD", "CNY"}
 
 
