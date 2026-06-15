@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-06-12T16:23:34Z",
+  "as_of": "2026-06-15T17:57:55Z",
   "rates": {
     "SOFR": {
-      "value": 3.6,
-      "date": "2026-06-11",
+      "value": 3.65,
+      "date": "2026-06-12",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.62,
-      "date": "2026-06-11",
+      "date": "2026-06-12",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
       "value": 1.931,
-      "date": "2026-06-11",
+      "date": "2026-06-12",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7296,
-      "date": "10 Jun 2026",
+      "value": 3.7305,
+      "date": "11 Jun 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -53,95 +53,137 @@
   },
   "news": [
     {
-      "time": "2026-06-10T12:30:00Z",
-      "currency": "USD",
-      "title": "Core CPI m/m",
-      "forecast": "0.3%",
-      "previous": "0.4%"
+      "time": "2026-06-16T02:30:00Z",
+      "currency": "JPY",
+      "title": "BOJ Policy Rate",
+      "forecast": "<1.00%",
+      "previous": "<0.75%"
     },
     {
-      "time": "2026-06-10T12:30:00Z",
-      "currency": "USD",
-      "title": "Core CPI y/y",
-      "forecast": "2.9%",
-      "previous": "2.8%"
-    },
-    {
-      "time": "2026-06-10T12:30:00Z",
-      "currency": "USD",
-      "title": "CPI m/m",
-      "forecast": "0.5%",
-      "previous": "0.6%"
-    },
-    {
-      "time": "2026-06-10T12:30:00Z",
-      "currency": "USD",
-      "title": "CPI y/y",
-      "forecast": "4.2%",
-      "previous": "3.8%"
-    },
-    {
-      "time": "2026-06-10T13:45:00Z",
-      "currency": "CAD",
-      "title": "BOC Rate Statement",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-06-10T13:45:00Z",
-      "currency": "CAD",
-      "title": "Overnight Rate",
-      "forecast": "2.25%",
-      "previous": "2.25%"
-    },
-    {
-      "time": "2026-06-10T14:30:00Z",
-      "currency": "CAD",
-      "title": "BOC Press Conference",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-06-11T12:15:00Z",
-      "currency": "EUR",
-      "title": "Main Refinancing Rate",
-      "forecast": "2.40%",
-      "previous": "2.15%"
-    },
-    {
-      "time": "2026-06-11T12:15:00Z",
-      "currency": "EUR",
+      "time": "2026-06-16T02:30:00Z",
+      "currency": "JPY",
       "title": "Monetary Policy Statement",
       "forecast": "",
       "previous": ""
     },
     {
-      "time": "2026-06-11T12:30:00Z",
-      "currency": "USD",
-      "title": "Core PPI m/m",
-      "forecast": "0.5%",
-      "previous": "1.0%"
+      "time": "2026-06-16T04:30:00Z",
+      "currency": "AUD",
+      "title": "Cash Rate",
+      "forecast": "4.35%",
+      "previous": "4.35%"
     },
     {
-      "time": "2026-06-11T12:30:00Z",
-      "currency": "USD",
-      "title": "PPI m/m",
-      "forecast": "0.7%",
-      "previous": "1.4%"
-    },
-    {
-      "time": "2026-06-11T12:45:00Z",
-      "currency": "EUR",
-      "title": "ECB Press Conference",
+      "time": "2026-06-16T04:30:00Z",
+      "currency": "AUD",
+      "title": "RBA Rate Statement",
       "forecast": "",
       "previous": ""
     },
     {
-      "time": "2026-06-12T06:00:00Z",
+      "time": "2026-06-16T05:30:00Z",
+      "currency": "AUD",
+      "title": "RBA Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-16T05:30:00Z",
+      "currency": "JPY",
+      "title": "BOJ Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-17T06:00:00Z",
       "currency": "GBP",
-      "title": "GDP m/m",
-      "forecast": "-0.1%",
-      "previous": "0.3%"
+      "title": "CPI y/y",
+      "forecast": "3.0%",
+      "previous": "2.8%"
+    },
+    {
+      "time": "2026-06-17T18:00:00Z",
+      "currency": "USD",
+      "title": "Federal Funds Rate",
+      "forecast": "3.75%",
+      "previous": "3.75%"
+    },
+    {
+      "time": "2026-06-17T18:00:00Z",
+      "currency": "USD",
+      "title": "FOMC Economic Projections",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-17T18:00:00Z",
+      "currency": "USD",
+      "title": "FOMC Statement",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-17T18:30:00Z",
+      "currency": "USD",
+      "title": "FOMC Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-17T22:45:00Z",
+      "currency": "NZD",
+      "title": "GDP q/q",
+      "forecast": "0.8%",
+      "previous": "0.2%"
+    },
+    {
+      "time": "2026-06-18T06:00:00Z",
+      "currency": "GBP",
+      "title": "Claimant Count Change",
+      "forecast": "25.8K",
+      "previous": "26.5K"
+    },
+    {
+      "time": "2026-06-18T07:30:00Z",
+      "currency": "CHF",
+      "title": "SNB Monetary Policy Assessment",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-18T07:30:00Z",
+      "currency": "CHF",
+      "title": "SNB Policy Rate",
+      "forecast": "0.00%",
+      "previous": "0.00%"
+    },
+    {
+      "time": "2026-06-18T08:00:00Z",
+      "currency": "CHF",
+      "title": "SNB Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-18T11:00:00Z",
+      "currency": "GBP",
+      "title": "Monetary Policy Summary",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-06-18T11:00:00Z",
+      "currency": "GBP",
+      "title": "MPC Official Bank Rate Votes",
+      "forecast": "1-0-8",
+      "previous": "1-0-8"
+    },
+    {
+      "time": "2026-06-18T11:00:00Z",
+      "currency": "GBP",
+      "title": "Official Bank Rate",
+      "forecast": "3.75%",
+      "previous": "3.75%"
     }
   ]
 }
