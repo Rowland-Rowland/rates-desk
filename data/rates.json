@@ -1,37 +1,37 @@
 {
-  "as_of": "2026-06-15T17:57:55Z",
+  "as_of": "2026-06-16T18:06:36Z",
   "rates": {
     "SOFR": {
-      "value": 3.65,
-      "date": "2026-06-12",
+      "value": 3.69,
+      "date": "2026-06-15",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
-      "value": 3.62,
-      "date": "2026-06-12",
+      "value": 3.63,
+      "date": "2026-06-15",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
       "value": 1.931,
-      "date": "2026-06-12",
+      "date": "2026-06-15",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7305,
-      "date": "11 Jun 2026",
+      "value": 3.7301,
+      "date": "12 Jun 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
     },
     "TONA": {
       "value": 0.727,
-      "date": "2026-04-01",
+      "date": "2026-05-01",
       "unit": "%",
       "source": "FRED",
       "ok": true
@@ -53,14 +53,14 @@
   },
   "news": [
     {
-      "time": "2026-06-16T02:30:00Z",
+      "time": "2026-06-16T03:19:00Z",
       "currency": "JPY",
       "title": "BOJ Policy Rate",
       "forecast": "<1.00%",
       "previous": "<0.75%"
     },
     {
-      "time": "2026-06-16T02:30:00Z",
+      "time": "2026-06-16T03:19:00Z",
       "currency": "JPY",
       "title": "Monetary Policy Statement",
       "forecast": "",
@@ -88,7 +88,7 @@
       "previous": ""
     },
     {
-      "time": "2026-06-16T05:30:00Z",
+      "time": "2026-06-16T06:30:00Z",
       "currency": "JPY",
       "title": "BOJ Press Conference",
       "forecast": "",
