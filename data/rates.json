@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-18T16:37:40Z",
+  "as_of": "2026-06-19T16:10:33Z",
   "rates": {
     "SOFR": {
       "value": 3.63,
@@ -16,15 +16,15 @@
       "ok": true
     },
     "ESTR": {
-      "value": 2.182,
-      "date": "2026-06-17",
+      "value": 2.18,
+      "date": "2026-06-18",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7304,
-      "date": "16 Jun 2026",
+      "value": 3.7303,
+      "date": "17 Jun 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
