@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-07-06T16:24:50Z",
+  "as_of": "2026-07-07T15:45:11Z",
   "rates": {
     "SOFR": {
-      "value": 3.64,
-      "date": "2026-07-02",
+      "value": 3.63,
+      "date": "2026-07-06",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-03",
+      "date": "2026-07-06",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.183,
-      "date": "2026-07-03",
+      "value": 2.182,
+      "date": "2026-07-06",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7305,
-      "date": "02 Jul 2026",
+      "value": 3.7302,
+      "date": "03 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -91,7 +91,7 @@
       "time": "2026-07-10T12:30:00Z",
       "currency": "CAD",
       "title": "Employment Change",
-      "forecast": "10.0K",
+      "forecast": "11.2K",
       "previous": "87.8K"
     },
     {
