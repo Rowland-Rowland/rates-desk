@@ -50,6 +50,13 @@
     letter-spacing:.08em; text-transform:uppercase;
   }
   button.theme:hover { color:var(--val); border-color:var(--frame); }
+  a.navlink {
+    background:transparent; color:var(--lbl); border:1px solid var(--line);
+    border-radius:2px; padding:4px 10px; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; text-decoration:none;
+    display:inline-block;
+  }
+  a.navlink:hover { color:var(--val); border-color:var(--frame); }
 
   .grid {
     display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
@@ -105,6 +112,7 @@
     <span class="spacer"></span>
     <span class="asof" id="asof">loading…</span>
     <span class="pill" id="status"><span class="dot"></span><span id="statusTxt">live</span></span>
+    <a class="navlink" href="checklist.html">Checklist</a>
     <button class="theme" id="themeBtn">Light</button>
   </header>
 
