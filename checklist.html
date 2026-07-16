@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desk Checklist — Rates Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0c0f;
+    --panel: #12151a;
+    --panel-2: #171b21;
+    --border: #232830;
+    --text: #e4e7eb;
+    --muted: #7b8794;
+    --muted-2: #4d5561;
+    --green: #2dd4a7;
+    --green-dim: rgba(45,212,167,0.12);
+    --amber: #f0a83a;
+    --amber-dim: rgba(240,168,58,0.12);
+    --red: #e85d5d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100vh;
+    padding:32px 16px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  /* header */
+  .deskhead{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    border-bottom:1px solid var(--border);
+    padding-bottom:16px;
+    margin-bottom:24px;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .deskhead h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:-0.01em;
+    margin:0 0 4px;
+  }
+  .deskhead .sub{
+    color:var(--muted);
+    font-size:12px;
+    letter-spacing:0.02em;
+  }
+  .clock{
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  .clock .time{
+    font-size:20px;
+    font-weight:600;
+    color:var(--green);
+  }
+  .clock .date{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  /* tabs */
+  .tabs{
+    display:flex;
+    gap:2px;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:3px;
+    margin-bottom:20px;
+  }
+  .tab{
+    flex:1;
+    text-align:center;
+    padding:9px 12px;
+    font-size:12px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:transparent;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:'JetBrains Mono', monospace;
+    font-weight:600;
+    transition:all .15s ease;
+  }
+  .tab.active{
+    background:var(--panel);
+    color:var(--text);
+    box-shadow:0 0 0 1px var(--border);
+  }
+
+  /* progress */
+  .progress-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .progress-bar{
+    flex:1;
+    height:6px;
+    background:var(--panel-2);
+    border-radius:3px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--green);
+    width:0%;
+    transition:width .25s ease;
+  }
+  .progress-pct{
+    font-size:12px;
+    color:var(--muted);
+    min-width:52px;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* panel */
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .group-label{
+    padding:10px 16px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--muted-2);
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+  }
+  .item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:13px 16px;
+    border-bottom:1px solid var(--border);
+    cursor:pointer;
+    user-select:none;
+  }
+  .item:last-child{border-bottom:none;}
+  .item:hover{background:var(--panel-2);}
+  .box{
+    width:18px;
+    height:18px;
+    min-width:18px;
+    margin-top:1px;
+    border-radius:4px;
+    border:1.5px solid var(--muted-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .12s ease;
+  }
+  .item.checked .box{
+    background:var(--green);
+    border-color:var(--green);
+  }
+  .box svg{opacity:0;width:12px;height:12px;transition:opacity .1s ease;}
+  .item.checked .box svg{opacity:1;}
+  .label{
+    font-size:13.5px;
+    line-height:1.5;
+    color:var(--text);
+  }
+  .item.checked .label{
+    color:var(--muted);
+    text-decoration:line-through;
+    text-decoration-color:var(--muted-2);
+  }
+
+  /* footer controls */
+  .controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:18px;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .meta{
+    font-size:11px;
+    color:var(--muted-2);
+  }
+  .reset-btn{
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .reset-btn:hover{
+    border-color:var(--red);
+    color:var(--red);
+  }
+  .allclear{
+    text-align:center;
+    padding:24px 16px;
+    color:var(--green);
+    font-size:13px;
+    letter-spacing:0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="deskhead">
+    <div>
+      <h1>Desk Checklist</h1>
+      <div class="sub">rates-desk // session &amp; execution gate</div>
+    </div>
+    <div class="clock">
+      <div class="time" id="clockTime">--:--:--</div>
+      <div class="date" id="clockDate">-- --- ----</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="prep">Session Prep</button>
+    <button class="tab" data-tab="trade">Trade Criteria</button>
+  </div>
+
+  <div class="progress-row">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-pct" id="progressPct">0/0</div>
+  </div>
+
+  <div class="panel" id="panelContent"></div>
+
+  <div class="controls">
+    <div class="meta" id="metaLine"></div>
+    <button class="reset-btn" id="resetBtn">Reset checklist</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  // ---- item sets (edit these to match your actual routine) ----
+  const DATA = {
+    prep: {
+      title: "Pre-Market / Session Prep",
+      resetMode: "daily", // auto-clears each new day
+      groups: [
+        {
+          label: "Macro & Calendar",
+          items: [
+            "Check today's high-impact news events (FOMC/ECB/BoE/BoJ, NFP, CPI)",
+            "Confirm no rate-decision date flag active",
+            "Review overnight Asia/London session range",
+            "Check FRED benchmark feed status (SOFR/EFFR/ESTR/SONIA)",
+          ]
+        },
+        {
+          label: "Levels & Structure",
+          items: [
+            "Mark PDH/PDL and PWH/PWL",
+            "Mark current daily/weekly VWAP",
+            "Identify active order blocks / OTE zones",
+            "Check for unfilled NDOG/NWOG/NMOG gaps",
+            "Note nearest BSL/SSL liquidity pools",
+          ]
+        },
+        {
+          label: "Session Readiness",
+          items: [
+            "Confirm correct session/kill-zone window active",
+            "Dashboard panel loading correctly (no repaint/lag)",
+            "Check compiled script size (headroom under limit)",
+            "Set daily bias (bullish / bearish / neutral / no-trade)",
+          ]
+        }
+      ]
+    },
+    trade: {
+      title: "Trade Entry / Exit Criteria",
+      resetMode: "manual", // stays checked until you reset it per trade
+      groups: [
+        {
+          label: "1. PD Arrays & Draw on Liquidity",
+          items: [
+            "Identify unmitigated PD arrays (OBs, PD OTE, FVG)",
+            "Check for unfilled NDOG, NWOG, NMOG — mark as potential TP zones",
+          ]
+        },
+        {
+          label: "2. Bias Confirmation (need all 3 aligned)",
+          items: [
+            "1700 NYC Reset open vs PD Equilibrium — above = Bearish, below = Bullish",
+            "Midnight (0000 EST) open vs PD Equilibrium — above = Bearish, below = Bullish",
+            "Midnight (0000 EST) open vs PD WM/R Proxy — above = Bearish, below = Bullish",
+          ]
+        },
+        {
+          label: "3. Validity Gate",
+          items: [
+            "All 3 confirmations agree (all Bearish or all Bullish) — if not, trade is invalid, stand down",
+          ]
+        },
+        {
+          label: "4. Manipulation (Judas Swing)",
+          items: [
+            "Bearish: price manipulated below Midnight Open then returned back above it (sell at expensive price)",
+            "Bullish: price manipulated above Midnight Open then returned back below it (buy at cheap price)",
+          ]
+        },
+        {
+          label: "5. Break Confirmation",
+          items: [
+            "Bearish: price broke down with FVG + significant volume",
+            "Bullish: price broke up with FVG + significant volume",
+          ]
+        },
+        {
+          label: "6. Timing Filter",
+          items: [
+            "Break occurred inside a Kill Zone and during a Macro window — if not, skip or wait",
+          ]
+        },
+        {
+          label: "7. Entry",
+          items: [
+            "Wait for price to return to the FVG formed, or the OB before the FVG",
+          ]
+        },
+        {
+          label: "8. Exit",
+          items: [
+            "Take profit: 75% of PD range, or 1:2 to 1:3 R:R",
+            "Stop loss: above/below the last 2 most recent swing highs/lows",
+          ]
+        },
+        {
+          label: "9. Post-Trade",
+          items: [
+            "Trade journaled immediately after execution",
+          ]
+        }
+      ]
+    }
+  };
+
+  const state = {
+    prep: loadState('prep'),
+    trade: loadState('trade'),
+    active: 'prep'
+  };
+
+  function todayKey(){
+    const d = new Date();
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+
+  function storageKey(tab){
+    if(DATA[tab].resetMode === 'daily'){
+      return 'desk_checklist_'+tab+'_'+todayKey();
+    }
+    return 'desk_checklist_'+tab;
+  }
+
+  function loadState(tab){
+    try{
+      const raw = localStorage.getItem(storageKey(tab));
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+
+  function saveState(tab){
+    try{
+      localStorage.setItem(storageKey(tab), JSON.stringify(state[tab]));
+    }catch(e){}
+  }
+
+  function allItems(tab){
+    const items = [];
+    DATA[tab].groups.forEach((g, gi) => {
+      g.items.forEach((label, ii) => {
+        items.push({id: gi+'_'+ii, label, group: g.label});
+      });
+    });
+    return items;
+  }
+
+  function render(){
+    const tab = state.active;
+    const items = allItems(tab);
+    const checkedCount = items.filter(it => state[tab][it.id]).length;
+
+    // tabs
+    document.querySelectorAll('.tab').forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.tab === tab);
+    });
+
+    // progress
+    const pct = items.length ? Math.round((checkedCount/items.length)*100) : 0;
+    document.getElementById('progressFill').style.width = pct+'%';
+    document.getElementById('progressPct').textContent = checkedCount+'/'+items.length;
+
+    // panel
+    const panel = document.getElementById('panelContent');
+    panel.innerHTML = '';
+
+    if(checkedCount === items.length && items.length > 0){
+      const clear = document.createElement('div');
+      clear.className = 'allclear';
+      clear.textContent = '✓ All clear — ' + DATA[tab].title + ' complete';
+      panel.appendChild(clear);
+    }
+
+    DATA[tab].groups.forEach((g, gi) => {
+      const groupLabel = document.createElement('div');
+      groupLabel.className = 'group-label';
+      groupLabel.textContent = g.label;
+      panel.appendChild(groupLabel);
+
+      g.items.forEach((label, ii) => {
+        const id = gi+'_'+ii;
+        const row = document.createElement('div');
+        row.className = 'item' + (state[tab][id] ? ' checked' : '');
+        row.innerHTML = `
+          <div class="box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0a0c0f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="label">${label}</div>
+        `;
+        row.addEventListener('click', () => {
+          state[tab][id] = !state[tab][id];
+          saveState(tab);
+          render();
+        });
+        panel.appendChild(row);
+      });
+    });
+
+    // meta line
+    const meta = document.getElementById('metaLine');
+    if(DATA[tab].resetMode === 'daily'){
+      meta.textContent = 'Auto-resets daily at rollover';
+    } else {
+      meta.textContent = 'Persists until manually reset';
+    }
+  }
+
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click', () => {
+      state.active = btn.dataset.tab;
+      render();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    const tab = state.active;
+    if(confirm('Reset "'+DATA[tab].title+'"? This clears all checks.')){
+      state[tab] = {};
+      saveState(tab);
+      render();
+    }
+  });
+
+  // clock
+  function tickClock(){
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clockTime').textContent = `${hh}:${mm}:${ss}`;
+    const opts = { weekday:'short', day:'2-digit', month:'short', year:'numeric' };
+    document.getElementById('clockDate').textContent = now.toLocaleDateString('en-US', opts);
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  render();
+})();
+</script>
+</body>
+</html>
