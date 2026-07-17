@@ -113,7 +113,7 @@
     <span class="spacer"></span>
     <span class="asof" id="asof">loading…</span>
     <span class="pill" id="status"><span class="dot"></span><span id="statusTxt">live</span></span>
-    <a class="navlink" id="checklistLink" href="checklist.html?v=3" onclick="window.location.href='checklist.html?v=3'; return true;">Checklist</a>
+    <button class="theme" id="checklistBtn" type="button">Checklist</button>
     <button class="theme" id="themeBtn">Light</button>
   </header>
 
@@ -289,6 +289,10 @@ function renderNews(payload) {
       `</div>`;
   }).join("");
 }
+
+document.getElementById("checklistBtn").addEventListener("click", () => {
+  window.location.href = "checklist.html?v=3";
+});
 
 document.getElementById("themeBtn").addEventListener("click", () => {
   const root = document.documentElement;
