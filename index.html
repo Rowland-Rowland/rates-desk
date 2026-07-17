@@ -54,7 +54,8 @@
     background:transparent; color:var(--lbl); border:1px solid var(--line);
     border-radius:2px; padding:4px 10px; font-size:11px;
     letter-spacing:.08em; text-transform:uppercase; text-decoration:none;
-    display:inline-block;
+    display:inline-block; position:relative; z-index:50; pointer-events:auto;
+    cursor:pointer;
   }
   a.navlink:hover { color:var(--val); border-color:var(--frame); }
 
@@ -112,7 +113,7 @@
     <span class="spacer"></span>
     <span class="asof" id="asof">loading…</span>
     <span class="pill" id="status"><span class="dot"></span><span id="statusTxt">live</span></span>
-    <a class="navlink" href="checklist.html">Checklist</a>
+    <a class="navlink" id="checklistLink" href="checklist.html?v=3" onclick="window.location.href='checklist.html?v=3'; return true;">Checklist</a>
     <button class="theme" id="themeBtn">Light</button>
   </header>
 
