@@ -1,740 +1,303 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desk Checklist — Rates Desk</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Benchmark Desk</title>
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
-  :root{
-    --bg: #0a0c0f;
-    --panel: #12151a;
-    --panel-2: #171b21;
-    --border: #232830;
-    --text: #e4e7eb;
-    --muted: #7b8794;
-    --muted-2: #4d5561;
-    --green: #2dd4a7;
-    --green-dim: rgba(45,212,167,0.12);
-    --amber: #f0a83a;
-    --amber-dim: rgba(240,168,58,0.12);
-    --red: #e85d5d;
-    --red-dim: rgba(232,93,93,0.12);
+  :root {
+    --bg:#0e1320; --panel:#141a2a; --hdr:#1b2336; --line:#283248; --frame:#3a4660;
+    --amber:#f0b429; --lbl:#8b97ad; --val:#e8eef7; --dim:#5b6678;
+    --teal:#2dd4bf; --blue:#5b9bff; --green:#34d399; --red:#f87171;
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'JetBrains Mono', monospace;
-    min-height:100vh;
-    padding:32px 16px 80px;
+  [data-theme="light"] {
+    --bg:#f5f7fa; --panel:#ffffff; --hdr:#e4e8ef; --line:#cdd5e0; --frame:#aab4c2;
+    --amber:#b45309; --lbl:#5b6472; --val:#111827; --dim:#9aa3b2;
+    --teal:#0d9488; --blue:#2563eb; --green:#15803d; --red:#dc2626;
   }
-  .wrap{max-width:760px;margin:0 auto;}
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--val);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono { font-family:ui-monospace,"SF Mono","JetBrains Mono","Roboto Mono",Menlo,Consolas,monospace; font-variant-numeric:tabular-nums; }
+  .wrap { max-width:1100px; margin:0 auto; padding:20px 18px 48px; }
 
-  /* header */
-  .deskhead{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    border-bottom:1px solid var(--border);
-    padding-bottom:16px;
-    margin-bottom:24px;
-    gap:12px;
-    flex-wrap:wrap;
+  header {
+    display:flex; align-items:baseline; gap:16px; flex-wrap:wrap;
+    border-bottom:1px solid var(--frame); padding-bottom:14px; margin-bottom:20px;
   }
-  .deskhead h1{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:700;
-    font-size:22px;
-    letter-spacing:-0.01em;
-    margin:0 0 4px;
+  header h1 {
+    margin:0; font-size:15px; font-weight:700; letter-spacing:.22em;
+    color:var(--amber); text-transform:uppercase;
   }
-  .deskhead .sub{
-    color:var(--muted);
-    font-size:12px;
-    letter-spacing:0.02em;
+  header .sub { color:var(--lbl); font-size:12px; letter-spacing:.04em; }
+  header .spacer { flex:1; }
+  .asof { font-size:12px; color:var(--lbl); }
+  .pill {
+    display:inline-flex; align-items:center; gap:6px; font-size:11px;
+    padding:3px 9px; border-radius:2px; border:1px solid var(--line);
+    text-transform:uppercase; letter-spacing:.08em;
   }
-  .clock{
-    text-align:right;
-    font-variant-numeric:tabular-nums;
+  .dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+  .pill.stale { color:var(--red); border-color:var(--red); }
+  .pill.stale .dot { background:var(--red); }
+  button.theme {
+    background:transparent; color:var(--lbl); border:1px solid var(--line);
+    border-radius:2px; padding:4px 10px; font-size:11px; cursor:pointer;
+    letter-spacing:.08em; text-transform:uppercase;
   }
-  .clock .time{
-    font-size:20px;
-    font-weight:600;
-    color:var(--green);
+  button.theme:hover { color:var(--val); border-color:var(--frame); }
+  a.navlink {
+    background:transparent; color:var(--lbl); border:1px solid var(--line);
+    border-radius:2px; padding:4px 10px; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; text-decoration:none;
+    display:inline-block;
   }
-  .clock .date{
-    font-size:11px;
-    color:var(--muted);
-    margin-top:2px;
-  }
+  a.navlink:hover { color:var(--val); border-color:var(--frame); }
 
-  /* tabs */
-  .tabs{
-    display:flex;
-    gap:2px;
-    background:var(--panel-2);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:3px;
-    margin-bottom:20px;
+  .grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+    gap:10px; margin-bottom:24px;
   }
-  .tab{
-    flex:1;
-    text-align:center;
-    padding:9px 12px;
-    font-size:12px;
-    letter-spacing:0.04em;
-    text-transform:uppercase;
-    color:var(--muted);
-    background:transparent;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    font-family:'JetBrains Mono', monospace;
-    font-weight:600;
-    transition:all .15s ease;
+  .card {
+    background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--teal);
+    padding:12px 13px; cursor:pointer; transition:border-color .12s, transform .12s;
   }
-  .tab.active{
-    background:var(--panel);
-    color:var(--text);
-    box-shadow:0 0 0 1px var(--border);
-  }
+  .card.commodity { border-left-color:var(--amber); }
+  .card:hover { border-color:var(--frame); }
+  .card.active { border-color:var(--frame); transform:translateY(-1px); }
+  .card .code { font-size:11px; letter-spacing:.12em; color:var(--lbl); text-transform:uppercase; }
+  .card .num { font-size:23px; font-weight:600; margin:6px 0 2px; color:var(--val); }
+  .card .num small { font-size:13px; color:var(--lbl); font-weight:400; }
+  .card .meta { font-size:10.5px; color:var(--dim); letter-spacing:.03em; }
+  .card .meta b { color:var(--lbl); font-weight:600; }
+  .card.nodata .num { color:var(--dim); }
+  .card.nodata { border-left-color:var(--dim); }
 
-  /* progress */
-  .progress-row{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:18px;
+  .chartwrap { background:var(--panel); border:1px solid var(--line); }
+  .chart-hd {
+    display:flex; align-items:baseline; gap:10px;
+    padding:11px 14px; border-bottom:1px solid var(--line);
   }
-  .progress-bar{
-    flex:1;
-    height:6px;
-    background:var(--panel-2);
-    border-radius:3px;
-    overflow:hidden;
-    border:1px solid var(--border);
-  }
-  .progress-fill{
-    height:100%;
-    background:var(--green);
-    width:0%;
-    transition:width .25s ease;
-  }
-  .progress-pct{
-    font-size:12px;
-    color:var(--muted);
-    min-width:52px;
-    text-align:right;
-    font-variant-numeric:tabular-nums;
-  }
+  .chart-hd .t { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); }
+  .chart-hd .h { font-size:11px; color:var(--lbl); }
+  #chart { height:340px; }
 
-  /* panel */
-  .panel{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:10px;
-    overflow:hidden;
-  }
-  .group-label{
-    padding:10px 16px;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.08em;
-    color:var(--muted-2);
-    background:var(--panel-2);
-    border-bottom:1px solid var(--border);
-  }
-  .item{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    padding:13px 16px;
-    border-bottom:1px solid var(--border);
-    cursor:pointer;
-    user-select:none;
-  }
-  .item:last-child{border-bottom:none;}
-  .item:hover{background:var(--panel-2);}
-  .box{
-    width:18px;
-    height:18px;
-    min-width:18px;
-    margin-top:1px;
-    border-radius:4px;
-    border:1.5px solid var(--muted-2);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:all .12s ease;
-    flex-shrink:0;
-  }
-  .item.checked .box{
-    background:var(--green);
-    border-color:var(--green);
-  }
-  .box svg{opacity:0;width:12px;height:12px;transition:opacity .1s ease;}
-  .item.checked .box svg{opacity:1;}
-  .label{
-    font-size:13.5px;
-    line-height:1.5;
-    color:var(--text);
-  }
-  .item.checked .label{
-    color:var(--muted);
-    text-decoration:line-through;
-    text-decoration-color:var(--muted-2);
-  }
-
-  /* yes/no rows */
-  .yn-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:13px 16px;
-    border-bottom:1px solid var(--border);
-  }
-  .yn-row:last-child{border-bottom:none;}
-  .yn-label{
-    font-size:13.5px;
-    line-height:1.5;
-    color:var(--text);
-    flex:1;
-  }
-  .yn-btns{
-    display:flex;
-    gap:6px;
-    flex-shrink:0;
-  }
-  .yn-btn{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:0.04em;
-    padding:7px 13px;
-    border-radius:6px;
-    border:1.5px solid var(--muted-2);
-    background:transparent;
-    color:var(--muted);
-    cursor:pointer;
-    transition:all .12s ease;
-  }
-  .yn-btn:hover{border-color:var(--text);color:var(--text);}
-  .yn-btn.sel-yes{background:var(--green);border-color:var(--green);color:#0a0c0f;}
-  .yn-btn.sel-no{background:var(--red);border-color:var(--red);color:#0a0c0f;}
-
-  /* banners */
-  .banner{
-    margin:0;
-    padding:14px 16px;
-    font-size:12.5px;
-    line-height:1.5;
-    letter-spacing:0.01em;
-    border-bottom:1px solid var(--border);
-  }
-  .banner:last-child{border-bottom:none;}
-  .banner-stop{background:var(--red-dim);color:var(--red);font-weight:700;}
-  .banner-go{background:var(--green-dim);color:var(--green);font-weight:700;}
-  .banner-wait{background:var(--amber-dim);color:var(--amber);}
-  .banner-hint{color:var(--muted-2);font-style:italic;}
-
-  /* footer controls */
-  .controls{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:18px;
-    gap:12px;
-    flex-wrap:wrap;
-  }
-  .meta{
-    font-size:11px;
-    color:var(--muted-2);
-  }
-  .reset-btn{
-    background:transparent;
-    border:1px solid var(--border);
-    color:var(--muted);
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.03em;
-    text-transform:uppercase;
-    padding:8px 14px;
-    border-radius:6px;
-    cursor:pointer;
-    transition:all .15s ease;
-  }
-  .reset-btn:hover{
-    border-color:var(--red);
-    color:var(--red);
-  }
-  .allclear{
-    text-align:center;
-    padding:24px 16px;
-    color:var(--green);
-    font-size:13px;
-    letter-spacing:0.02em;
-  }
+  footer { margin-top:22px; font-size:11px; color:var(--dim); line-height:1.7; }
+  footer b { color:var(--lbl); }
+  a { color:var(--blue); text-decoration:none; }
+.newswrap{margin-top:18px;border:1px solid var(--frame);background:var(--panel);border-radius:8px;overflow:hidden}
+.news-hd{display:flex;align-items:baseline;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.news-hd .t{color:var(--amber);font-weight:700;letter-spacing:.04em}
+.news-hd .h{color:var(--dim);font-size:12px}
+.news-row{display:grid;grid-template-columns:128px 52px 1fr auto;gap:10px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.news-row:last-child{border-bottom:0}
+.news-row.past{opacity:.4}
+.news-row.next{background:rgba(240,180,41,.10)}
+.news-when{color:var(--val);font-variant-numeric:tabular-nums}
+.news-cur{color:var(--bg);background:var(--teal);border-radius:4px;text-align:center;font-weight:700;font-size:11px;padding:2px 0}
+.news-title{color:var(--lbl)}
+.news-fp{color:var(--dim);font-size:12px;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.news-empty{padding:14px;color:var(--dim);font-size:13px}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <header>
+    <h1>Benchmark Desk</h1>
+    <span class="sub">overnight rates &amp; commodity spot</span>
+    <span class="spacer"></span>
+    <span class="asof" id="asof">loading…</span>
+    <span class="pill" id="status"><span class="dot"></span><span id="statusTxt">live</span></span>
+    <a class="navlink" href="checklist.html?v=2">Checklist</a>
+    <button class="theme" id="themeBtn">Light</button>
+  </header>
 
-  <div class="deskhead">
-    <div>
-      <h1>Desk Checklist</h1>
-      <div class="sub">rates-desk // session &amp; execution gate</div>
+  <div class="grid" id="cards"></div>
+
+  <div class="newswrap" id="newswrap">
+    <div class="news-hd">
+      <span class="t">High-Impact This Week</span>
+      <span class="h">red-folder events for major currencies · times in ET</span>
     </div>
-    <div class="clock">
-      <div class="time" id="clockTime">--:--:--</div>
-      <div class="date" id="clockDate">-- --- ----</div>
+    <div id="news"></div>
+  </div>
+
+  <div class="chartwrap">
+    <div class="chart-hd">
+      <span class="t" id="chartTitle">SOFR</span>
+      <span class="h" id="chartHint">click any tile to chart its history</span>
     </div>
+    <div id="chart"></div>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-tab="prep">Session Prep</button>
-    <button class="tab" data-tab="trade">Trade Criteria</button>
-  </div>
-
-  <div class="progress-row">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-pct" id="progressPct">0/0</div>
-  </div>
-
-  <div class="panel" id="panelContent"></div>
-
-  <div class="controls">
-    <div class="meta" id="metaLine"></div>
-    <button class="reset-btn" id="resetBtn">Reset checklist</button>
-  </div>
-
+  <footer>
+    <div><b>Free sources:</b> SOFR &amp; EFFR — New York Fed · ESTR — ECB · SONIA — Bank of England · TONA — Bank of Japan · Gold/WTI/Brent spot — Stooq.</div>
+    <div><b>Not shown (licensed):</b> Term SOFR/SONIA, EURIBOR, SARON, LBMA gold fixes, and exchange settlement prices are redistribution-restricted and intentionally excluded.</div>
+    <div>Values are end-of-day, updated by a daily job — not a live tick feed.</div>
+  </footer>
 </div>
 
 <script>
-(function(){
+const STALE_DAYS = 5;          // a rate older than this flags as stale
+const STALE = { TONA: 120 };   // TONA is a monthly series that can lag 2-3 months
+const RATE_ORDER = ["SOFR","EFFR","ESTR","SONIA","TONA","WTI","BRENT"];
+const COMMODITIES = new Set(["WTI","BRENT"]);
+const LABELS = { WTI:"WTI", BRENT:"Brent" };
 
-  // ---- Real 2026 central bank rate-decision dates (announcement day) ----
-  // Source: Federal Reserve, ECB, Bank of England, Bank of Japan official calendars
-  const RATE_DECISIONS_2026 = {
-    'FOMC': ['2026-01-28','2026-03-18','2026-04-29','2026-06-17','2026-07-29','2026-09-16','2026-10-28','2026-12-09'],
-    'ECB':  ['2026-02-05','2026-03-19','2026-04-30','2026-06-11','2026-07-23','2026-09-10','2026-10-29','2026-12-17'],
-    'BoE':  ['2026-02-05','2026-03-19','2026-04-30','2026-06-18','2026-07-30','2026-09-17','2026-11-05','2026-12-17'],
-    'BoJ':  ['2026-01-23','2026-03-19','2026-04-28','2026-06-16','2026-07-31','2026-09-18','2026-10-30','2026-12-18'],
-  };
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const daysSince = d => (Date.now() - new Date(d + "T00:00:00Z").getTime()) / 86400000;
 
-  function todaysRateDecisions(){
-    const today = todayKey();
-    const hits = [];
-    Object.keys(RATE_DECISIONS_2026).forEach(bank => {
-      if(RATE_DECISIONS_2026[bank].includes(today)) hits.push(bank);
-    });
-    return hits;
-  }
+let chart, series, HISTORY = {}, activeCode = "SOFR";
 
-  // ---- Session Prep item set (edit to match your routine) ----
-  const PREP = {
-    title: "Pre-Market / Session Prep",
-    resetMode: "daily", // auto-clears each new day
-    groups: [
-      {
-        label: "Macro & Calendar",
-        items: [
-          "Check today's high-impact news events (FOMC/ECB/BoE/BoJ, NFP, CPI)",
-          "__AUTO_RATE_FLAG__",
-          "Review Asia range high and low",
-          "Check FRED benchmark feed status (SOFR/EFFR/ESTR/SONIA)",
-        ]
-      },
-      {
-        label: "Levels & Structure",
-        items: [
-          "Mark current daily/weekly VWAP",
-          "Identify active order blocks / OTE zones",
-          "Check for unfilled NDOG/NWOG/NMOG gaps",
-          "Note nearest BSL/SSL liquidity pools",
-        ]
-      }
-    ]
-  };
+function buildChart() {
+  const el = document.getElementById("chart");
+  el.innerHTML = "";
+  chart = LightweightCharts.createChart(el, {
+    height: 340,
+    layout: { background:{ color:"transparent" }, textColor:cssVar("--lbl"), fontFamily:"ui-monospace, monospace" },
+    grid: { vertLines:{ color:cssVar("--line") }, horzLines:{ color:cssVar("--line") } },
+    rightPriceScale: { borderColor:cssVar("--frame") },
+    timeScale: { borderColor:cssVar("--frame") },
+    crosshair: { vertLine:{ color:cssVar("--frame") }, horzLine:{ color:cssVar("--frame") } },
+  });
+  series = chart.addLineSeries({ color:cssVar("--amber"), lineWidth:2, priceLineVisible:false });
+  drawSeries(activeCode);
+  new ResizeObserver(() => chart.applyOptions({ width: el.clientWidth })).observe(el);
+  chart.applyOptions({ width: el.clientWidth });
+}
 
-  // ---- state ----
-  let prepState = loadPrep();
-  let tradeState = loadTrade();
-  let activeTab = 'prep';
+function drawSeries(code) {
+  activeCode = code;
+  document.getElementById("chartTitle").textContent = LABELS[code] || code;
+  document.querySelectorAll(".card").forEach(c => c.classList.toggle("active", c.dataset.code === code));
+  const data = (HISTORY[code] || []);
+  series.applyOptions({ color: COMMODITIES.has(code) ? cssVar("--amber") : cssVar("--teal") });
+  series.setData(data);
+  chart.timeScale().fitContent();
+}
 
-  function todayKey(){
-    const d = new Date();
-    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  }
-  function prepKey(){ return 'desk_checklist_prep_'+todayKey(); }
-  const TRADE_KEY = 'desk_checklist_trade';
+function renderCards(payload) {
+  const wrap = document.getElementById("cards");
+  wrap.innerHTML = "";
+  let anyStale = false;
 
-  function loadPrep(){
-    try{ const raw = localStorage.getItem(prepKey()); return raw ? JSON.parse(raw) : {}; }
-    catch(e){ return {}; }
-  }
-  function savePrep(){
-    try{ localStorage.setItem(prepKey(), JSON.stringify(prepState)); }catch(e){}
-  }
-  function loadTrade(){
-    try{
-      const raw = localStorage.getItem(TRADE_KEY);
-      return raw ? JSON.parse(raw) : defaultTradeState();
-    }catch(e){ return defaultTradeState(); }
-  }
-  function saveTrade(){
-    try{ localStorage.setItem(TRADE_KEY, JSON.stringify(tradeState)); }catch(e){}
-  }
-  function defaultTradeState(){
-    return {
-      pd1:false, pd2:false,
-      bias1:null, bias2:null, bias3:null,
-      gateAgree:null,
-      manip:null,
-      brk:null,
-      newsToday:null, news30:null,
-      kzMacro:null,
-      entry:false,
-      tp:false, sl:false,
-      journal:false
-    };
-  }
+  RATE_ORDER.forEach(code => {
+    const r = payload.rates[code];
+    if (!r) return;
+    const hasVal = r.value !== null && r.value !== undefined && r.ok !== false;
+    const limit = STALE[code] || STALE_DAYS;
+    const stale = hasVal && r.date && daysSince(r.date) > limit;
+    if (stale || r.ok === false) anyStale = true;
 
-  // ---- helpers to build DOM rows ----
-  function checkRow(panel, label, checked, onClick){
-    const row = document.createElement('div');
-    row.className = 'item' + (checked ? ' checked' : '');
-    row.innerHTML = `
-      <div class="box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#0a0c0f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-      </div>
-      <div class="label">${label}</div>
-    `;
-    row.addEventListener('click', onClick);
-    panel.appendChild(row);
-    return row;
-  }
+    const card = document.createElement("div");
+    card.className = "card" + (COMMODITIES.has(code) ? " commodity" : "") + (hasVal ? "" : " nodata");
+    card.dataset.code = code;
 
-  function ynRow(panel, label, value, onYes, onNo){
-    const row = document.createElement('div');
-    row.className = 'yn-row';
-    row.innerHTML = `
-      <div class="yn-label">${label}</div>
-      <div class="yn-btns">
-        <button class="yn-btn${value===true ? ' sel-yes' : ''}" data-v="yes">YES</button>
-        <button class="yn-btn${value===false ? ' sel-no' : ''}" data-v="no">NO</button>
-      </div>
-    `;
-    row.querySelector('[data-v="yes"]').addEventListener('click', onYes);
-    row.querySelector('[data-v="no"]').addEventListener('click', onNo);
-    panel.appendChild(row);
-    return row;
-  }
+    const num = hasVal
+      ? (r.unit === "%"
+          ? `${Number(r.value).toFixed(2)}<small> %</small>`
+          : `<small>$ </small>${Number(r.value).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`)
+      : "&mdash;";
 
-  // Above/Below row for bias questions — shows Premium/Discount confirmation once answered
-  function abRow(panel, label, value, onAbove, onBelow){
-    const row = document.createElement('div');
-    row.className = 'yn-row';
-    row.innerHTML = `
-      <div class="yn-label">${label}</div>
-      <div class="yn-btns">
-        <button class="yn-btn${value===true ? ' sel-yes' : ''}" data-v="above">ABOVE</button>
-        <button class="yn-btn${value===false ? ' sel-no' : ''}" data-v="below">BELOW</button>
-      </div>
-    `;
-    row.querySelector('[data-v="above"]').addEventListener('click', onAbove);
-    row.querySelector('[data-v="below"]').addEventListener('click', onBelow);
-    panel.appendChild(row);
-    if(value === true){
-      const note = document.createElement('div');
-      note.className = 'banner banner-hint';
-      note.textContent = 'Premium confirmation';
-      panel.appendChild(note);
-    } else if(value === false){
-      const note = document.createElement('div');
-      note.className = 'banner banner-hint';
-      note.textContent = 'Discount confirmation';
-      panel.appendChild(note);
-    }
-    return row;
-  }
+    const metaDate = r.date ? r.date : "no data";
+    const flag = (r.ok === false) ? ' · <b style="color:var(--red)">source down</b>'
+               : (stale ? ' · <b style="color:var(--red)">stale</b>' : "");
 
-  function groupLabel(panel, text){
-    const g = document.createElement('div');
-    g.className = 'group-label';
-    g.textContent = text;
-    panel.appendChild(g);
-  }
+    card.innerHTML =
+      `<div class="code">${LABELS[code] || code}</div>` +
+      `<div class="num mono">${num}</div>` +
+      `<div class="meta">${r.source || ""} · <b>${metaDate}</b>${flag}</div>`;
 
-  function banner(panel, text, kind){
-    const b = document.createElement('div');
-    b.className = 'banner banner-'+kind;
-    b.textContent = text;
-    panel.appendChild(b);
-  }
-
-  // ---- Session Prep renderer ----
-  function renderPrep(panel){
-    const rateHits = todaysRateDecisions();
-
-    // build real (non-auto) item list for progress calc — auto row doesn't count as a manual check
-    const items = [];
-    PREP.groups.forEach((g, gi) => g.items.forEach((label, ii) => {
-      if(label !== '__AUTO_RATE_FLAG__') items.push({id: gi+'_'+ii, label});
-    }));
-    const checkedCount = items.filter(it => prepState[it.id]).length;
-    updateProgress(checkedCount, items.length);
-
-    if(checkedCount === items.length && items.length > 0){
-      const clear = document.createElement('div');
-      clear.className = 'allclear';
-      clear.textContent = '✓ All clear — ' + PREP.title + ' complete';
-      panel.appendChild(clear);
-    }
-
-    PREP.groups.forEach((g, gi) => {
-      groupLabel(panel, g.label);
-      g.items.forEach((label, ii) => {
-        const id = gi+'_'+ii;
-
-        if(label === '__AUTO_RATE_FLAG__'){
-          if(rateHits.length){
-            banner(panel, 'RATE-DECISION DATE ACTIVE TODAY — ' + rateHits.join(', '), 'banner-stop');
-          } else {
-            banner(panel, '✓ No rate-decision date flag active today (auto-checked: FOMC/ECB/BoE/BoJ)', 'banner-go');
-          }
-          return;
-        }
-
-        checkRow(panel, label, prepState[id], () => {
-          prepState[id] = !prepState[id];
-          savePrep();
-          render();
-        });
-
-        // auto info subtext for the news-events item — central bank part only
-        if(gi === 0 && ii === 0){
-          const note = document.createElement('div');
-          note.className = 'banner banner-hint';
-          note.style.paddingTop = '0';
-          note.style.paddingBottom = '10px';
-          note.textContent = rateHits.length
-            ? 'Central bank calendar: ' + rateHits.join(', ') + ' decision today — NFP/CPI still need manual check'
-            : 'Central bank calendar: clear today — NFP/CPI still need manual check';
-          panel.appendChild(note);
-        }
-      });
-    });
-
-    document.getElementById('metaLine').textContent = 'Auto-resets daily at rollover';
-  }
-
-  // ---- Trade Criteria renderer (gated flow) ----
-  function renderTrade(panel){
-    let visibleTotal = 0, visibleDone = 0;
-    const count = (done) => { visibleTotal++; if(done) visibleDone++; };
-
-    // 1. PD Arrays
-    groupLabel(panel, '1. PD Arrays & Draw on Liquidity');
-    checkRow(panel, 'Identify unmitigated PD arrays (OBs, PD OTE, FVG)', tradeState.pd1, () => { tradeState.pd1 = !tradeState.pd1; saveTrade(); render(); });
-    checkRow(panel, 'Check for unfilled NDOG, NWOG, NMOG — mark as potential TP zones', tradeState.pd2, () => { tradeState.pd2 = !tradeState.pd2; saveTrade(); render(); });
-    count(tradeState.pd1); count(tradeState.pd2);
-
-    // 2. Bias Confirmation
-    groupLabel(panel, '2. Bias Confirmation — Above or Below PD level?');
-    abRow(panel, '1700 NYC Reset open vs PD Equilibrium', tradeState.bias1,
-      () => { tradeState.bias1 = true; saveTrade(); render(); },
-      () => { tradeState.bias1 = false; saveTrade(); render(); });
-    abRow(panel, 'Midnight (0000 EST) open vs PD Equilibrium', tradeState.bias2,
-      () => { tradeState.bias2 = true; saveTrade(); render(); },
-      () => { tradeState.bias2 = false; saveTrade(); render(); });
-    abRow(panel, 'Midnight (0000 EST) open vs PD WM/R Proxy', tradeState.bias3,
-      () => { tradeState.bias3 = true; saveTrade(); render(); },
-      () => { tradeState.bias3 = false; saveTrade(); render(); });
-    count(tradeState.bias1 !== null); count(tradeState.bias2 !== null); count(tradeState.bias3 !== null);
-
-    // 3. Validity Gate (manual)
-    groupLabel(panel, '3. Validity Gate — do all 3 agree?');
-    ynRow(panel, 'Do all 3 bias confirmations agree (all Above / Premium, or all Below / Discount)?', tradeState.gateAgree,
-      () => { tradeState.gateAgree = true; saveTrade(); render(); },
-      () => { tradeState.gateAgree = false; saveTrade(); render(); });
-    count(tradeState.gateAgree !== null && tradeState.gateAgree);
-
-    let dir = null;
-    if(tradeState.gateAgree === true){
-      // derive direction wording from majority of the 3 answers for downstream text
-      const aboveCount = [tradeState.bias1, tradeState.bias2, tradeState.bias3].filter(v => v === true).length;
-      dir = aboveCount >= 2 ? 'bearish' : 'bullish';
-      banner(panel, 'BIAS CONFIRMED — ' + (dir === 'bearish' ? 'BEARISH (Premium)' : 'BULLISH (Discount)'), 'banner-go');
-    } else if(tradeState.gateAgree === false){
-      banner(panel, 'STAND DOWN — NO TRADE', 'banner-stop');
-    }
-
-    if(!dir){
-      updateProgress(visibleDone, visibleTotal);
-      document.getElementById('metaLine').textContent = 'Persists until manually reset';
-      return;
-    }
-
-    // 4. Manipulation (Judas Swing)
-    groupLabel(panel, '4. Manipulation (Judas Swing)');
-    const manipLabel = dir === 'bearish'
-      ? 'Price manipulated below Midnight Open then returned back above it? (sell at expensive price)'
-      : 'Price manipulated above Midnight Open then returned back below it? (buy at cheap price)';
-    ynRow(panel, manipLabel, tradeState.manip,
-      () => { tradeState.manip = true; saveTrade(); render(); },
-      () => { tradeState.manip = false; saveTrade(); render(); });
-    count(tradeState.manip !== null && tradeState.manip);
-
-    if(tradeState.manip !== true){
-      if(tradeState.manip === false) banner(panel, 'STAND DOWN — NO TRADE (manipulation not confirmed)', 'banner-stop');
-      updateProgress(visibleDone, visibleTotal);
-      document.getElementById('metaLine').textContent = 'Persists until manually reset';
-      return;
-    }
-
-    // 5. Break Confirmation
-    groupLabel(panel, '5. Break Confirmation');
-    const brkLabel = dir === 'bearish'
-      ? 'Price broken down with FVG + significant volume?'
-      : 'Price broken up with FVG + significant volume?';
-    ynRow(panel, brkLabel, tradeState.brk,
-      () => { tradeState.brk = true; saveTrade(); render(); },
-      () => { tradeState.brk = false; saveTrade(); render(); });
-    count(tradeState.brk !== null && tradeState.brk);
-
-    if(tradeState.brk !== true){
-      if(tradeState.brk === false) banner(panel, 'STAND DOWN — NO TRADE (break not confirmed)', 'banner-stop');
-      updateProgress(visibleDone, visibleTotal);
-      document.getElementById('metaLine').textContent = 'Persists until manually reset';
-      return;
-    }
-
-    // 6. News Filter
-    groupLabel(panel, '6. News Filter — check Benchmark Rates dashboard');
-    ynRow(panel, 'Is there high-impact news today?', tradeState.newsToday,
-      () => { tradeState.newsToday = true; saveTrade(); render(); },
-      () => { tradeState.newsToday = false; saveTrade(); render(); });
-    count(tradeState.newsToday !== null);
-
-    let newsClear = false;
-    if(tradeState.newsToday === false){
-      newsClear = true;
-      banner(panel, 'No high-impact news today — clear on this filter', 'banner-go');
-    } else if(tradeState.newsToday === true){
-      ynRow(panel, 'Is your setup ready 30+ minutes after the high-impact news release?', tradeState.news30,
-        () => { tradeState.news30 = true; saveTrade(); render(); },
-        () => { tradeState.news30 = false; saveTrade(); render(); });
-      count(tradeState.news30 !== null && tradeState.news30);
-      if(tradeState.news30 === true){
-        newsClear = true;
-        banner(panel, 'GREEN LIGHT — 30+ min past high-impact news', 'banner-go');
-      } else if(tradeState.news30 === false){
-        banner(panel, 'STAND DOWN — wait until 30 min after high-impact news release', 'banner-stop');
-      }
-    }
-
-    if(!newsClear){
-      updateProgress(visibleDone, visibleTotal);
-      document.getElementById('metaLine').textContent = 'Persists until manually reset';
-      return;
-    }
-
-    // 7. Timing Filter (Kill Zone + Macro)
-    groupLabel(panel, '7. Timing Filter');
-    ynRow(panel, 'Did the break occur inside a Kill Zone during a Macro window?', tradeState.kzMacro,
-      () => { tradeState.kzMacro = true; saveTrade(); render(); },
-      () => { tradeState.kzMacro = false; saveTrade(); render(); });
-    count(tradeState.kzMacro !== null && tradeState.kzMacro);
-
-    if(tradeState.kzMacro !== true){
-      if(tradeState.kzMacro === false) banner(panel, 'STAND DOWN — skip or wait', 'banner-stop');
-      updateProgress(visibleDone, visibleTotal);
-      document.getElementById('metaLine').textContent = 'Persists until manually reset';
-      return;
-    }
-
-    // 8. Entry
-    groupLabel(panel, '8. Entry');
-    checkRow(panel, 'Price returned to the FVG formed, or the OB before the FVG', tradeState.entry, () => { tradeState.entry = !tradeState.entry; saveTrade(); render(); });
-    count(tradeState.entry);
-
-    // 9. Exit
-    groupLabel(panel, '9. Exit');
-    checkRow(panel, 'Take profit: 75% of PD range, or 1:2 to 1:3 R:R', tradeState.tp, () => { tradeState.tp = !tradeState.tp; saveTrade(); render(); });
-    checkRow(panel, 'Stop loss: above/below the last 2 most recent swing highs/lows', tradeState.sl, () => { tradeState.sl = !tradeState.sl; saveTrade(); render(); });
-    count(tradeState.tp); count(tradeState.sl);
-
-    // 10. Post-Trade
-    groupLabel(panel, '10. Post-Trade');
-    checkRow(panel, 'Trade journaled immediately after execution', tradeState.journal, () => { tradeState.journal = !tradeState.journal; saveTrade(); render(); });
-    count(tradeState.journal);
-
-    if(tradeState.entry && tradeState.tp && tradeState.sl && tradeState.journal){
-      const clear = document.createElement('div');
-      clear.className = 'allclear';
-      clear.textContent = '✓ Trade sequence complete';
-      panel.appendChild(clear);
-    }
-
-    updateProgress(visibleDone, visibleTotal);
-    document.getElementById('metaLine').textContent = 'Persists until manually reset';
-  }
-
-  function updateProgress(done, total){
-    const pct = total ? Math.round((done/total)*100) : 0;
-    document.getElementById('progressFill').style.width = pct+'%';
-    document.getElementById('progressPct').textContent = done+'/'+total;
-  }
-
-  function render(){
-    document.querySelectorAll('.tab').forEach(btn=>{
-      btn.classList.toggle('active', btn.dataset.tab === activeTab);
-    });
-    const panel = document.getElementById('panelContent');
-    panel.innerHTML = '';
-    if(activeTab === 'prep') renderPrep(panel);
-    else renderTrade(panel);
-  }
-
-  document.querySelectorAll('.tab').forEach(btn=>{
-    btn.addEventListener('click', () => {
-      activeTab = btn.dataset.tab;
-      render();
-    });
+    card.addEventListener("click", () => drawSeries(code));
+    wrap.appendChild(card);
   });
 
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    const title = activeTab === 'prep' ? PREP.title : 'Trade Entry / Exit Criteria';
-    if(confirm('Reset "'+title+'"? This clears all checks.')){
-      if(activeTab === 'prep'){ prepState = {}; savePrep(); }
-      else { tradeState = defaultTradeState(); saveTrade(); }
-      render();
-    }
-  });
+  const asof = payload.as_of ? new Date(payload.as_of) : null;
+  document.getElementById("asof").textContent =
+    asof ? "updated " + asof.toUTCString().replace("GMT","UTC") : "";
+  const pill = document.getElementById("status");
+  pill.classList.toggle("stale", anyStale);
+  document.getElementById("statusTxt").textContent = anyStale ? "check sources" : "live";
+}
 
-  // clock
-  function tickClock(){
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2,'0');
-    const mm = String(now.getMinutes()).padStart(2,'0');
-    const ss = String(now.getSeconds()).padStart(2,'0');
-    document.getElementById('clockTime').textContent = `${hh}:${mm}:${ss}`;
-    const opts = { weekday:'short', day:'2-digit', month:'short', year:'numeric' };
-    document.getElementById('clockDate').textContent = now.toLocaleDateString('en-US', opts);
+function parseHistory(text) {
+  const lines = text.trim().split(/\r?\n/);
+  const head = lines[0].split(",");
+  const di = head.indexOf("date"), si = head.indexOf("series"), vi = head.indexOf("value");
+  const bySeries = {};
+  for (let i = 1; i < lines.length; i++) {
+    const p = lines[i].split(",");
+    if (p.length < 3) continue;
+    const code = p[si], date = p[di], val = parseFloat(p[vi]);
+    if (!code || !date || Number.isNaN(val)) continue;
+    (bySeries[code] = bySeries[code] || {})[date] = val;   // last write per date wins
   }
-  tickClock();
-  setInterval(tickClock, 1000);
+  Object.keys(bySeries).forEach(code => {
+    HISTORY[code] = Object.entries(bySeries[code])
+      .map(([time, value]) => ({ time, value }))
+      .sort((a, b) => a.time < b.time ? -1 : 1);
+  });
+}
 
-  render();
-})();
+async function load() {
+  try {
+    const [rates, hist] = await Promise.all([
+      fetch("data/rates.json", { cache:"no-store" }).then(r => r.json()),
+      fetch("data/history.csv", { cache:"no-store" }).then(r => r.text()),
+    ]);
+    parseHistory(hist);
+    renderCards(rates);
+    try { renderNews(rates); } catch (ne) { console.error("news:", ne); }
+    try { buildChart(); } catch (ce) { console.error("chart:", ce); }
+  } catch (e) {
+    document.getElementById("asof").textContent = "could not load data/ — run the fetcher first";
+    console.error(e);
+  }
+}
+
+const ET_TZ = "America/New_York";
+function fmtET(iso) {
+  const d = new Date(iso);
+  const day = d.toLocaleDateString("en-US", { weekday: "short", timeZone: ET_TZ });
+  const tm = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: ET_TZ });
+  return `${day} ${tm}`;
+}
+function renderNews(payload) {
+  const host = document.getElementById("news");
+  if (!host) return;
+  const list = Array.isArray(payload.news) ? payload.news : [];
+  if (!list.length) {
+    host.innerHTML = `<div class="news-empty">No high-impact events loaded yet — the panel fills when the robot next runs.</div>`;
+    return;
+  }
+  const now = Date.now();
+  const nextIdx = list.findIndex(e => new Date(e.time).getTime() >= now);
+  host.innerHTML = list.map((e, i) => {
+    const t = new Date(e.time).getTime();
+    const cls = t < now ? "past" : (i === nextIdx ? "next" : "");
+    const fp = [e.forecast ? `F ${e.forecast}` : "", e.previous ? `P ${e.previous}` : ""].filter(Boolean).join("  ");
+    return `<div class="news-row ${cls}">` +
+      `<div class="news-when">${fmtET(e.time)} ET</div>` +
+      `<div class="news-cur">${e.currency}</div>` +
+      `<div class="news-title">${e.title}</div>` +
+      `<div class="news-fp">${fp}</div>` +
+      `</div>`;
+  }).join("");
+}
+
+document.getElementById("themeBtn").addEventListener("click", () => {
+  const root = document.documentElement;
+  const light = root.getAttribute("data-theme") === "light";
+  root.setAttribute("data-theme", light ? "dark" : "light");
+  document.getElementById("themeBtn").textContent = light ? "Light" : "Dark";
+  if (chart) buildChart();   // rebuild so chart colors follow the theme
+});
+
+load();
 </script>
 </body>
 </html>
