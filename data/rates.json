@@ -1,37 +1,37 @@
 {
-  "as_of": "2026-07-16T15:06:56Z",
+  "as_of": "2026-07-17T14:47:20Z",
   "rates": {
     "SOFR": {
-      "value": 3.64,
-      "date": "2026-07-15",
+      "value": 3.62,
+      "date": "2026-07-16",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-15",
+      "date": "2026-07-16",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.184,
-      "date": "2026-07-15",
+      "value": 2.185,
+      "date": "2026-07-16",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7311,
-      "date": "14 Jul 2026",
+      "value": 3.7308,
+      "date": "15 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
     },
     "TONA": {
-      "value": 0.727,
-      "date": "2026-05-01",
+      "value": 0.841,
+      "date": "2026-06-01",
       "unit": "%",
       "source": "FRED",
       "ok": true
