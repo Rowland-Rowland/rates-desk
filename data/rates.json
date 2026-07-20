@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-07-17T14:47:20Z",
+  "as_of": "2026-07-20T15:14:32Z",
   "rates": {
     "SOFR": {
-      "value": 3.62,
-      "date": "2026-07-16",
+      "value": 3.59,
+      "date": "2026-07-17",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-16",
+      "date": "2026-07-17",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.185,
-      "date": "2026-07-16",
+      "value": 2.186,
+      "date": "2026-07-17",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
       "value": 3.7308,
-      "date": "15 Jul 2026",
+      "date": "16 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -53,102 +53,81 @@
   },
   "news": [
     {
-      "time": "2026-07-14T12:30:00Z",
-      "currency": "USD",
-      "title": "Core CPI m/m",
-      "forecast": "0.2%",
-      "previous": "0.2%"
-    },
-    {
-      "time": "2026-07-14T12:30:00Z",
-      "currency": "USD",
-      "title": "Core CPI y/y",
-      "forecast": "2.8%",
-      "previous": "2.9%"
-    },
-    {
-      "time": "2026-07-14T12:30:00Z",
-      "currency": "USD",
+      "time": "2026-07-20T12:30:00Z",
+      "currency": "CAD",
       "title": "CPI m/m",
-      "forecast": "-0.1%",
-      "previous": "0.5%"
+      "forecast": "-0.2%",
+      "previous": "1.0%"
     },
     {
-      "time": "2026-07-14T12:30:00Z",
-      "currency": "USD",
+      "time": "2026-07-20T12:30:00Z",
+      "currency": "CAD",
+      "title": "Median CPI y/y",
+      "forecast": "2.1%",
+      "previous": "2.1%"
+    },
+    {
+      "time": "2026-07-20T12:30:00Z",
+      "currency": "CAD",
+      "title": "Trimmed CPI y/y",
+      "forecast": "2.0%",
+      "previous": "2.0%"
+    },
+    {
+      "time": "2026-07-20T22:45:00Z",
+      "currency": "NZD",
+      "title": "CPI q/q",
+      "forecast": "1.5%",
+      "previous": "0.9%"
+    },
+    {
+      "time": "2026-07-21T06:00:00Z",
+      "currency": "GBP",
+      "title": "Claimant Count Change",
+      "forecast": "28.3K",
+      "previous": "31.2K"
+    },
+    {
+      "time": "2026-07-22T06:00:00Z",
+      "currency": "GBP",
       "title": "CPI y/y",
-      "forecast": "3.8%",
-      "previous": "4.2%"
+      "forecast": "2.7%",
+      "previous": "2.8%"
     },
     {
-      "time": "2026-07-14T14:00:00Z",
-      "currency": "USD",
-      "title": "Fed Chairman Warsh Testifies",
+      "time": "2026-07-23T01:30:00Z",
+      "currency": "AUD",
+      "title": "Employment Change",
+      "forecast": "15.2K",
+      "previous": "40.3K"
+    },
+    {
+      "time": "2026-07-23T01:30:00Z",
+      "currency": "AUD",
+      "title": "Unemployment Rate",
+      "forecast": "4.4%",
+      "previous": "4.4%"
+    },
+    {
+      "time": "2026-07-23T12:15:00Z",
+      "currency": "EUR",
+      "title": "Main Refinancing Rate",
+      "forecast": "2.40%",
+      "previous": "2.40%"
+    },
+    {
+      "time": "2026-07-23T12:15:00Z",
+      "currency": "EUR",
+      "title": "Monetary Policy Statement",
       "forecast": "",
       "previous": ""
     },
     {
-      "time": "2026-07-14T20:00:00Z",
-      "currency": "GBP",
-      "title": "BOE Gov Bailey Speaks",
+      "time": "2026-07-23T12:45:00Z",
+      "currency": "EUR",
+      "title": "ECB Press Conference",
       "forecast": "",
       "previous": ""
-    },
-    {
-      "time": "2026-07-15T12:30:00Z",
-      "currency": "USD",
-      "title": "Core PPI m/m",
-      "forecast": "0.3%",
-      "previous": "0.4%"
-    },
-    {
-      "time": "2026-07-15T12:30:00Z",
-      "currency": "USD",
-      "title": "PPI m/m",
-      "forecast": "0.0%",
-      "previous": "1.1%"
-    },
-    {
-      "time": "2026-07-15T13:45:00Z",
-      "currency": "CAD",
-      "title": "BOC Monetary Policy Report",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-15T13:45:00Z",
-      "currency": "CAD",
-      "title": "BOC Rate Statement",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-15T13:45:00Z",
-      "currency": "CAD",
-      "title": "Overnight Rate",
-      "forecast": "2.25%",
-      "previous": "2.25%"
-    },
-    {
-      "time": "2026-07-15T14:00:00Z",
-      "currency": "USD",
-      "title": "Fed Chairman Warsh Testifies",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-15T14:45:00Z",
-      "currency": "CAD",
-      "title": "BOC Press Conference",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-16T06:00:00Z",
-      "currency": "GBP",
-      "title": "GDP m/m",
-      "forecast": "0.0%",
-      "previous": "-0.1%"
     }
   ]
 }
