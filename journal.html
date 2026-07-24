@@ -246,7 +246,7 @@
   }
 
   function h(tag, cls, html){ const e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
-  function fgroup(label){ const g=h('div','fgroup'); g.appendChild(h('div','fgroup-label',label)); return g; }
+  function fgroup(label){ const g=h('div','fgroup'); g.appendChild(h('div','fgroup-label',label)); panel.appendChild(g); return g; }
   function field(label, wide){ const f=h('div','field'+(wide?' wide':'')); f.appendChild(h('label',null,label)); return f; }
 
   function textField(g,label,key,opts){
@@ -313,7 +313,6 @@
     selectField(g,'Kill zone','killzone',[{v:'',t:'—'},{v:'Asian KZ',t:'Asian KZ'},{v:'London KZ',t:'London KZ'},{v:'New York KZ',t:'New York KZ'},{v:'London Close KZ',t:'London Close KZ'}]);
     textField(g,'Macro window','macro',{placeholder:'NY Open, Power Hour…'});
     segField(g,'Bias','bias',[{v:'discount',t:'DISCOUNT',cls:'on-long'},{v:'premium',t:'PREMIUM',cls:'on-short'}]);
-    panel.appendChild(g.parentNode? g: g);
 
     // 2. Thesis
     g=grid(fgroup('Thesis / Setup'));
