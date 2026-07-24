@@ -34,6 +34,12 @@
   }
   .wrap{max-width:760px;margin:0 auto;}
 
+  /* cross-page nav */
+  .topnav{display:flex;gap:8px;margin:0 0 20px;}
+  .topnav a{font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:6px;transition:color .15s,border-color .15s;}
+  .topnav a:hover{color:var(--text);border-color:var(--muted-2);}
+  .topnav a.active{color:var(--green);border-color:var(--green);}
+
   /* header */
   .deskhead{
     display:flex;
@@ -296,6 +302,12 @@
     </div>
   </div>
 
+  <nav class="topnav">
+    <a href="index.html">Benchmark</a>
+    <a href="checklist.html" class="active">Checklist</a>
+    <a href="journal.html">Journal</a>
+  </nav>
+
   <div class="tabs">
     <button class="tab active" data-tab="prep">Session Prep</button>
     <button class="tab" data-tab="trade">Trade Criteria</button>
@@ -353,8 +365,6 @@
       {
         label: "Levels & Structure",
         items: [
-          "Mark current daily/weekly VWAP",
-          "Identify active order blocks / OTE zones",
           "Check for unfilled NDOG/NWOG/NMOG gaps",
           "Note nearest BSL/SSL liquidity pools",
         ]
@@ -393,13 +403,14 @@
   function defaultTradeState(){
     return {
       pd1:false, pd2:false,
-      bias1:null, bias2:null, bias3:null,
+      bias2:null, bias3:null,
       gateAgree:null,
       manip:null,
+      tf5m:null,
       brk:null,
-      newsToday:null, news30:null,
       kzMacro:null,
-      entry:false,
+      newsToday:null, news30:null,
+      entry:null,
       tp:false, sl:false,
       journal:false
     };
@@ -549,20 +560,17 @@
 
     // 2. Bias Confirmation
     groupLabel(panel, '2. Bias Confirmation — Above or Below PD level?');
-    abRow(panel, '1700 NYC Reset open vs PD Equilibrium', tradeState.bias1,
-      () => { tradeState.bias1 = true; saveTrade(); render(); },
-      () => { tradeState.bias1 = false; saveTrade(); render(); });
     abRow(panel, 'Midnight (0000 EST) open vs PD Equilibrium', tradeState.bias2,
       () => { tradeState.bias2 = true; saveTrade(); render(); },
       () => { tradeState.bias2 = false; saveTrade(); render(); });
     abRow(panel, 'Midnight (0000 EST) open vs PD WM/R Proxy', tradeState.bias3,
       () => { tradeState.bias3 = true; saveTrade(); render(); },
       () => { tradeState.bias3 = false; saveTrade(); render(); });
-    count(tradeState.bias1 !== null); count(tradeState.bias2 !== null); count(tradeState.bias3 !== null);
+    count(tradeState.bias2 !== null); count(tradeState.bias3 !== null);
 
     // 3. Validity Gate (manual)
-    groupLabel(panel, '3. Validity Gate — do all 3 agree?');
-    ynRow(panel, 'Do all 3 bias confirmations agree (all Above / Premium, or all Below / Discount)?', tradeState.gateAgree,
+    groupLabel(panel, '3. Validity Gate — do all 2 agree?');
+    ynRow(panel, 'Do all 2 bias confirmations agree (both Above / Premium, or both Below / Discount)?', tradeState.gateAgree,
       () => { tradeState.gateAgree = true; saveTrade(); render(); },
       () => { tradeState.gateAgree = false; saveTrade(); render(); });
     count(tradeState.gateAgree !== null && tradeState.gateAgree);
@@ -570,8 +578,8 @@
     let dir = null;
     if(tradeState.gateAgree === true){
       // derive direction wording from majority of the 3 answers for downstream text
-      const aboveCount = [tradeState.bias1, tradeState.bias2, tradeState.bias3].filter(v => v === true).length;
-      dir = aboveCount >= 2 ? 'bearish' : 'bullish';
+      const aboveCount = [tradeState.bias2, tradeState.bias3].filter(v => v === true).length;
+      dir = aboveCount === 2 ? 'bearish' : 'bullish';
       banner(panel, 'BIAS CONFIRMED — ' + (dir === 'bearish' ? 'BEARISH (Premium)' : 'BULLISH (Discount)'), 'banner-go');
     } else if(tradeState.gateAgree === false){
       banner(panel, 'STAND DOWN — NO TRADE', 'banner-stop');
@@ -600,8 +608,22 @@
       return;
     }
 
-    // 5. Break Confirmation
-    groupLabel(panel, '5. Break Confirmation');
+    // 5. Change to 5m Timeframe
+    groupLabel(panel, '5. Change to 5m Timeframe');
+    ynRow(panel, 'Changed to the 5m timeframe?', tradeState.tf5m,
+      () => { tradeState.tf5m = true; saveTrade(); render(); },
+      () => { tradeState.tf5m = false; saveTrade(); render(); });
+    count(tradeState.tf5m === true);
+
+    if(tradeState.tf5m !== true){
+      if(tradeState.tf5m === false) banner(panel, 'SWITCH TO THE 5M TIME FRAME', 'banner-wait');
+      updateProgress(visibleDone, visibleTotal);
+      document.getElementById('metaLine').textContent = 'Persists until manually reset';
+      return;
+    }
+
+    // 6. Break Confirmation
+    groupLabel(panel, '6. Break Confirmation');
     const brkLabel = dir === 'bearish'
       ? 'Price broken down with FVG + significant volume?'
       : 'Price broken up with FVG + significant volume?';
@@ -617,8 +639,22 @@
       return;
     }
 
-    // 6. News Filter
-    groupLabel(panel, '6. News Filter — check Benchmark Rates dashboard');
+    // 7. Timing Filter (Kill Zone + Macro)
+    groupLabel(panel, '7. Timing Filter');
+    ynRow(panel, 'Did the break occur inside a Kill Zone during a Macro window?', tradeState.kzMacro,
+      () => { tradeState.kzMacro = true; saveTrade(); render(); },
+      () => { tradeState.kzMacro = false; saveTrade(); render(); });
+    count(tradeState.kzMacro !== null && tradeState.kzMacro);
+
+    if(tradeState.kzMacro !== true){
+      if(tradeState.kzMacro === false) banner(panel, 'STAND DOWN — skip or wait', 'banner-stop');
+      updateProgress(visibleDone, visibleTotal);
+      document.getElementById('metaLine').textContent = 'Persists until manually reset';
+      return;
+    }
+
+    // 8. News Filter
+    groupLabel(panel, '8. News Filter — check Benchmark Rates dashboard');
     ynRow(panel, 'Is there high-impact news today?', tradeState.newsToday,
       () => { tradeState.newsToday = true; saveTrade(); render(); },
       () => { tradeState.newsToday = false; saveTrade(); render(); });
@@ -647,33 +683,28 @@
       return;
     }
 
-    // 7. Timing Filter (Kill Zone + Macro)
-    groupLabel(panel, '7. Timing Filter');
-    ynRow(panel, 'Did the break occur inside a Kill Zone during a Macro window?', tradeState.kzMacro,
-      () => { tradeState.kzMacro = true; saveTrade(); render(); },
-      () => { tradeState.kzMacro = false; saveTrade(); render(); });
-    count(tradeState.kzMacro !== null && tradeState.kzMacro);
+    // 9. Entry
+    groupLabel(panel, '9. Entry');
+    ynRow(panel, 'Price returned to the FVG formed, or the OB before the FVG?', tradeState.entry,
+      () => { tradeState.entry = true; saveTrade(); render(); },
+      () => { tradeState.entry = false; saveTrade(); render(); });
+    count(tradeState.entry === true);
 
-    if(tradeState.kzMacro !== true){
-      if(tradeState.kzMacro === false) banner(panel, 'STAND DOWN — skip or wait', 'banner-stop');
+    if(tradeState.entry !== true){
+      if(tradeState.entry === false) banner(panel, 'WAIT — for price to return to the FVG formed, or the OB before the FVG', 'banner-wait');
       updateProgress(visibleDone, visibleTotal);
       document.getElementById('metaLine').textContent = 'Persists until manually reset';
       return;
     }
 
-    // 8. Entry
-    groupLabel(panel, '8. Entry');
-    checkRow(panel, 'Price returned to the FVG formed, or the OB before the FVG', tradeState.entry, () => { tradeState.entry = !tradeState.entry; saveTrade(); render(); });
-    count(tradeState.entry);
-
-    // 9. Exit
-    groupLabel(panel, '9. Exit');
+    // 10. Exit
+    groupLabel(panel, '10. Exit');
     checkRow(panel, 'Take profit: 75% of PD range, or 1:2 to 1:3 R:R', tradeState.tp, () => { tradeState.tp = !tradeState.tp; saveTrade(); render(); });
     checkRow(panel, 'Stop loss: above/below the last 2 most recent swing highs/lows', tradeState.sl, () => { tradeState.sl = !tradeState.sl; saveTrade(); render(); });
     count(tradeState.tp); count(tradeState.sl);
 
-    // 10. Post-Trade
-    groupLabel(panel, '10. Post-Trade');
+    // 11. Post-Trade
+    groupLabel(panel, '11. Post-Trade');
     checkRow(panel, 'Trade journaled immediately after execution', tradeState.journal, () => { tradeState.journal = !tradeState.journal; saveTrade(); render(); });
     count(tradeState.journal);
 
