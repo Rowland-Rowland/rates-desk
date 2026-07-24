@@ -436,6 +436,7 @@
     bar.appendChild(fSym); bar.appendChild(fSes); bar.appendChild(fRes); bar.appendChild(fCl);
     bar.appendChild(h('div','spacer'));
     const csv=h('button','btn btn-ghost','Export CSV'); csv.addEventListener('click',exportCSV); bar.appendChild(csv);
+    const wipe=h('button','btn btn-ghost btn-danger','Clear all'); wipe.addEventListener('click',clearAllTrades); bar.appendChild(wipe);
     panel.appendChild(bar);
     const tblWrap=h('div'); tblWrap.id='tblWrap'; panel.appendChild(tblWrap);
     drawTable();
@@ -480,6 +481,12 @@
       tb.appendChild(tr);
     });
     tbl.appendChild(tb); wrap.appendChild(tbl);
+  }
+
+  function clearAllTrades(){
+    if(!trades.length){ flash('No trades to clear'); return; }
+    if(!confirm('Delete ALL '+trades.length+' saved trade(s)? This cannot be undone.')) return;
+    trades=[]; save(); draft=blankTrade(); editingId=null; render(); flash('All trades cleared');
   }
 
   function exportCSV(){
