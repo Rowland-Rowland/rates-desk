@@ -403,6 +403,8 @@
   function defaultTradeState(){
     return {
       pd1:false, pd2:false,
+      anchor:'reset',
+      bias1700:null,
       bias2:null, bias3:null,
       gateAgree:null,
       manip:null,
@@ -484,6 +486,22 @@
     panel.appendChild(g);
   }
 
+  // Open Anchor mode toggle — Midnight (00:00) vs NY Reset (17:00)
+  function anchorToggle(panel){
+    const row = document.createElement('div');
+    row.className = 'yn-row';
+    row.innerHTML = `
+      <div class="yn-label">Open Anchor — which open are you trading?</div>
+      <div class="yn-btns">
+        <button class="yn-btn${tradeState.anchor==='midnight' ? ' sel-yes' : ''}" data-v="midnight">MIDNIGHT 00:00</button>
+        <button class="yn-btn${tradeState.anchor==='reset' ? ' sel-yes' : ''}" data-v="reset">NY RESET 17:00</button>
+      </div>
+    `;
+    row.querySelector('[data-v="midnight"]').addEventListener('click', () => { tradeState.anchor = 'midnight'; saveTrade(); render(); });
+    row.querySelector('[data-v="reset"]').addEventListener('click', () => { tradeState.anchor = 'reset'; saveTrade(); render(); });
+    panel.appendChild(row);
+  }
+
   function banner(panel, text, kind){
     const b = document.createElement('div');
     b.className = 'banner banner-'+kind;
@@ -558,31 +576,54 @@
     checkRow(panel, 'Check for unfilled NDOG, NWOG, NMOG — mark as potential TP zones', tradeState.pd2, () => { tradeState.pd2 = !tradeState.pd2; saveTrade(); render(); });
     count(tradeState.pd1); count(tradeState.pd2);
 
+    // Open Anchor (mode selector)
+    groupLabel(panel, 'Open Anchor');
+    anchorToggle(panel);
+
+    const isReset = tradeState.anchor === 'reset';
+    const anchorName = isReset ? '17:00 Reset Open' : 'Midnight Open';
+
     // 2. Bias Confirmation
     groupLabel(panel, '2. Bias Confirmation — Above or Below PD level?');
-    abRow(panel, 'Midnight (0000 EST) open vs PD Equilibrium', tradeState.bias2,
-      () => { tradeState.bias2 = true; saveTrade(); render(); },
-      () => { tradeState.bias2 = false; saveTrade(); render(); });
-    abRow(panel, 'Midnight (0000 EST) open vs PD WM/R Proxy', tradeState.bias3,
-      () => { tradeState.bias3 = true; saveTrade(); render(); },
-      () => { tradeState.bias3 = false; saveTrade(); render(); });
-    count(tradeState.bias2 !== null); count(tradeState.bias3 !== null);
+    if(isReset){
+      abRow(panel, '1700 Reset (17:00 EST) open vs PD Equilibrium', tradeState.bias1700,
+        () => { tradeState.bias1700 = true; saveTrade(); render(); },
+        () => { tradeState.bias1700 = false; saveTrade(); render(); });
+      count(tradeState.bias1700 !== null);
+    } else {
+      abRow(panel, 'Midnight (0000 EST) open vs PD Equilibrium', tradeState.bias2,
+        () => { tradeState.bias2 = true; saveTrade(); render(); },
+        () => { tradeState.bias2 = false; saveTrade(); render(); });
+      abRow(panel, 'Midnight (0000 EST) open vs PD WM/R Proxy', tradeState.bias3,
+        () => { tradeState.bias3 = true; saveTrade(); render(); },
+        () => { tradeState.bias3 = false; saveTrade(); render(); });
+      count(tradeState.bias2 !== null); count(tradeState.bias3 !== null);
+    }
 
     // 3. Validity Gate (manual)
-    groupLabel(panel, '3. Validity Gate — do all 2 agree?');
-    ynRow(panel, 'Do all 2 bias confirmations agree (both Above / Premium, or both Below / Discount)?', tradeState.gateAgree,
-      () => { tradeState.gateAgree = true; saveTrade(); render(); },
-      () => { tradeState.gateAgree = false; saveTrade(); render(); });
-    count(tradeState.gateAgree !== null && tradeState.gateAgree);
-
     let dir = null;
-    if(tradeState.gateAgree === true){
-      // derive direction wording from majority of the 3 answers for downstream text
-      const aboveCount = [tradeState.bias2, tradeState.bias3].filter(v => v === true).length;
-      dir = aboveCount === 2 ? 'bearish' : 'bullish';
-      banner(panel, 'BIAS CONFIRMED — ' + (dir === 'bearish' ? 'BEARISH (Premium)' : 'BULLISH (Discount)'), 'banner-go');
-    } else if(tradeState.gateAgree === false){
-      banner(panel, 'STAND DOWN — NO TRADE', 'banner-stop');
+    if(isReset){
+      groupLabel(panel, '3. Validity Gate — anchor read sets direction');
+      if(tradeState.bias1700 === true){
+        dir = 'bearish';
+        banner(panel, 'BIAS CONFIRMED — BEARISH (Premium)', 'banner-go');
+      } else if(tradeState.bias1700 === false){
+        dir = 'bullish';
+        banner(panel, 'BIAS CONFIRMED — BULLISH (Discount)', 'banner-go');
+      }
+    } else {
+      groupLabel(panel, '3. Validity Gate — do all 2 agree?');
+      ynRow(panel, 'Do all 2 bias confirmations agree (both Above / Premium, or both Below / Discount)?', tradeState.gateAgree,
+        () => { tradeState.gateAgree = true; saveTrade(); render(); },
+        () => { tradeState.gateAgree = false; saveTrade(); render(); });
+      count(tradeState.gateAgree !== null && tradeState.gateAgree);
+      if(tradeState.gateAgree === true){
+        const aboveCount = [tradeState.bias2, tradeState.bias3].filter(v => v === true).length;
+        dir = aboveCount === 2 ? 'bearish' : 'bullish';
+        banner(panel, 'BIAS CONFIRMED — ' + (dir === 'bearish' ? 'BEARISH (Premium)' : 'BULLISH (Discount)'), 'banner-go');
+      } else if(tradeState.gateAgree === false){
+        banner(panel, 'STAND DOWN — NO TRADE', 'banner-stop');
+      }
     }
 
     if(!dir){
@@ -594,8 +635,8 @@
     // 4. Manipulation (Judas Swing)
     groupLabel(panel, '4. Manipulation (Judas Swing)');
     const manipLabel = dir === 'bearish'
-      ? 'Price manipulated below Midnight Open then returned back above it? (sell at expensive price)'
-      : 'Price manipulated above Midnight Open then returned back below it? (buy at cheap price)';
+      ? 'Price manipulated below ' + anchorName + ' then returned back above it? (sell at expensive price)'
+      : 'Price manipulated above ' + anchorName + ' then returned back below it? (buy at cheap price)';
     ynRow(panel, manipLabel, tradeState.manip,
       () => { tradeState.manip = true; saveTrade(); render(); },
       () => { tradeState.manip = false; saveTrade(); render(); });
