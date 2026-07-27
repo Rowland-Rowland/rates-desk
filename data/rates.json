@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-07-24T14:59:53Z",
+  "as_of": "2026-07-27T15:45:50Z",
   "rates": {
     "SOFR": {
       "value": 3.64,
-      "date": "2026-07-23",
+      "date": "2026-07-24",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-23",
+      "date": "2026-07-24",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.185,
-      "date": "2026-07-23",
+      "value": 2.186,
+      "date": "2026-07-24",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7303,
-      "date": "22 Jul 2026",
+      "value": 3.731,
+      "date": "23 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -53,81 +53,130 @@
   },
   "news": [
     {
-      "time": "2026-07-20T12:30:00Z",
-      "currency": "CAD",
+      "time": "2026-07-28T03:05:00Z",
+      "currency": "AUD",
+      "title": "RBA Gov Bullock Speaks",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-07-29T01:30:00Z",
+      "currency": "AUD",
       "title": "CPI m/m",
-      "forecast": "-0.2%",
-      "previous": "1.0%"
+      "forecast": "0.2%",
+      "previous": "-0.7%"
     },
     {
-      "time": "2026-07-20T12:30:00Z",
-      "currency": "CAD",
-      "title": "Median CPI y/y",
-      "forecast": "2.1%",
-      "previous": "2.1%"
+      "time": "2026-07-29T01:30:00Z",
+      "currency": "AUD",
+      "title": "CPI y/y",
+      "forecast": "4.0%",
+      "previous": "4.0%"
     },
     {
-      "time": "2026-07-20T12:30:00Z",
-      "currency": "CAD",
-      "title": "Trimmed CPI y/y",
-      "forecast": "2.0%",
+      "time": "2026-07-29T01:30:00Z",
+      "currency": "AUD",
+      "title": "Trimmed Mean CPI m/m",
+      "forecast": "0.4%",
+      "previous": "0.4%"
+    },
+    {
+      "time": "2026-07-29T18:00:00Z",
+      "currency": "USD",
+      "title": "Federal Funds Rate",
+      "forecast": "3.75%",
+      "previous": "3.75%"
+    },
+    {
+      "time": "2026-07-29T18:00:00Z",
+      "currency": "USD",
+      "title": "FOMC Statement",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-07-29T18:30:00Z",
+      "currency": "USD",
+      "title": "FOMC Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-07-30T11:00:00Z",
+      "currency": "GBP",
+      "title": "BOE Monetary Policy Report",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-07-30T11:00:00Z",
+      "currency": "GBP",
+      "title": "Monetary Policy Summary",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-07-30T11:00:00Z",
+      "currency": "GBP",
+      "title": "MPC Official Bank Rate Votes",
+      "forecast": "2-0-7",
+      "previous": "2-0-7"
+    },
+    {
+      "time": "2026-07-30T11:00:00Z",
+      "currency": "GBP",
+      "title": "Official Bank Rate",
+      "forecast": "3.75%",
+      "previous": "3.75%"
+    },
+    {
+      "time": "2026-07-30T12:30:00Z",
+      "currency": "USD",
+      "title": "Advance GDP q/q",
+      "forecast": "2.3%",
       "previous": "2.0%"
     },
     {
-      "time": "2026-07-20T22:45:00Z",
-      "currency": "NZD",
-      "title": "CPI q/q",
-      "forecast": "1.4%",
-      "previous": "0.9%"
+      "time": "2026-07-30T12:30:00Z",
+      "currency": "USD",
+      "title": "Core PCE Price Index m/m",
+      "forecast": "0.1%",
+      "previous": "0.3%"
     },
     {
-      "time": "2026-07-21T06:00:00Z",
-      "currency": "GBP",
-      "title": "Claimant Count Change",
-      "forecast": "29.4K",
-      "previous": "31.2K"
+      "time": "2026-07-31T02:30:00Z",
+      "currency": "JPY",
+      "title": "BOJ Policy Rate",
+      "forecast": "<1.00%",
+      "previous": "<1.00%"
     },
     {
-      "time": "2026-07-22T06:00:00Z",
-      "currency": "GBP",
-      "title": "CPI y/y",
-      "forecast": "2.7%",
-      "previous": "2.8%"
-    },
-    {
-      "time": "2026-07-23T01:30:00Z",
-      "currency": "AUD",
-      "title": "Employment Change",
-      "forecast": "16.4K",
-      "previous": "40.3K"
-    },
-    {
-      "time": "2026-07-23T01:30:00Z",
-      "currency": "AUD",
-      "title": "Unemployment Rate",
-      "forecast": "4.4%",
-      "previous": "4.4%"
-    },
-    {
-      "time": "2026-07-23T12:15:00Z",
-      "currency": "EUR",
-      "title": "Main Refinancing Rate",
-      "forecast": "2.40%",
-      "previous": "2.40%"
-    },
-    {
-      "time": "2026-07-23T12:15:00Z",
-      "currency": "EUR",
+      "time": "2026-07-31T02:30:00Z",
+      "currency": "JPY",
       "title": "Monetary Policy Statement",
       "forecast": "",
       "previous": ""
     },
     {
-      "time": "2026-07-23T12:45:00Z",
-      "currency": "EUR",
-      "title": "ECB Press Conference",
+      "time": "2026-07-31T02:31:00Z",
+      "currency": "JPY",
+      "title": "BOJ Outlook Report",
       "forecast": "",
       "previous": ""
+    },
+    {
+      "time": "2026-07-31T05:30:00Z",
+      "currency": "JPY",
+      "title": "BOJ Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-07-31T12:30:00Z",
+      "currency": "CAD",
+      "title": "GDP m/m",
+      "forecast": "0.2%",
+      "previous": "0.5%"
     }
   ]
 }
