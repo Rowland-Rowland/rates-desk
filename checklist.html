@@ -394,7 +394,7 @@
   function loadTrade(){
     try{
       const raw = localStorage.getItem(TRADE_KEY);
-      return raw ? JSON.parse(raw) : defaultTradeState();
+      return raw ? Object.assign(defaultTradeState(), JSON.parse(raw)) : defaultTradeState();
     }catch(e){ return defaultTradeState(); }
   }
   function saveTrade(){
