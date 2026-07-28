@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-07-27T15:45:50Z",
+  "as_of": "2026-07-28T15:24:40Z",
   "rates": {
     "SOFR": {
       "value": 3.64,
-      "date": "2026-07-24",
+      "date": "2026-07-27",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-24",
+      "date": "2026-07-27",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.186,
-      "date": "2026-07-24",
+      "value": 2.185,
+      "date": "2026-07-27",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.731,
-      "date": "23 Jul 2026",
+      "value": 3.7307,
+      "date": "24 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -77,7 +77,7 @@
       "time": "2026-07-29T01:30:00Z",
       "currency": "AUD",
       "title": "Trimmed Mean CPI m/m",
-      "forecast": "0.4%",
+      "forecast": "0.3%",
       "previous": "0.4%"
     },
     {
@@ -130,17 +130,24 @@
       "previous": "3.75%"
     },
     {
+      "time": "2026-07-30T11:30:00Z",
+      "currency": "GBP",
+      "title": "BOE Gov Bailey Speaks",
+      "forecast": "",
+      "previous": ""
+    },
+    {
       "time": "2026-07-30T12:30:00Z",
       "currency": "USD",
       "title": "Advance GDP q/q",
-      "forecast": "2.3%",
+      "forecast": "2.0%",
       "previous": "2.0%"
     },
     {
       "time": "2026-07-30T12:30:00Z",
       "currency": "USD",
       "title": "Core PCE Price Index m/m",
-      "forecast": "0.1%",
+      "forecast": "0.2%",
       "previous": "0.3%"
     },
     {
