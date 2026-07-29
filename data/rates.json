@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-07-28T15:24:40Z",
+  "as_of": "2026-07-29T15:10:43Z",
   "rates": {
     "SOFR": {
-      "value": 3.64,
-      "date": "2026-07-27",
+      "value": 3.65,
+      "date": "2026-07-28",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-27",
+      "date": "2026-07-28",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.185,
-      "date": "2026-07-27",
+      "value": 2.184,
+      "date": "2026-07-28",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7307,
-      "date": "24 Jul 2026",
+      "value": 3.7312,
+      "date": "27 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -140,7 +140,7 @@
       "time": "2026-07-30T12:30:00Z",
       "currency": "USD",
       "title": "Advance GDP q/q",
-      "forecast": "2.0%",
+      "forecast": "2.1%",
       "previous": "2.0%"
     },
     {
