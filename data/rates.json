@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-07-29T15:10:43Z",
+  "as_of": "2026-07-30T15:14:46Z",
   "rates": {
     "SOFR": {
       "value": 3.65,
-      "date": "2026-07-28",
+      "date": "2026-07-29",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-28",
+      "date": "2026-07-29",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.184,
-      "date": "2026-07-28",
+      "value": 2.185,
+      "date": "2026-07-29",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7312,
-      "date": "27 Jul 2026",
+      "value": 3.7316,
+      "date": "28 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -37,15 +37,15 @@
       "ok": true
     },
     "WTI": {
-      "value": 84.38,
-      "date": "2026-07-20",
+      "value": 84.25,
+      "date": "2026-07-27",
       "unit": "$",
       "source": "FRED",
       "ok": true
     },
     "BRENT": {
-      "value": 86.99,
-      "date": "2026-07-20",
+      "value": 91.82,
+      "date": "2026-07-27",
       "unit": "$",
       "source": "FRED",
       "ok": true
@@ -130,7 +130,7 @@
       "previous": "3.75%"
     },
     {
-      "time": "2026-07-30T11:30:00Z",
+      "time": "2026-07-30T12:00:00Z",
       "currency": "GBP",
       "title": "BOE Gov Bailey Speaks",
       "forecast": "",
