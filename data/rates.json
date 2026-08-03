@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-07-31T15:23:14Z",
+  "as_of": "2026-08-03T15:46:23Z",
   "rates": {
     "SOFR": {
-      "value": 3.65,
-      "date": "2026-07-30",
+      "value": 3.66,
+      "date": "2026-07-31",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-07-30",
+      "date": "2026-07-31",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.185,
-      "date": "2026-07-30",
+      "value": 2.184,
+      "date": "2026-07-31",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7313,
-      "date": "29 Jul 2026",
+      "value": 3.732,
+      "date": "30 Jul 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -53,137 +53,60 @@
   },
   "news": [
     {
-      "time": "2026-07-28T03:05:00Z",
-      "currency": "AUD",
-      "title": "RBA Gov Bullock Speaks",
-      "forecast": "",
-      "previous": ""
+      "time": "2026-08-03T14:00:00Z",
+      "currency": "USD",
+      "title": "ISM Manufacturing PMI",
+      "forecast": "54.0",
+      "previous": "53.3"
     },
     {
-      "time": "2026-07-29T01:30:00Z",
-      "currency": "AUD",
-      "title": "CPI m/m",
-      "forecast": "0.2%",
-      "previous": "-0.7%"
+      "time": "2026-08-04T22:45:00Z",
+      "currency": "NZD",
+      "title": "Employment Change q/q",
+      "forecast": "0.1%",
+      "previous": "0.2%"
     },
     {
-      "time": "2026-07-29T01:30:00Z",
-      "currency": "AUD",
-      "title": "CPI y/y",
-      "forecast": "4.0%",
-      "previous": "4.0%"
+      "time": "2026-08-04T22:45:00Z",
+      "currency": "NZD",
+      "title": "Unemployment Rate",
+      "forecast": "5.4%",
+      "previous": "5.3%"
     },
     {
-      "time": "2026-07-29T01:30:00Z",
-      "currency": "AUD",
-      "title": "Trimmed Mean CPI m/m",
+      "time": "2026-08-07T12:30:00Z",
+      "currency": "CAD",
+      "title": "Employment Change",
+      "forecast": "15.0K",
+      "previous": "18.2K"
+    },
+    {
+      "time": "2026-08-07T12:30:00Z",
+      "currency": "CAD",
+      "title": "Unemployment Rate",
+      "forecast": "6.5%",
+      "previous": "6.5%"
+    },
+    {
+      "time": "2026-08-07T12:30:00Z",
+      "currency": "USD",
+      "title": "Average Hourly Earnings m/m",
       "forecast": "0.3%",
-      "previous": "0.4%"
-    },
-    {
-      "time": "2026-07-29T18:00:00Z",
-      "currency": "USD",
-      "title": "Federal Funds Rate",
-      "forecast": "3.75%",
-      "previous": "3.75%"
-    },
-    {
-      "time": "2026-07-29T18:00:00Z",
-      "currency": "USD",
-      "title": "FOMC Statement",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-29T18:30:00Z",
-      "currency": "USD",
-      "title": "FOMC Press Conference",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-30T11:00:00Z",
-      "currency": "GBP",
-      "title": "BOE Monetary Policy Report",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-30T11:00:00Z",
-      "currency": "GBP",
-      "title": "Monetary Policy Summary",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-30T11:00:00Z",
-      "currency": "GBP",
-      "title": "MPC Official Bank Rate Votes",
-      "forecast": "2-0-7",
-      "previous": "2-0-7"
-    },
-    {
-      "time": "2026-07-30T11:00:00Z",
-      "currency": "GBP",
-      "title": "Official Bank Rate",
-      "forecast": "3.75%",
-      "previous": "3.75%"
-    },
-    {
-      "time": "2026-07-30T12:00:00Z",
-      "currency": "GBP",
-      "title": "BOE Gov Bailey Speaks",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-30T12:30:00Z",
-      "currency": "USD",
-      "title": "Advance GDP q/q",
-      "forecast": "2.1%",
-      "previous": "2.0%"
-    },
-    {
-      "time": "2026-07-30T12:30:00Z",
-      "currency": "USD",
-      "title": "Core PCE Price Index m/m",
-      "forecast": "0.2%",
       "previous": "0.3%"
     },
     {
-      "time": "2026-07-31T03:11:00Z",
-      "currency": "JPY",
-      "title": "BOJ Outlook Report",
-      "forecast": "",
-      "previous": ""
+      "time": "2026-08-07T12:30:00Z",
+      "currency": "USD",
+      "title": "Non-Farm Employment Change",
+      "forecast": "88K",
+      "previous": "57K"
     },
     {
-      "time": "2026-07-31T03:11:00Z",
-      "currency": "JPY",
-      "title": "BOJ Policy Rate",
-      "forecast": "<1.00%",
-      "previous": "<1.00%"
-    },
-    {
-      "time": "2026-07-31T03:11:00Z",
-      "currency": "JPY",
-      "title": "Monetary Policy Statement",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-31T06:30:00Z",
-      "currency": "JPY",
-      "title": "BOJ Press Conference",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-07-31T12:30:00Z",
-      "currency": "CAD",
-      "title": "GDP m/m",
-      "forecast": "0.2%",
-      "previous": "0.5%"
+      "time": "2026-08-07T12:30:00Z",
+      "currency": "USD",
+      "title": "Unemployment Rate",
+      "forecast": "4.2%",
+      "previous": "4.2%"
     }
   ]
 }
