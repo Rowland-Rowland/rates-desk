@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Morning Wind Check — Rates Desk</title>
+<style>
+  :root{
+    --bg:#0e1420; --panel:#131b2b; --panel2:#0f1622;
+    --grid:#2a3441; --grid-soft:#1c2534;
+    --amber:#e0a020; --amber-dim:#8a6a2a;
+    --ink:#e6e9ef; --ink-dim:#8b96a8; --ink-faint:#5a6576;
+    --green:#3fb984; --green-dim:#12402e; --green-bd:#2f7d5b;
+    --red:#e05a5a; --red-dim:#3d1c1c; --red-bd:#8a3838;
+    --amberpanel:#38300f;
+    --mono:"SFMono-Regular",Consolas,"Roboto Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    padding:22px;max-width:720px;margin:0 auto;-webkit-font-smoothing:antialiased}
+  header{border-bottom:1px solid var(--grid);padding-bottom:14px;margin-bottom:14px;
+    display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px}
+  h1{font-size:19px;font-weight:600;color:var(--amber);letter-spacing:.3px}
+  h1 .sub{color:var(--ink-dim);font-weight:400;font-size:13px;margin-left:8px}
+  .tag{font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px}
+
+  .status{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-bottom:16px;
+    padding:8px 12px;border:1px dashed var(--grid);border-radius:6px}
+  .status.ok{border-style:solid;color:var(--ink-dim)}
+  .status b{color:var(--amber)}
+  .status .spin{color:var(--amber)}
+
+  .step{background:var(--panel);border:1px solid var(--grid);border-radius:8px;padding:15px 16px;margin-bottom:14px}
+  .step .n{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:1px;text-transform:uppercase}
+  .step h2{font-size:15px;font-weight:600;color:var(--ink);margin:3px 0 2px}
+  .step .tick{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);margin-bottom:11px}
+  .step .tick b{color:var(--amber);font-weight:600}
+
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{flex:1;min-width:130px;background:var(--panel2);border:1px solid var(--grid);
+    border-radius:6px;padding:11px 12px;cursor:pointer;text-align:left;transition:.12s;color:var(--ink-dim);position:relative}
+  .btn:hover{border-color:var(--ink-faint)}
+  .btn .lab{font-size:13.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
+  .btn .arr{font-family:var(--mono);font-size:15px}
+  .btn .imp{font-size:11.5px;color:var(--ink-faint);margin-top:2px}
+  .btn.sel{background:var(--amberpanel);border-color:var(--amber)}
+  .btn.sel .imp{color:var(--ink-dim)}
+  .up{color:var(--red)} .dn{color:var(--green)}
+  .btn[data-neutral].sel{background:#1c2534}
+  .autobadge{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.6px;
+    background:var(--green-dim);color:#bff0d8;border:1px solid var(--green-bd);border-radius:3px;padding:0 4px;margin-left:2px}
+  .auto-read{font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin-top:10px;min-height:14px}
+  .auto-read .stale{color:var(--amber)}
+
+  .verdict{border-radius:8px;padding:15px 16px;margin-bottom:14px;border:1px solid var(--grid)}
+  .verdict .n{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-faint)}
+  .verdict .big{font-size:17px;font-weight:700;margin:4px 0 3px}
+  .verdict .exp{font-size:13px;color:var(--ink-dim)}
+  .v-wait{background:var(--panel2);border-style:dashed}
+  .v-wait .big{color:var(--ink-faint)}
+  .v-bear .big{color:var(--red)} .v-bear{background:var(--red-dim);border-color:var(--red-bd)}
+  .v-bull .big{color:var(--green)} .v-bull{background:var(--green-dim);border-color:var(--green-bd)}
+  .v-split .big{color:var(--amber)} .v-split{background:var(--amberpanel);border-color:var(--amber-dim)}
+
+  .grade{border-radius:8px;padding:17px 16px;margin-bottom:6px;border:1px solid var(--grid);text-align:center}
+  .grade .n{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-faint)}
+  .grade .big{font-size:26px;font-weight:800;margin:5px 0 4px;letter-spacing:.5px}
+  .grade .exp{font-size:13px;color:var(--ink-dim);max-width:480px;margin:0 auto}
+  .g-wait{background:var(--panel2);border-style:dashed}
+  .g-wait .big{color:var(--ink-faint);font-size:16px;font-weight:600}
+  .g-a{background:var(--green-dim);border-color:var(--green-bd)} .g-a .big{color:var(--green)}
+  .g-b{background:var(--amberpanel);border-color:var(--amber-dim)} .g-b .big{color:var(--amber)}
+  .g-skip{background:var(--red-dim);border-color:var(--red-bd)} .g-skip .big{color:var(--red)}
+
+  .reset{background:none;border:1px solid var(--grid);color:var(--ink-dim);font-family:var(--mono);
+    font-size:11px;padding:7px 14px;border-radius:5px;cursor:pointer;letter-spacing:.5px;margin-top:8px}
+  .reset:hover{border-color:var(--red-bd);color:var(--red)}
+  footer{margin-top:16px;padding-top:12px;border-top:1px solid var(--grid);
+    font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <h1>Gold morning wind check <span class="sub">read the tape before the setup</span></h1>
+  <div class="tag">Rates Desk · XAUUSD</div>
+</header>
+
+<div class="status" id="status"><span class="spin">&#9684;</span> Checking for auto data&hellip;</div>
+
+<div class="step">
+  <div class="n">Step 1 &middot; Macro wind A</div>
+  <h2>Real yields &mdash; which way is the slope?</h2>
+  <div class="tick">Source: <b>DFII10</b> (10Y TIPS real yield) &middot; daily</div>
+  <div class="btns" id="yields">
+    <button class="btn" data-v="rising"><span class="lab">Rising <span class="arr up">&#9650;</span></span><span class="imp">Bearish for gold &mdash; drags it down</span></button>
+    <button class="btn" data-v="falling"><span class="lab">Falling <span class="arr dn">&#9660;</span></span><span class="imp">Bullish for gold &mdash; lifts it</span></button>
+  </div>
+  <div class="auto-read" id="yields-read"></div>
+</div>
+
+<div class="step">
+  <div class="n">Step 2 &middot; Macro wind B</div>
+  <h2>Dollar &mdash; which way is the slope?</h2>
+  <div class="tick">Source: <b>DTWEXBGS</b> (broad $ index) &middot; live check: <b>TVC:DXY</b></div>
+  <div class="btns" id="dxy">
+    <button class="btn" data-v="rising"><span class="lab">Rising <span class="arr up">&#9650;</span></span><span class="imp">Bearish for gold &mdash; strong $</span></button>
+    <button class="btn" data-v="falling"><span class="lab">Falling <span class="arr dn">&#9660;</span></span><span class="imp">Bullish for gold &mdash; soft $</span></button>
+  </div>
+  <div class="auto-read" id="dxy-read"></div>
+</div>
+
+<div class="verdict v-wait" id="wind">
+  <div class="n">Combined wind</div>
+  <div class="big" id="wind-big">Set both slopes above</div>
+  <div class="exp" id="wind-exp">The two winds usually agree. When they split, there's no clean macro edge &mdash; that's the signal to be selective.</div>
+</div>
+
+<div class="step">
+  <div class="n">Step 3 &middot; Your setup</div>
+  <h2>Did the midnight/fix mechanic fire &mdash; and which way?</h2>
+  <div class="tick">Only after a valid sweep &rarr; displacement &rarr; FVG tap inside a kill zone / macro</div>
+  <div class="btns" id="setup">
+    <button class="btn" data-v="short"><span class="lab">Short</span><span class="imp">Midnight above PDH, fix near EQ</span></button>
+    <button class="btn" data-v="long"><span class="lab">Long</span><span class="imp">Midnight below PDL, fix near EQ</span></button>
+    <button class="btn" data-neutral data-v="none"><span class="lab">No setup</span><span class="imp">Nothing qualified today</span></button>
+  </div>
+</div>
+
+<div class="grade g-wait" id="grade">
+  <div class="n">Verdict</div>
+  <div class="big" id="grade-big">Complete all three steps</div>
+  <div class="exp" id="grade-exp">Wind + setup direction combine into a grade.</div>
+</div>
+
+<button class="reset" onclick="resetAll()">&#8635; Reset for next session</button>
+
+<footer>Real yield &amp; dollar auto-fetched daily via FRED &middot; dollar can lag ~1wk, override from live DXY if stale &middot; macro sets direction, the fix mechanic pulls the trigger</footer>
+
+<script>
+  const state = { yields:null, dxy:null, setup:null };
+
+  function wireGroup(id, key){
+    const box = document.getElementById(id);
+    box.querySelectorAll('.btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        box.querySelectorAll('.btn').forEach(function(x){x.classList.remove('sel');});
+        box.querySelectorAll('.autobadge').forEach(function(x){x.remove();});
+        b.classList.add('sel');
+        state[key] = b.dataset.v;
+        var read = document.getElementById(id+'-read');
+        if(read && (key==='yields'||key==='dxy')) read.textContent='Set manually.';
+        render();
+      });
+    });
+  }
+  wireGroup('yields','yields');
+  wireGroup('dxy','dxy');
+  wireGroup('setup','setup');
+
+  function windOf(v){ return v==='rising' ? 'bear' : v==='falling' ? 'bull' : null; }
+
+  function render(){
+    var wY = windOf(state.yields), wD = windOf(state.dxy);
+    var wind = document.getElementById('wind');
+    var wBig = document.getElementById('wind-big');
+    var wExp = document.getElementById('wind-exp');
+    var windClass = 'v-wait', windKind = null;
+
+    if(wY && wD){
+      if(wY==='bear' && wD==='bear'){ windKind='bear'; windClass='v-bear';
+        wBig.textContent='Bearish wind \u2014 strong';
+        wExp.textContent='Yields and dollar both pushing gold down. They agree \u2014 clean macro edge to the downside.'; }
+      else if(wY==='bull' && wD==='bull'){ windKind='bull'; windClass='v-bull';
+        wBig.textContent='Bullish wind \u2014 strong';
+        wExp.textContent='Yields and dollar both lifting gold. They agree \u2014 clean macro edge to the upside.'; }
+      else { windKind='split'; windClass='v-split';
+        wBig.textContent='Split wind \u2014 no clean edge';
+        wExp.textContent='The two winds disagree (the 2026 decoupling live). Mean-reversion is less reliable \u2014 expect chop, stay selective.'; }
+    } else {
+      wBig.textContent='Set both slopes above';
+      wExp.textContent='The two winds usually agree. When they split, there\u2019s no clean macro edge \u2014 that\u2019s the signal to be selective.';
+    }
+    wind.className = 'verdict ' + windClass;
+
+    var grade = document.getElementById('grade');
+    var gBig = document.getElementById('grade-big');
+    var gExp = document.getElementById('grade-exp');
+    var gClass='g-wait', gTxt='Complete all three steps', gExpTxt='Wind + setup direction combine into a grade.';
+
+    if(state.setup==='none'){
+      gClass='g-wait'; gTxt='No trade'; gExpTxt='No qualifying setup today. The wind read is noted for tomorrow \u2014 stand down.';
+    } else if(windKind && state.setup){
+      var s = state.setup;
+      if(windKind==='split'){
+        gClass='g-b'; gTxt='B \u2014 trade small or pass';
+        gExpTxt='Macro gives no clean edge either way. Take the setup only on its own merit, at reduced size \u2014 or wait for the winds to align.';
+      } else if((windKind==='bear'&&s==='short')||(windKind==='bull'&&s==='long')){
+        gClass='g-a'; gTxt='A \u2014 high conviction';
+        gExpTxt='Wind and setup point the same way. Two forces behind the trade \u2014 your reversion has help. Take it.';
+      } else {
+        gClass='g-skip'; gTxt='Skip \u2014 fighting the wind';
+        gExpTxt='The macro tide is running against your '+s+'. Even a clean entry is swimming upstream. Downgrade hard or pass.';
+      }
+    }
+    grade.className = 'grade ' + gClass;
+    gBig.textContent = gTxt;
+    gExp.textContent = gExpTxt;
+  }
+
+  function applyAuto(id, key, dir){
+    if(dir!=='rising' && dir!=='falling') return false;
+    var box = document.getElementById(id);
+    var btn = box.querySelector('.btn[data-v="'+dir+'"]');
+    if(!btn) return false;
+    box.querySelectorAll('.btn').forEach(function(x){x.classList.remove('sel');});
+    box.querySelectorAll('.autobadge').forEach(function(x){x.remove();});
+    btn.classList.add('sel');
+    var badge=document.createElement('span');
+    badge.className='autobadge'; badge.textContent='AUTO';
+    btn.querySelector('.lab').appendChild(badge);
+    state[key]=dir;
+    return true;
+  }
+
+  function daysAgo(iso){
+    if(!iso) return null;
+    var d = new Date(iso+'T00:00:00Z');
+    return Math.round((Date.now()-d.getTime())/86400000);
+  }
+
+  function loadWinds(){
+    var status = document.getElementById('status');
+    fetch('wind.json?t='+Date.now(), {cache:'no-store'}).then(function(res){
+      if(!res.ok) throw new Error('no file');
+      return res.json();
+    }).then(function(w){
+      if(w.yields){
+        var ok = applyAuto('yields','yields', w.yields.dir);
+        var read = document.getElementById('yields-read');
+        read.textContent = ok
+          ? 'Auto \u00b7 '+w.yields.value+'% \u00b7 '+w.yields.dir+' ('+(w.yields.change>=0?'+':'')+w.yields.change+' over '+w.yields.lookback+'d) \u00b7 '+w.yields.asof
+          : 'Auto read flat/unclear \u2014 set manually.';
+      }
+      if(w.dollar){
+        var ok2 = applyAuto('dxy','dxy', w.dollar.dir);
+        var read2 = document.getElementById('dxy-read');
+        var lag = daysAgo(w.dollar.asof);
+        var stale = (lag!==null && lag>3);
+        read2.innerHTML = ok2
+          ? 'Auto \u00b7 '+w.dollar.value+' \u00b7 '+w.dollar.dir+' ('+(w.dollar.change>=0?'+':'')+w.dollar.change+' over '+w.dollar.lookback+'d) \u00b7 '+w.dollar.asof
+            + (stale ? ' <span class="stale">\u26a0 '+lag+'d old \u2014 confirm vs live DXY</span>' : '')
+          : 'Auto read flat/unclear \u2014 set manually.';
+      }
+      status.className='status ok';
+      status.innerHTML = 'Auto-updated <b>'+(w.updated||'\u2014')+'</b>. Slopes pre-set below \u2014 tap to override either one.';
+      render();
+    }).catch(function(){
+      status.className='status';
+      status.innerHTML='Manual mode \u2014 no <b>wind.json</b> yet. Read the two slopes off TradingView and set them below. (Add the daily fetch to auto-fill this.)';
+    });
+  }
+
+  function resetAll(){
+    state.yields=state.dxy=state.setup=null;
+    document.querySelectorAll('.btn').forEach(function(b){b.classList.remove('sel');});
+    document.querySelectorAll('.autobadge').forEach(function(x){x.remove();});
+    document.getElementById('yields-read').textContent='';
+    document.getElementById('dxy-read').textContent='';
+    render();
+    loadWinds();
+  }
+
+  render();
+  loadWinds();
+</script>
+</body>
+</html>
