@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Pre-Trade Checklist — Rates Desk</title>
+<style>
+  :root{
+    --bg:#0e1420; --panel:#131b2b; --panel2:#0f1622;
+    --grid:#2a3441; --grid-soft:#1c2534;
+    --amber:#e0a020; --amber-dim:#8a6a2a;
+    --ink:#e6e9ef; --ink-dim:#8b96a8; --ink-faint:#5a6576;
+    --green:#3fb984; --green-dim:#12402e; --green-bd:#2f7d5b;
+    --red:#e05a5a; --red-dim:#3d1c1c; --red-bd:#8a3838;
+    --amberpanel:#38300f;
+    --mono:"SFMono-Regular",Consolas,"Roboto Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    padding:22px 22px 120px;max-width:760px;margin:0 auto;-webkit-font-smoothing:antialiased}
+  header{border-bottom:1px solid var(--grid);padding-bottom:12px;margin-bottom:8px}
+  .toprow{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+  h1{font-size:19px;font-weight:600;color:var(--amber);letter-spacing:.3px}
+  h1 .sub{color:var(--ink-dim);font-weight:400;font-size:13px;margin-left:8px}
+  .tag{font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px}
+  nav{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+  nav a{font-family:var(--mono);font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;
+    color:var(--ink-dim);border:1px solid var(--grid);border-radius:5px;padding:4px 9px;transition:.12s}
+  nav a:hover{border-color:var(--ink-faint);color:var(--ink)}
+  nav a.active{color:var(--amber);border-color:var(--amber-dim);background:var(--amberpanel)}
+
+  .lockbar{font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin:14px 0 4px;
+    padding:8px 12px;border:1px solid var(--grid);border-radius:6px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+  .lockbar b{color:var(--amber)}
+
+  .step{background:var(--panel);border:1px solid var(--grid);border-left:3px solid var(--grid);
+    border-radius:8px;padding:13px 15px;margin-top:12px;transition:.15s}
+  .step.done{border-left-color:var(--green)}
+  .step.fail{border-left-color:var(--red)}
+  .step .num{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:1px}
+  .step h2{font-size:14.5px;font-weight:600;color:var(--ink);margin:2px 0 2px}
+  .step .hint{font-size:12px;color:var(--ink-dim);margin-bottom:10px}
+  .step .hint b{color:var(--ink)}
+
+  .opts{display:flex;gap:8px;flex-wrap:wrap}
+  .opt{flex:1;min-width:112px;background:var(--panel2);border:1px solid var(--grid);border-radius:6px;
+    padding:9px 11px;cursor:pointer;text-align:left;transition:.12s;color:var(--ink-dim);font-size:13px;font-weight:600}
+  .opt:hover{border-color:var(--ink-faint)}
+  .opt.sel{background:var(--amberpanel);border-color:var(--amber);color:var(--ink)}
+  .opt.selgo{background:var(--green-dim);border-color:var(--green-bd);color:#dff5e9}
+  .opt.selno{background:var(--red-dim);border-color:var(--red-bd);color:#f4cccc}
+  .opt small{display:block;font-weight:400;font-size:11px;color:var(--ink-faint);margin-top:2px}
+  .opt.sel small,.opt.selgo small,.opt.selno small{color:var(--ink-dim)}
+  .autobadge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.5px;
+    background:var(--green-dim);color:#bff0d8;border:1px solid var(--green-bd);border-radius:3px;padding:0 4px;margin-left:6px}
+  .auto-read{font-family:var(--mono);font-size:10.5px;color:var(--ink-dim);margin-top:9px;min-height:12px}
+  .auto-read .stale{color:var(--amber)}
+
+  .derived{font-family:var(--mono);font-size:12px;margin-top:2px;padding:9px 11px;border-radius:6px;
+    border:1px dashed var(--grid);color:var(--ink-dim)}
+  .derived.short{border-style:solid;border-color:var(--red-bd);background:var(--red-dim);color:#f4cccc}
+  .derived.long{border-style:solid;border-color:var(--green-bd);background:var(--green-dim);color:#dff5e9}
+  .derived.none{border-style:solid;border-color:var(--amber-dim);background:var(--amberpanel);color:#f4dca0}
+  .derived b{font-weight:700}
+
+  .verdict{position:fixed;left:0;right:0;bottom:0;background:var(--panel2);
+    border-top:1px solid var(--grid);padding:12px 22px;z-index:10}
+  .verdict .inner{max-width:760px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .verdict .msg{font-size:14px;font-weight:600}
+  .verdict .n{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:1px}
+  .v-wait .msg{color:var(--amber)} .v-halt .msg{color:var(--red)} .v-go .msg{color:var(--green)}
+  .verdict.v-go{border-top-color:var(--green-bd)} .verdict.v-halt{border-top-color:var(--red-bd)}
+  .reset{background:none;border:1px solid var(--grid);color:var(--ink-dim);font-family:var(--mono);
+    font-size:10px;padding:6px 12px;border-radius:5px;cursor:pointer;letter-spacing:.5px;white-space:nowrap}
+  .reset:hover{border-color:var(--red-bd);color:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <div class="toprow">
+    <h1>Gold pre-trade checklist <span class="sub">XAUUSD &middot; sweep-and-reverse gate</span></h1>
+    <span class="tag">Rates Desk</span>
+  </div>
+  <nav>
+    <a href="index.html">Benchmark</a>
+    <a href="checklist.html">FX Checklist</a>
+    <a href="goldcheck.html" class="active">Gold</a>
+    <a href="windcheck.html">Wind</a>
+    <a href="journal.html">Journal</a>
+  </nav>
+</header>
+
+<div class="lockbar">
+  <span>Range day: <b>00:00 anchor</b> (midnight open)</span>
+  <span>Fix: <b>LBMA PM</b> (15:00 London)</span>
+  <span>Max <b>2 trades/day</b></span>
+</div>
+
+<!-- 1 -->
+<div class="step" id="s1">
+  <div class="num">01 &middot; PD arrays</div>
+  <h2>Mark PDH, PDL, EQ and the PD PM fix</h2>
+  <div class="hint">EQ = midpoint of PD range. <b>R = PDH &minus; PDL</b>, band unit <b>Q = R/8</b>. Draw = the opposite extreme.</div>
+  <div class="opts" data-step="pd">
+    <button class="opt" data-v="done">Marked &amp; ready</button>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="step" id="s2">
+  <div class="num">02 &middot; Bias &mdash; midnight open</div>
+  <h2>Where did midnight open in the PD range?</h2>
+  <div class="hint">Short needs it at the top; long needs it at the bottom.</div>
+  <div class="opts" data-step="midnight">
+    <button class="opt" data-v="high">Top &frac14; or above PDH<small>&ge; PDH &minus; Q, or &gt; PDH &rarr; short side</small></button>
+    <button class="opt" data-v="low">Bottom &frac14; or below PDL<small>&le; PDL + Q, or &lt; PDL &rarr; long side</small></button>
+    <button class="opt" data-v="neither">Neither<small>Mid-range &rarr; no setup</small></button>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="step" id="s3">
+  <div class="num">03 &middot; Bias &mdash; PM fix</div>
+  <h2>Is the PD PM fix hugging equilibrium?</h2>
+  <div class="hint">Fix must sit within <b>Q (R/8)</b> of EQ, on the entry side.</div>
+  <div class="opts" data-step="fix">
+    <button class="opt" data-v="near">Near EQ (within Q)<small>Confluence + BE marker</small></button>
+    <button class="opt" data-v="far">Away from EQ<small>No confluence &rarr; skip</small></button>
+  </div>
+</div>
+
+<!-- validity -->
+<div class="step" id="sv">
+  <div class="num">04 &middot; Validity gate</div>
+  <h2>Direction</h2>
+  <div class="derived none" id="derived">Set steps 02 and 03 &mdash; direction derives automatically.</div>
+</div>
+
+<!-- 5 wind -->
+<div class="step" id="s5">
+  <div class="num">05 &middot; Macro wind</div>
+  <h2>Real yields + dollar &mdash; is the tide with you?</h2>
+  <div class="hint">Auto from <b>wind.json</b>. Rising = bearish for gold, falling = bullish. Tap to override.</div>
+  <div class="opts" data-step="wy" style="margin-bottom:8px">
+    <button class="opt" data-v="rising">Yields rising<small>Bearish</small></button>
+    <button class="opt" data-v="falling">Yields falling<small>Bullish</small></button>
+  </div>
+  <div class="opts" data-step="wd">
+    <button class="opt" data-v="rising">Dollar rising<small>Bearish</small></button>
+    <button class="opt" data-v="falling">Dollar falling<small>Bullish</small></button>
+  </div>
+  <div class="auto-read" id="wind-read"></div>
+  <div class="derived none" id="windgrade" style="margin-top:9px">Set direction + both winds for a grade.</div>
+</div>
+
+<!-- 6 judas -->
+<div class="step" id="s6">
+  <div class="num">06 &middot; Manipulation / Judas</div>
+  <h2>Has price swept the liquidity past the midnight open?</h2>
+  <div class="hint">Short: sweep <b>above</b> MO. Long: sweep <b>below</b> MO.</div>
+  <div class="opts" data-step="judas">
+    <button class="opt" data-v="yes">Yes &mdash; swept</button>
+    <button class="opt" data-v="no">Not yet</button>
+  </div>
+</div>
+
+<!-- 7 5m -->
+<div class="step" id="s7">
+  <div class="num">07 &middot; Timeframe</div>
+  <h2>Dropped to the 5-minute chart?</h2>
+  <div class="opts" data-step="tf5m">
+    <button class="opt" data-v="yes">Yes &mdash; on 5m</button>
+    <button class="opt" data-v="no">No</button>
+  </div>
+</div>
+
+<!-- 8 displacement -->
+<div class="step" id="s8">
+  <div class="num">08 &middot; Displacement / MSS</div>
+  <h2>Did a displacement leg break structure and leave an FVG?</h2>
+  <div class="hint">Not a drift &mdash; a decisive leg that breaks a short-term swing (market-structure shift), with an FVG inside it.</div>
+  <div class="opts" data-step="disp">
+    <button class="opt" data-v="yes">Yes &mdash; MSS + FVG</button>
+    <button class="opt" data-v="no">Not yet</button>
+  </div>
+</div>
+
+<!-- 9 timing -->
+<div class="step" id="s9">
+  <div class="num">09 &middot; Timing &amp; news</div>
+  <h2>Inside a kill zone / macro AND clear of US data?</h2>
+  <div class="hint">No entries within <b>&plusmn;15 min</b> of CPI / NFP / FOMC.</div>
+  <div class="opts" data-step="timing">
+    <button class="opt" data-v="yes">Yes &mdash; clean window</button>
+    <button class="opt" data-v="no">No / near news</button>
+  </div>
+</div>
+
+<!-- 10 entry -->
+<div class="step" id="s10">
+  <div class="num">10 &middot; Entry</div>
+  <h2>Has price tapped back into the FVG?</h2>
+  <div class="opts" data-step="entry">
+    <button class="opt" data-v="yes">Yes &mdash; tapped</button>
+    <button class="opt" data-v="no">Not yet</button>
+  </div>
+</div>
+
+<!-- 11 stop -->
+<div class="step" id="s11">
+  <div class="num">11 &middot; Stop &amp; size</div>
+  <h2>Stop set in dollars, size computed?</h2>
+  <div class="hint">Stop beyond the swing at the push origin, measured in <b>$</b> not pips. <b>lot = risk$ &divide; (stop$ &times; contract)</b>. Then: BE at EQ, trail to the opposite extreme.</div>
+  <div class="opts" data-step="stop">
+    <button class="opt" data-v="done">Set &amp; sized</button>
+  </div>
+</div>
+
+<div class="verdict v-wait" id="verdict">
+  <div class="inner">
+    <div><span class="n">Verdict</span><span class="msg" id="verdict-msg">Work through the steps&hellip;</span></div>
+    <button class="reset" onclick="resetAll()">&#8635; New trade</button>
+  </div>
+</div>
+
+<script>
+  var KEY='desk_checklist_gold';
+  var state={pd:null,midnight:null,fix:null,wy:null,wd:null,judas:null,tf5m:null,disp:null,timing:null,entry:null,stop:null};
+
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ var s=localStorage.getItem(KEY); if(s) state=Object.assign(state, JSON.parse(s)); }catch(e){} }
+
+  function paint(){
+    document.querySelectorAll('.opts').forEach(function(box){
+      var key=box.dataset.step;
+      box.querySelectorAll('.opt').forEach(function(b){
+        b.classList.remove('sel','selgo','selno');
+        if(state[key]===b.dataset.v){
+          var v=b.dataset.v;
+          if(v==='no'||v==='far'||v==='neither') b.classList.add('selno');
+          else if(v==='yes'||v==='near'||v==='done'||v==='low'||v==='falling') b.classList.add('selgo');
+          else b.classList.add('sel');
+        }
+      });
+    });
+  }
+
+  function wireGroup(box){
+    var key=box.dataset.step;
+    box.querySelectorAll('.opt').forEach(function(b){
+      b.addEventListener('click', function(){
+        state[key]= (state[key]===b.dataset.v) ? null : b.dataset.v;
+        if(key==='wy'||key==='wd'){ var r=document.getElementById('wind-read'); if(r) r.textContent='Set manually.'; document.querySelectorAll('.autobadge').forEach(function(x){x.remove();}); }
+        save(); render();
+      });
+    });
+  }
+  document.querySelectorAll('.opts').forEach(wireGroup);
+
+  function direction(){
+    if(state.midnight==='high' && state.fix==='near') return 'short';
+    if(state.midnight==='low'  && state.fix==='near') return 'long';
+    return null;
+  }
+  function windKind(){
+    if(!state.wy || !state.wd) return null;
+    var y = state.wy==='rising'?'bear':'bull';
+    var d = state.wd==='rising'?'bear':'bull';
+    if(y===d) return y;      // 'bear' or 'bull'
+    return 'split';
+  }
+  function grade(){
+    var dir=direction(), w=windKind();
+    if(!dir || !w) return null;
+    if(w==='split') return 'B';
+    if((w==='bear'&&dir==='short')||(w==='bull'&&dir==='long')) return 'A';
+    return 'SKIP';
+  }
+
+  function render(){
+    paint();
+
+    // validity / direction panel
+    var dir=direction();
+    var dv=document.getElementById('derived');
+    if(state.midnight==='neither' || state.fix==='far'){
+      dv.className='derived none'; dv.innerHTML='<b>No setup</b> &mdash; midnight not at an extreme, or fix not near EQ. Stand down.';
+    } else if(dir==='short'){
+      dv.className='derived short'; dv.innerHTML='<b>SHORT</b> &middot; premium &middot; sweep above MO &rarr; short displacement &rarr; draw = PDL';
+    } else if(dir==='long'){
+      dv.className='derived long'; dv.innerHTML='<b>LONG</b> &middot; discount &middot; sweep below MO &rarr; long displacement &rarr; draw = PDH';
+    } else {
+      dv.className='derived none'; dv.innerHTML='Set steps 02 and 03 &mdash; direction derives automatically.';
+    }
+
+    // wind grade panel
+    var g=grade(), w=windKind(), wg=document.getElementById('windgrade');
+    if(!dir){ wg.className='derived none'; wg.innerHTML='Set a valid direction first.'; }
+    else if(!w){ wg.className='derived none'; wg.innerHTML='Set both winds for a grade.'; }
+    else if(g==='A'){ wg.className='derived long'; wg.innerHTML='<b>A-grade</b> &mdash; wind agrees with your '+dir+'. Full conviction.'; }
+    else if(g==='B'){ wg.className='derived none'; wg.innerHTML='<b>B-grade</b> &mdash; split wind, no clean edge. Trade small or pass.'; }
+    else { wg.className='derived short'; wg.innerHTML='<b>SKIP</b> &mdash; wind fights your '+dir+'. Downgrade hard or pass.'; }
+
+    // step done/fail styling
+    function mark(id, ok, bad){ var el=document.getElementById(id); el.classList.remove('done','fail'); if(bad) el.classList.add('fail'); else if(ok) el.classList.add('done'); }
+    mark('s1', state.pd==='done', false);
+    mark('s2', state.midnight==='high'||state.midnight==='low', state.midnight==='neither');
+    mark('s3', state.fix==='near', state.fix==='far');
+    mark('sv', !!dir, state.midnight==='neither'||state.fix==='far');
+    mark('s5', g==='A'||g==='B', g==='SKIP');
+    mark('s6', state.judas==='yes', state.judas==='no');
+    mark('s7', state.tf5m==='yes', state.tf5m==='no');
+    mark('s8', state.disp==='yes', state.disp==='no');
+    mark('s9', state.timing==='yes', state.timing==='no');
+    mark('s10', state.entry==='yes', state.entry==='no');
+    mark('s11', state.stop==='done', false);
+
+    // verdict — first blocking gate, in order
+    var v=document.getElementById('verdict'), m=document.getElementById('verdict-msg');
+    var block=null, tone='wait';
+    function halt(msg){ if(!block){ block=msg; tone='halt'; } }
+    function wait(msg){ if(!block){ block=msg; tone='wait'; } }
+
+    if(state.pd!=='done') wait('Mark PDH / PDL / EQ / PM fix first.');
+    else if(state.midnight==='neither' || state.fix==='far') halt('No qualifying setup — stand down.');
+    else if(!dir) wait('Complete bias (steps 02–03).');
+    else if(g==='SKIP') halt('Fighting the wind — macro tide against your '+dir+'. Pass or size down hard.');
+    else if(!g) wait('Set the macro wind (step 05).');
+    else if(state.judas!=='yes') { if(state.judas==='no') wait('WAIT — no sweep of the midnight open yet.'); else wait('Confirm the Judas sweep (step 06).'); }
+    else if(state.tf5m!=='yes') { if(state.tf5m==='no') halt('SWITCH TO THE 5M TIME FRAME.'); else wait('Confirm 5m timeframe (step 07).'); }
+    else if(state.disp!=='yes') { if(state.disp==='no') wait('WAIT — no displacement / MSS yet.'); else wait('Confirm displacement + FVG (step 08).'); }
+    else if(state.timing!=='yes') { if(state.timing==='no') halt('WAIT — outside kill zone/macro, or inside a news window.'); else wait('Confirm timing (step 09).'); }
+    else if(state.entry!=='yes') { if(state.entry==='no') wait('WAIT for price to return to the FVG.'); else wait('Confirm the FVG tap (step 10).'); }
+    else if(state.stop!=='done') wait('Set stop (in $) and size (step 11).');
+
+    if(block){
+      v.className='verdict v-'+tone;
+      m.textContent=block;
+    } else {
+      v.className='verdict v-go';
+      m.textContent='CLEARED — '+dir.toUpperCase()+', '+g+'-grade. Execute: stop in $, BE at EQ, trail to opposite extreme.';
+    }
+  }
+
+  function applyAutoWind(step, dir){
+    if(dir!=='rising' && dir!=='falling') return false;
+    state[step]=dir;
+    var box=document.querySelector('.opts[data-step="'+step+'"]');
+    var btn=box.querySelector('.opt[data-v="'+dir+'"]');
+    if(btn){ var badge=document.createElement('span'); badge.className='autobadge'; badge.textContent='AUTO'; btn.appendChild(badge); }
+    return true;
+  }
+  function daysAgo(iso){ if(!iso) return null; var d=new Date(iso+'T00:00:00Z'); return Math.round((Date.now()-d.getTime())/86400000); }
+
+  function loadWinds(){
+    fetch('wind.json?t='+Date.now(), {cache:'no-store'}).then(function(res){
+      if(!res.ok) throw new Error('no file'); return res.json();
+    }).then(function(w){
+      var read=document.getElementById('wind-read'); var txt='';
+      if(w.yields && !state.wy){ if(applyAutoWind('wy', w.yields.dir)) txt+='yields '+w.yields.value+'% '+w.yields.dir; }
+      if(w.dollar && !state.wd){
+        if(applyAutoWind('wd', w.dollar.dir)){
+          var lag=daysAgo(w.dollar.asof), stale=(lag!==null&&lag>3);
+          txt+=(txt?' · ':'')+'dollar '+w.dollar.dir+(stale?' ⚠ '+lag+'d old, check live DXY':'');
+        }
+      }
+      read.innerHTML = txt ? 'Auto ('+ (w.updated||'') +'): '+txt : 'Auto read unavailable — set manually.';
+      save(); render();
+    }).catch(function(){
+      var read=document.getElementById('wind-read');
+      read.textContent='No wind.json — set the two winds manually.';
+      render();
+    });
+  }
+
+  function resetAll(){
+    for(var k in state) state[k]=null;
+    document.querySelectorAll('.autobadge').forEach(function(x){x.remove();});
+    save(); render(); loadWinds();
+  }
+
+  load(); render(); loadWinds();
+</script>
+</body>
+</html>
