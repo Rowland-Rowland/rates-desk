@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIX Regime — Rates Desk</title>
+<style>
+  :root{
+    --bg:#0e1420; --panel:#131b2b; --panel2:#0f1622;
+    --grid:#2a3441; --grid-soft:#1c2534;
+    --amber:#e0a020; --amber-dim:#8a6a2a;
+    --ink:#e6e9ef; --ink-dim:#8b96a8; --ink-faint:#5a6576;
+    --green:#3fb984; --green-dim:#12402e; --green-bd:#2f7d5b;
+    --red:#e05a5a; --red-dim:#3d1c1c; --red-bd:#8a3838;
+    --amberpanel:#38300f;
+    --mono:"SFMono-Regular",Consolas,"Roboto Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    padding:22px;max-width:720px;margin:0 auto;-webkit-font-smoothing:antialiased}
+  header{border-bottom:1px solid var(--grid);padding-bottom:12px;margin-bottom:8px}
+  .toprow{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+  h1{font-size:19px;font-weight:600;color:var(--amber);letter-spacing:.3px}
+  h1 .sub{color:var(--ink-dim);font-weight:400;font-size:13px;margin-left:8px}
+  .tag{font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px}
+  nav{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+  nav a{font-family:var(--mono);font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;
+    color:var(--ink-dim);border:1px solid var(--grid);border-radius:5px;padding:4px 9px;transition:.12s}
+  nav a:hover{border-color:var(--ink-faint);color:var(--ink)}
+  nav a.active{color:var(--amber);border-color:var(--amber-dim);background:var(--amberpanel)}
+
+  .status{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin:14px 0 16px;
+    padding:8px 12px;border:1px dashed var(--grid);border-radius:6px}
+  .status.ok{border-style:solid;color:var(--ink-dim)}
+  .status b{color:var(--amber)}
+
+  .verdict{border-radius:8px;padding:18px 16px;margin-bottom:16px;border:1px solid var(--grid);text-align:center}
+  .verdict .n{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-faint)}
+  .verdict .big{font-size:27px;font-weight:800;margin:5px 0 3px;letter-spacing:.5px}
+  .verdict .play{font-family:var(--mono);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
+  .verdict .exp{font-size:13px;color:var(--ink-dim);max-width:500px;margin:0 auto}
+  .v-wait{background:var(--panel2);border-style:dashed} .v-wait .big{color:var(--ink-faint)}
+  .v-fade{background:var(--green-dim);border-color:var(--green-bd)} .v-fade .big,.v-fade .play{color:var(--green)}
+  .v-follow{background:var(--red-dim);border-color:var(--red-bd)} .v-follow .big,.v-follow .play{color:var(--red)}
+  .v-mixed{background:var(--amberpanel);border-color:var(--amber-dim)} .v-mixed .big,.v-mixed .play{color:var(--amber)}
+
+  .reads{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .read{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--grid);border-radius:8px;padding:13px 15px}
+  .read .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+  .read .val{font-size:22px;font-weight:700;color:var(--ink)}
+  .read .val small{font-size:12px;font-weight:400;color:var(--ink-dim);margin-left:4px}
+  .read .sub{font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin-top:3px}
+  .read .sub.stale{color:var(--amber)}
+
+  .step{background:var(--panel);border:1px solid var(--grid);border-radius:8px;padding:14px 15px;margin-bottom:14px}
+  .step .n{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:1px;text-transform:uppercase}
+  .step h2{font-size:14px;font-weight:600;color:var(--ink);margin:3px 0 9px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{flex:1;min-width:96px;background:var(--panel2);border:1px solid var(--grid);border-radius:6px;
+    padding:9px 10px;cursor:pointer;text-align:center;transition:.12s;color:var(--ink-dim);font-size:12.5px;font-weight:600}
+  .btn:hover{border-color:var(--ink-faint)}
+  .btn.sel{background:var(--amberpanel);border-color:var(--amber);color:var(--ink)}
+  .btn small{display:block;font-weight:400;font-size:10.5px;color:var(--ink-faint);margin-top:2px}
+  .btn.sel small{color:var(--ink-dim)}
+  .autobadge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.5px;
+    background:var(--green-dim);color:#bff0d8;border:1px solid var(--green-bd);border-radius:3px;padding:0 4px;margin-left:5px}
+
+  .reset{background:none;border:1px solid var(--grid);color:var(--ink-dim);font-family:var(--mono);
+    font-size:10px;padding:6px 12px;border-radius:5px;cursor:pointer;letter-spacing:.5px}
+  .reset:hover{border-color:var(--red-bd);color:var(--red)}
+  footer{margin-top:16px;padding-top:12px;border-top:1px solid var(--grid);
+    font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="toprow">
+    <h1>VIX regime <span class="sub">fade or follow &mdash; is today your kind of day?</span></h1>
+    <span class="tag">Rates Desk &middot; Indices</span>
+  </div>
+  <nav>
+    <a href="index.html">Benchmark</a>
+    <a href="checklist.html">FX Checklist</a>
+    <a href="goldcheck.html">Gold</a>
+    <a href="windcheck.html">Wind</a>
+    <a href="vixpanel.html" class="active">VIX Regime</a>
+    <a href="journal.html">Journal</a>
+  </nav>
+</header>
+
+<div class="status" id="status">Checking for auto data&hellip;</div>
+
+<div class="verdict v-wait" id="verdict">
+  <div class="n">Regime</div>
+  <div class="play" id="v-play">&mdash;</div>
+  <div class="big" id="v-big">Set the two reads below</div>
+  <div class="exp" id="v-exp">VIX level + term structure decide whether your sweep-and-reverse is valid today, or a trap.</div>
+</div>
+
+<div class="reads">
+  <div class="read">
+    <div class="lbl">VIX (VIXCLS)</div>
+    <div class="val" id="r-vix">&mdash;<small id="r-vix-band"></small></div>
+    <div class="sub" id="r-vix-asof"></div>
+  </div>
+  <div class="read">
+    <div class="lbl">Term structure &middot; VIX / VIX3M</div>
+    <div class="val" id="r-ratio">&mdash;<small id="r-struct"></small></div>
+    <div class="sub" id="r-ratio-asof"></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="n">Read 1 &middot; VIX level</div>
+  <h2>How much fear is priced in?</h2>
+  <div class="btns" id="level">
+    <button class="btn" data-v="low">Low<small>&lt; 20</small></button>
+    <button class="btn" data-v="elevated">Elevated<small>20&ndash;28</small></button>
+    <button class="btn" data-v="high">High<small>&gt; 28</small></button>
+  </div>
+</div>
+
+<div class="step">
+  <div class="n">Read 2 &middot; Term structure</div>
+  <h2>Is VIX below or above VIX3M?</h2>
+  <div class="btns" id="struct">
+    <button class="btn" data-v="contango">Contango<small>VIX &lt; 3M &middot; calm</small></button>
+    <button class="btn" data-v="flat">Flat<small>&asymp; equal</small></button>
+    <button class="btn" data-v="backwardation">Backwardation<small>VIX &gt; 3M &middot; stress</small></button>
+  </div>
+  <div style="margin-top:12px;text-align:right"><button class="reset" onclick="resetAll()">&#8635; Reset</button></div>
+</div>
+
+<footer>VIX regime is a free proxy for dealer gamma &middot; it answers fade-or-follow, not the exact gamma level &middot; VIX &amp; VIX3M via FRED, daily</footer>
+
+<script>
+  var state = { level:null, struct:null };
+
+  function wire(id, key){
+    var box = document.getElementById(id);
+    box.querySelectorAll('.btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        box.querySelectorAll('.btn').forEach(function(x){x.classList.remove('sel');});
+        box.querySelectorAll('.autobadge').forEach(function(x){x.remove();});
+        b.classList.add('sel');
+        state[key]=b.dataset.v;
+        render();
+      });
+    });
+  }
+  wire('level','level'); wire('struct','struct');
+
+  function regimeOf(level, struct){
+    if(!level || !struct) return null;
+    if(struct==='backwardation') return {r:'stressed-trend', p:'follow'};
+    if(struct==='flat') return level==='low' ? {r:'mixed',p:'mixed'} : {r:'stressed-trend',p:'follow'};
+    // contango
+    if(level==='low') return {r:'calm-pin', p:'fade'};
+    if(level==='elevated') return {r:'mixed', p:'mixed'};
+    return {r:'stressed-trend', p:'follow'};
+  }
+
+  function render(){
+    var v = document.getElementById('verdict');
+    var big = document.getElementById('v-big');
+    var play = document.getElementById('v-play');
+    var exp = document.getElementById('v-exp');
+    var g = regimeOf(state.level, state.struct);
+    if(!g){
+      v.className='verdict v-wait'; play.textContent='—';
+      big.textContent='Set the two reads below';
+      exp.textContent='VIX level + term structure decide whether your sweep-and-reverse is valid today, or a trap.';
+      return;
+    }
+    if(g.r==='calm-pin'){
+      v.className='verdict v-fade'; play.textContent='▸ FADE'; big.textContent='CALM-PIN';
+      exp.textContent='Low vol, contango — dealers likely long gamma, price pins and mean-reverts. Your sweep-and-reverse is valid: fade the OR/overnight sweeps toward VWAP and big strikes.';
+    } else if(g.r==='stressed-trend'){
+      v.className='verdict v-follow'; play.textContent='▸ FOLLOW'; big.textContent='STRESSED-TREND';
+      exp.textContent='Elevated/backwardated vol — acceleration regime. Reversion setups are traps here; a sweep keeps going. Follow continuation, widen stops, or stand down. Do NOT fade.';
+    } else {
+      v.className='verdict v-mixed'; play.textContent='▸ MIXED'; big.textContent='MIXED / TRANSITION';
+      exp.textContent='No clean regime — structure and level disagree, or vol is mid-range. Lower conviction: trade small, take reversion only at the cleanest levels, or wait.';
+    }
+  }
+
+  function daysAgo(iso){ if(!iso) return null; var d=new Date(iso+'T00:00:00Z'); return Math.round((Date.now()-d.getTime())/86400000); }
+  function autoSel(id, val){
+    var box=document.getElementById(id);
+    var btn=box.querySelector('.btn[data-v="'+val+'"]');
+    if(!btn) return;
+    box.querySelectorAll('.btn').forEach(function(x){x.classList.remove('sel');});
+    btn.classList.add('sel');
+    var b=document.createElement('span'); b.className='autobadge'; b.textContent='AUTO'; btn.appendChild(b);
+  }
+
+  function loadVix(){
+    var status=document.getElementById('status');
+    fetch('vix.json?t='+Date.now(), {cache:'no-store'}).then(function(res){
+      if(!res.ok) throw new Error('no file'); return res.json();
+    }).then(function(w){
+      // readouts
+      document.getElementById('r-vix').firstChild.textContent = w.vix.value;
+      var band = w.vix.value < 20 ? 'low' : (w.vix.value < 28 ? 'elevated' : 'high');
+      document.getElementById('r-vix-band').textContent = ' · '+band;
+      var lag1=daysAgo(w.vix.asof), st1=(lag1!==null&&lag1>3);
+      var a1=document.getElementById('r-vix-asof'); a1.textContent=w.vix.asof+(st1?' ⚠ '+lag1+'d old':''); if(st1) a1.className='sub stale';
+
+      document.getElementById('r-ratio').firstChild.textContent = w.ratio;
+      document.getElementById('r-struct').textContent = ' · '+w.structure;
+      document.getElementById('r-ratio-asof').textContent = 'VIX '+w.vix.value+' / VIX3M '+w.vix3m.value;
+
+      // pre-select
+      state.level = band; state.struct = w.structure;
+      autoSel('level', band); autoSel('struct', w.structure);
+
+      status.className='status ok';
+      status.innerHTML='Auto-updated <b>'+(w.updated||'—')+'</b>. Reads pre-set below — tap to override.';
+      render();
+    }).catch(function(){
+      status.className='status';
+      status.innerHTML='Manual mode — no <b>vix.json</b> yet. Read VIX and VIX/VIX3M off TradingView (TVC:VIX, and VIX vs FRED:VXVCLS) and set them below.';
+    });
+  }
+
+  function resetAll(){
+    state.level=state.struct=null;
+    document.querySelectorAll('.btn').forEach(function(b){b.classList.remove('sel');});
+    document.querySelectorAll('.autobadge').forEach(function(x){x.remove();});
+    render(); loadVix();
+  }
+
+  render(); loadVix();
+</script>
+</body>
+</html>
