@@ -366,12 +366,12 @@
     else if(!p) wait('Set the regime (step 03).');
     else if(p==='M') halt('MIXED regime — no clean edge. Trade small at the best level only, or skip.');
     else if(!dir) wait('Set bias — OR in premium or discount (step 02).');
-    else if(state.trigger!=='yes'){ if(state.trigger==='no') wait(p==='A'?'WAIT — no sweep of an OR/overnight edge yet.':'WAIT — no break-and-hold of an OR edge yet.'); else wait('Confirm the trigger (step 05).'); }
-    else if(state.tf5m!=='yes'){ if(state.tf5m==='no') halt('SWITCH TO THE 5M TIME FRAME.'); else wait('Confirm 5m timeframe (step 06).'); }
-    else if(state.disp!=='yes'){ if(state.disp==='no') wait('WAIT — no displacement / FVG yet.'); else wait('Confirm displacement + FVG (step 07).'); }
-    else if(state.timing!=='yes'){ if(state.timing==='no') halt('WAIT — outside an index macro, or inside a news window.'); else wait('Confirm timing (step 08).'); }
-    else if(state.entry!=='yes'){ if(state.entry==='no') wait('WAIT for price to tap the FVG.'); else wait('Confirm the FVG tap (step 09).'); }
-    else if(state.stop!=='done') wait('Set stop (in points) and size (step 10).');
+    else if(state.trigger!=='yes'){ if(state.trigger==='no') wait(p==='A'?'Wait for the sweep of the OR / overnight edge.':'Wait for the break of the ORH / ORL (and hold).'); else wait('Confirm the trigger (step 06).'); }
+    else if(state.tf5m!=='yes'){ if(state.tf5m==='no') halt('Switch to the 5-minute chart.'); else wait('Confirm 5m timeframe (step 07).'); }
+    else if(state.disp!=='yes'){ if(state.disp==='no') wait(p==='A'?'Wait for the reversal displacement + FVG.':'Wait for the continuation FVG on the retest.'); else wait('Confirm displacement + FVG (step 08).'); }
+    else if(state.timing!=='yes'){ if(state.timing==='no') wait('Wait for a valid index macro window, clear of news.'); else wait('Confirm timing (step 09).'); }
+    else if(state.entry!=='yes'){ if(state.entry==='no') wait('Wait for price to tap the FVG.'); else wait('Confirm the FVG tap (step 10).'); }
+    else if(state.stop!=='done') wait('Set stop (in points) and size (step 11).');
 
     var v=document.getElementById('verdict'), m=document.getElementById('verdict-msg');
     if(block){ v.className='verdict v-'+tone; m.textContent=block; }
