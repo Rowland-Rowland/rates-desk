@@ -84,9 +84,9 @@
   </div>
   <nav>
     <a href="index.html">Benchmark</a>
-    <a href="checklist.html">FX Checklist</a>
+    <a href="checklist.html">FX</a>
     <a href="goldcheck.html" class="active">Gold</a>
-    <a href="windcheck.html">Wind</a>
+    <a href="indexcheck.html">Indices</a>
     <a href="journal.html">Journal</a>
   </nav>
 </header>
@@ -97,49 +97,9 @@
   <span>Max <b>2 trades/day</b></span>
 </div>
 
-<!-- 1 -->
-<div class="step" id="s1">
-  <div class="num">01 &middot; PD arrays</div>
-  <h2>Mark PDH, PDL, EQ and the PD PM fix</h2>
-  <div class="hint">EQ = midpoint of PD range. <b>R = PDH &minus; PDL</b>, band unit <b>Q = R/8</b>. Draw = the opposite extreme.</div>
-  <div class="opts" data-step="pd">
-    <button class="opt" data-v="done">Marked &amp; ready</button>
-  </div>
-</div>
-
-<!-- 2 -->
-<div class="step" id="s2">
-  <div class="num">02 &middot; Bias &mdash; midnight open</div>
-  <h2>Where did midnight open in the PD range?</h2>
-  <div class="hint">Short needs it at the top; long needs it at the bottom.</div>
-  <div class="opts" data-step="midnight">
-    <button class="opt" data-v="high">Top &frac14; or above PDH<small>&ge; PDH &minus; Q, or &gt; PDH &rarr; short side</small></button>
-    <button class="opt" data-v="low">Bottom &frac14; or below PDL<small>&le; PDL + Q, or &lt; PDL &rarr; long side</small></button>
-    <button class="opt" data-v="neither">Neither<small>Mid-range &rarr; no setup</small></button>
-  </div>
-</div>
-
-<!-- 3 -->
-<div class="step" id="s3">
-  <div class="num">03 &middot; Bias &mdash; PM fix</div>
-  <h2>Is the PD PM fix hugging equilibrium?</h2>
-  <div class="hint">Fix must sit within <b>Q (R/8)</b> of EQ, on the entry side.</div>
-  <div class="opts" data-step="fix">
-    <button class="opt" data-v="near">Near EQ (within Q)<small>Confluence + BE marker</small></button>
-    <button class="opt" data-v="far">Away from EQ<small>No confluence &rarr; skip</small></button>
-  </div>
-</div>
-
-<!-- validity -->
-<div class="step" id="sv">
-  <div class="num">04 &middot; Validity gate</div>
-  <h2>Direction</h2>
-  <div class="derived none" id="derived">Set steps 02 and 03 &mdash; direction derives automatically.</div>
-</div>
-
-<!-- 5 wind -->
+<!-- 1 wind -->
 <div class="step" id="s5">
-  <div class="num">05 &middot; Macro wind</div>
+  <div class="num">01 &middot; Macro wind</div>
   <h2>Real yields + dollar &mdash; is the tide with you?</h2>
   <div class="hint">Auto from <b>wind.json</b>. Rising = bearish for gold, falling = bullish. Tap to override.</div>
   <div class="opts" data-step="wy" style="margin-bottom:8px">
@@ -152,6 +112,46 @@
   </div>
   <div class="auto-read" id="wind-read"></div>
   <div class="derived none" id="windgrade" style="margin-top:9px">Set direction + both winds for a grade.</div>
+</div>
+
+<!-- 2 -->
+<div class="step" id="s1">
+  <div class="num">02 &middot; PD arrays</div>
+  <h2>Mark PDH, PDL, EQ and the PD PM fix</h2>
+  <div class="hint">EQ = midpoint of PD range. <b>R = PDH &minus; PDL</b>, band unit <b>Q = R/8</b>. Draw = the opposite extreme.</div>
+  <div class="opts" data-step="pd">
+    <button class="opt" data-v="done">Marked &amp; ready</button>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="step" id="s2">
+  <div class="num">03 &middot; Bias &mdash; midnight open</div>
+  <h2>Where did midnight open in the PD range?</h2>
+  <div class="hint">Short needs it at the top; long needs it at the bottom.</div>
+  <div class="opts" data-step="midnight">
+    <button class="opt" data-v="high">Top &frac14; or above PDH<small>&ge; PDH &minus; Q, or &gt; PDH &rarr; short side</small></button>
+    <button class="opt" data-v="low">Bottom &frac14; or below PDL<small>&le; PDL + Q, or &lt; PDL &rarr; long side</small></button>
+    <button class="opt" data-v="neither">Neither<small>Mid-range &rarr; no setup</small></button>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="step" id="s3">
+  <div class="num">04 &middot; Bias &mdash; PM fix</div>
+  <h2>Is the PD PM fix hugging equilibrium?</h2>
+  <div class="hint">Fix must sit within <b>Q (R/8)</b> of EQ, on the entry side.</div>
+  <div class="opts" data-step="fix">
+    <button class="opt" data-v="near">Near EQ (within Q)<small>Confluence + BE marker</small></button>
+    <button class="opt" data-v="far">Away from EQ<small>No confluence &rarr; skip</small></button>
+  </div>
+</div>
+
+<!-- validity -->
+<div class="step" id="sv">
+  <div class="num">05 &middot; Validity gate</div>
+  <h2>Direction</h2>
+  <div class="derived none" id="derived">Set steps 03 and 04 &mdash; direction derives automatically.</div>
 </div>
 
 <!-- 6 judas -->
@@ -291,7 +291,7 @@
     } else if(dir==='long'){
       dv.className='derived long'; dv.innerHTML='<b>LONG</b> &middot; discount &middot; sweep below MO &rarr; long displacement &rarr; draw = PDH';
     } else {
-      dv.className='derived none'; dv.innerHTML='Set steps 02 and 03 &mdash; direction derives automatically.';
+      dv.className='derived none'; dv.innerHTML='Set steps 03 and 04 &mdash; direction derives automatically.';
     }
 
     // wind grade panel
@@ -316,30 +316,51 @@
     mark('s10', state.entry==='yes', state.entry==='no');
     mark('s11', state.stop==='done', false);
 
-    // verdict — first blocking gate, in order
+    // ── progressive reveal + verdict (one step at a time) ──
+    function stepStatus(id){
+      if(id==='s5'){ return (state.wy!==null && state.wd!==null) ? {k:'pass'} : {k:'pending', m:'Read the macro wind — set yields and dollar.'}; }
+      if(id==='s1'){ return state.pd==='done' ? {k:'pass'} : {k:'pending', m:'Mark PDH / PDL / EQ / PM fix.'}; }
+      if(id==='s2'){
+        if(state.midnight==='high'||state.midnight==='low') return {k:'pass'};
+        if(state.midnight==='neither') return {k:'halt', m:'No qualifying setup — midnight mid-range. Stand down.'};
+        return {k:'pending', m:'Where did midnight open?'};
+      }
+      if(id==='s3'){
+        if(state.fix==='near') return {k:'pass'};
+        if(state.fix==='far')  return {k:'halt', m:'No confluence — fix not near EQ. Stand down.'};
+        return {k:'pending', m:'Is the PM fix hugging EQ?'};
+      }
+      if(id==='sv'){
+        if(g==='SKIP') return {k:'halt', m:'Fighting the wind — macro tide against your '+dir+'. Pass or size down hard.'};
+        return (g==='A'||g==='B') ? {k:'pass'} : {k:'pending', m:'Direction / grade resolving…'};
+      }
+      if(id==='s6'){ if(state.judas==='yes')return{k:'pass'}; if(state.judas==='no')return{k:'wait',m:'Wait for the sweep of the midnight open.'}; return{k:'pending',m:'Has price swept the midnight open?'}; }
+      if(id==='s7'){ if(state.tf5m==='yes')return{k:'pass'}; if(state.tf5m==='no')return{k:'wait',m:'Switch to the 5-minute chart.'}; return{k:'pending',m:'On the 5-minute chart?'}; }
+      if(id==='s8'){ if(state.disp==='yes')return{k:'pass'}; if(state.disp==='no')return{k:'wait',m:'Wait for the displacement + FVG.'}; return{k:'pending',m:'Displacement + FVG yet?'}; }
+      if(id==='s9'){ if(state.timing==='yes')return{k:'pass'}; if(state.timing==='no')return{k:'wait',m:'Wait for a kill zone / macro, clear of news.'}; return{k:'pending',m:'In a clean window?'}; }
+      if(id==='s10'){ if(state.entry==='yes')return{k:'pass'}; if(state.entry==='no')return{k:'wait',m:'Wait for price to return to the FVG.'}; return{k:'pending',m:'Has price tapped the FVG?'}; }
+      if(id==='s11'){ return state.stop==='done' ? {k:'pass'} : {k:'pending', m:'Set stop (in $) and size.'}; }
+      return {k:'pending', m:''};
+    }
+
+    var order = ['s5','s1','s2','s3','sv','s6','s7','s8','s9','s10','s11'];
+    var stopMsg=null, stopKind=null, allPass=true;
+    for(var i=0;i<order.length;i++){
+      var el=document.getElementById(order[i]);
+      if(stopMsg===null){
+        el.style.display='';
+        var st=stepStatus(order[i]);
+        if(st.k!=='pass'){ stopMsg=st.m; stopKind=st.k; allPass=false; }
+      } else { el.style.display='none'; }
+    }
+
     var v=document.getElementById('verdict'), m=document.getElementById('verdict-msg');
-    var block=null, tone='wait';
-    function halt(msg){ if(!block){ block=msg; tone='halt'; } }
-    function wait(msg){ if(!block){ block=msg; tone='wait'; } }
-
-    if(state.pd!=='done') wait('Mark PDH / PDL / EQ / PM fix first.');
-    else if(state.midnight==='neither' || state.fix==='far') halt('No qualifying setup — stand down.');
-    else if(!dir) wait('Complete bias (steps 02–03).');
-    else if(g==='SKIP') halt('Fighting the wind — macro tide against your '+dir+'. Pass or size down hard.');
-    else if(!g) wait('Set the macro wind (step 05).');
-    else if(state.judas!=='yes') { if(state.judas==='no') wait('WAIT — no sweep of the midnight open yet.'); else wait('Confirm the Judas sweep (step 06).'); }
-    else if(state.tf5m!=='yes') { if(state.tf5m==='no') halt('SWITCH TO THE 5M TIME FRAME.'); else wait('Confirm 5m timeframe (step 07).'); }
-    else if(state.disp!=='yes') { if(state.disp==='no') wait('WAIT — no displacement / MSS yet.'); else wait('Confirm displacement + FVG (step 08).'); }
-    else if(state.timing!=='yes') { if(state.timing==='no') halt('WAIT — outside kill zone/macro, or inside a news window.'); else wait('Confirm timing (step 09).'); }
-    else if(state.entry!=='yes') { if(state.entry==='no') wait('WAIT for price to return to the FVG.'); else wait('Confirm the FVG tap (step 10).'); }
-    else if(state.stop!=='done') wait('Set stop (in $) and size (step 11).');
-
-    if(block){
-      v.className='verdict v-'+tone;
-      m.textContent=block;
-    } else {
+    if(allPass){
       v.className='verdict v-go';
       m.textContent='CLEARED — '+dir.toUpperCase()+', '+g+'-grade. Execute: stop in $, BE at EQ, trail to opposite extreme.';
+    } else {
+      v.className='verdict v-'+(stopKind==='halt'?'halt':'wait');
+      m.textContent=stopMsg;
     }
   }
 
