@@ -89,8 +89,6 @@
     <a href="checklist.html">FX Checklist</a>
     <a href="goldcheck.html">Gold</a>
     <a href="indexcheck.html" class="active">Indices</a>
-    <a href="windcheck.html">Wind</a>
-    <a href="vixpanel.html">VIX</a>
     <a href="journal.html">Journal</a>
   </nav>
 </header>
@@ -101,9 +99,22 @@
   <span>Max <b>2 trades/day</b></span>
 </div>
 
-<!-- 0 instrument -->
+<!-- 1 regime -->
+<div class="step" id="s2">
+  <div class="num">01 · Regime — the master switch</div>
+  <h2>Fade day or follow day?</h2>
+  <div class="hint">Auto from <b>vix.json</b>. CALM-PIN → <b>Play A (fade)</b>, sweeps reverse. STRESSED-TREND → <b>Play B (follow)</b>, sweeps run. MIXED → small or skip.</div>
+  <div class="opts" data-step="regime">
+    <button class="opt" data-v="fade">CALM-PIN<small>Play A · fade sweeps</small></button>
+    <button class="opt" data-v="follow">STRESSED-TREND<small>Play B · follow breaks</small></button>
+    <button class="opt" data-v="mixed">MIXED<small>Small / skip</small></button>
+  </div>
+  <div class="auto-read" id="regime-read"></div>
+</div>
+
+<!-- 2 instrument -->
 <div class="step" id="s0">
-  <div class="num">01 · Instrument</div>
+  <div class="num">02 · Instrument</div>
   <h2>What are you trading?</h2>
   <div class="hint">CFD = continuous, no expiry — trade any day. 1! = continuous futures chart, but the underlying contract rolls quarterly; roll week is messy, so we stand down across it.</div>
   <div class="opts" data-step="instr">
@@ -115,7 +126,7 @@
 
 <!-- 1 -->
 <div class="step" id="s1">
-  <div class="num">02 · Anchors</div>
+  <div class="num">03 · Anchors</div>
   <h2>Mark the overnight range and the Opening Range</h2>
   <div class="hint">Overnight: ONH / ONL / ON-EQ (midpoint). Opening Range: ORH / ORL once 10:00 ET closes the box.</div>
   <div class="opts" data-step="anchors"><button class="opt" data-v="done">Both marked</button></div>
@@ -123,7 +134,7 @@
 
 <!-- 2 bias -->
 <div class="step" id="s3">
-  <div class="num">03 · Bias — OR vs overnight range</div>
+  <div class="num">04 · Bias — OR vs overnight range</div>
   <h2>Where is the Opening Range within the overnight range?</h2>
   <div class="hint">Premium (upper half) → short side. Discount (lower half) → long side.</div>
   <div class="opts" data-step="bias">
@@ -132,24 +143,11 @@
   </div>
 </div>
 
-<!-- 3 regime -->
-<div class="step" id="s2">
-  <div class="num">04 · Regime — the master switch</div>
-  <h2>Fade day or follow day?</h2>
-  <div class="hint">Auto from <b>vix.json</b>. CALM-PIN → <b>Play A (fade)</b>, sweeps reverse. STRESSED-TREND → <b>Play B (follow)</b>, sweeps run. MIXED → small or skip.</div>
-  <div class="opts" data-step="regime">
-    <button class="opt" data-v="fade">CALM-PIN<small>Play A · fade sweeps</small></button>
-    <button class="opt" data-v="follow">STRESSED-TREND<small>Play B · follow breaks</small></button>
-    <button class="opt" data-v="mixed">MIXED<small>Small / skip</small></button>
-  </div>
-  <div class="auto-read" id="regime-read"></div>
-</div>
-
 <!-- 4 validity -->
 <div class="step" id="sv">
   <div class="num">05 · Validity gate</div>
   <h2>Play + direction</h2>
-  <div class="derived none" id="derived">Set bias (02) and regime (03) — the play derives automatically.</div>
+  <div class="derived none" id="derived">Set regime (01) and bias (04) — the play derives automatically.</div>
 </div>
 
 <!-- 5 trigger -->
@@ -319,7 +317,7 @@
       s7h.innerHTML='Pullback to the broken edge leaves an FVG <b>in the direction</b> of the break.';
     } else {
       s5t.textContent='The sweep / break';
-      s5h.textContent='Set the play first (step 03).';
+      s5h.textContent='Set the play first (step 01).';
       s7t.textContent='Displacement leg + FVG?';
       s7h.textContent='A decisive leg breaks structure and leaves an FVG.';
     }
@@ -338,7 +336,7 @@
         dv.innerHTML='<b>'+playName+' · '+dir.toUpperCase()+'</b> · break-and-hold the '+(dir==='short'?'low → short the extension':'high → long the extension')+'. Do NOT fade.';
       }
     } else {
-      dv.className='derived none'; dv.innerHTML='Set bias (02) and regime (03) — the play derives automatically.';
+      dv.className='derived none'; dv.innerHTML='Set regime (01) and bias (04) — the play derives automatically.';
     }
 
     // step styling
@@ -398,7 +396,7 @@
       return {k:'pending', m:''};
     }
 
-    var order = ['s0','s1','s3','s2','sv','s5','s6','s7','s8','s9','s10'];
+    var order = ['s2','s0','s1','s3','sv','s5','s6','s7','s8','s9','s10'];
     var stopMsg=null, stopKind=null, allPass=true;
     for(var i=0;i<order.length;i++){
       var el=document.getElementById(order[i]);
