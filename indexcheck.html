@@ -354,31 +354,71 @@
     mark('s9', state.entry==='yes', state.entry==='no');
     mark('s10', state.stop==='done', false);
 
-    // verdict — first blocking gate
-    var block=null, tone='wait';
-    function halt(m){ if(!block){ block=m; tone='halt'; } }
-    function wait(m){ if(!block){ block=m; tone='wait'; } }
+    // ── progressive reveal + verdict ──
+    // one step at a time: 'pass' reveals the next, anything else stops the unfold.
+    function stepStatus(id){
+      if(id==='s0'){
+        if(!state.instr) return {k:'pending', m:'Choose your instrument — CFD or 1!.'};
+        if(state.instr==='fut'){ var cs=contractStatus(); if(!cs.active) return {k:'halt', m:'STAND DOWN — 1! contract in roll week. Next clean session: '+cs.nextClean+'.'}; }
+        return {k:'pass'};
+      }
+      if(id==='s1') return state.anchors==='done' ? {k:'pass'} : {k:'pending', m:'Mark the overnight range + Opening Range.'};
+      if(id==='s3') return dir ? {k:'pass'} : {k:'pending', m:'Set bias — OR in premium or discount.'};
+      if(id==='s2'){
+        if(state.regime==='mixed') return {k:'halt', m:'MIXED regime — no clean edge. Trade small at the best level only, or skip.'};
+        return (p==='A'||p==='B') ? {k:'pass'} : {k:'pending', m:'Set the regime — fade or follow.'};
+      }
+      if(id==='sv') return {k:'pass'};
+      if(id==='s5'){
+        if(state.trigger==='yes') return {k:'pass'};
+        if(state.trigger==='no')  return {k:'wait', m:(p==='A'?'Wait for the sweep of the OR / overnight edge.':'Wait for the break of the ORH / ORL (and hold).')};
+        return {k:'pending', m:'Has the trigger happened?'};
+      }
+      if(id==='s6'){
+        if(state.tf5m==='yes') return {k:'pass'};
+        if(state.tf5m==='no')  return {k:'wait', m:'Switch to the 5-minute chart.'};
+        return {k:'pending', m:'On the 5-minute chart?'};
+      }
+      if(id==='s7'){
+        if(state.disp==='yes') return {k:'pass'};
+        if(state.disp==='no')  return {k:'wait', m:(p==='A'?'Wait for the reversal displacement + FVG.':'Wait for the continuation FVG on the retest.')};
+        return {k:'pending', m:'Displacement + FVG yet?'};
+      }
+      if(id==='s8'){
+        if(state.timing==='yes') return {k:'pass'};
+        if(state.timing==='no')  return {k:'wait', m:'Wait for a valid index macro window, clear of news.'};
+        return {k:'pending', m:'In a clean macro window?'};
+      }
+      if(id==='s9'){
+        if(state.entry==='yes') return {k:'pass'};
+        if(state.entry==='no')  return {k:'wait', m:'Wait for price to tap the FVG.'};
+        return {k:'pending', m:'Has price tapped the FVG?'};
+      }
+      if(id==='s10') return state.stop==='done' ? {k:'pass'} : {k:'pending', m:'Set stop (in points) and size.'};
+      return {k:'pending', m:''};
+    }
 
-    var cs2 = state.instr==='fut' ? contractStatus() : null;
-    if(!state.instr) wait('Choose your instrument — CFD or 1! (step 01).');
-    else if(state.instr==='fut' && cs2 && !cs2.active) halt('STAND DOWN — 1! contract in roll week. Next clean session: '+cs2.nextClean+'.');
-    else if(state.anchors!=='done') wait('Mark the overnight range + Opening Range first.');
-    else if(!p) wait('Set the regime (step 03).');
-    else if(p==='M') halt('MIXED regime — no clean edge. Trade small at the best level only, or skip.');
-    else if(!dir) wait('Set bias — OR in premium or discount (step 02).');
-    else if(state.trigger!=='yes'){ if(state.trigger==='no') wait(p==='A'?'Wait for the sweep of the OR / overnight edge.':'Wait for the break of the ORH / ORL (and hold).'); else wait('Confirm the trigger (step 06).'); }
-    else if(state.tf5m!=='yes'){ if(state.tf5m==='no') halt('Switch to the 5-minute chart.'); else wait('Confirm 5m timeframe (step 07).'); }
-    else if(state.disp!=='yes'){ if(state.disp==='no') wait(p==='A'?'Wait for the reversal displacement + FVG.':'Wait for the continuation FVG on the retest.'); else wait('Confirm displacement + FVG (step 08).'); }
-    else if(state.timing!=='yes'){ if(state.timing==='no') wait('Wait for a valid index macro window, clear of news.'); else wait('Confirm timing (step 09).'); }
-    else if(state.entry!=='yes'){ if(state.entry==='no') wait('Wait for price to tap the FVG.'); else wait('Confirm the FVG tap (step 10).'); }
-    else if(state.stop!=='done') wait('Set stop (in points) and size (step 11).');
+    var order = ['s0','s1','s3','s2','sv','s5','s6','s7','s8','s9','s10'];
+    var stopMsg=null, stopKind=null, allPass=true;
+    for(var i=0;i<order.length;i++){
+      var el=document.getElementById(order[i]);
+      if(stopMsg===null){
+        el.style.display='';                 // reveal up to and including the first non-pass
+        var st=stepStatus(order[i]);
+        if(st.k!=='pass'){ stopMsg=st.m; stopKind=st.k; allPass=false; }
+      } else {
+        el.style.display='none';             // hide everything after it (collapses on change)
+      }
+    }
 
     var v=document.getElementById('verdict'), m=document.getElementById('verdict-msg');
-    if(block){ v.className='verdict v-'+tone; m.textContent=block; }
-    else {
+    if(allPass){
       var pn = p==='A' ? 'FADE' : 'FOLLOW';
       v.className='verdict v-go';
       m.textContent='CLEARED — '+pn+' · '+dir.toUpperCase()+'. Stop in points, BE at EQ, trail to target.';
+    } else {
+      v.className='verdict v-'+(stopKind==='halt'?'halt':(stopKind==='wait'?'wait':'wait'));
+      m.textContent=stopMsg;
     }
   }
 
