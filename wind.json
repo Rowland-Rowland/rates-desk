@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-19",
+  "updated": "2026-08-20",
   "yields": {
     "series": "DFII10",
-    "value": 2.44,
-    "asof": "2026-08-17",
+    "value": 2.41,
+    "asof": "2026-08-18",
     "dir": "flat",
-    "change": 0.01,
+    "change": -0.02,
     "lookback": 5
   },
   "dollar": {
