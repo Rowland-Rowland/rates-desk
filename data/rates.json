@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-08-20T13:50:17Z",
+  "as_of": "2026-08-21T13:49:46Z",
   "rates": {
     "SOFR": {
-      "value": 3.62,
-      "date": "2026-08-19",
+      "value": 3.63,
+      "date": "2026-08-20",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-08-19",
+      "date": "2026-08-20",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.188,
-      "date": "2026-08-19",
+      "value": 2.191,
+      "date": "2026-08-20",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7311,
-      "date": "18 Aug 2026",
+      "value": 3.7313,
+      "date": "19 Aug 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
