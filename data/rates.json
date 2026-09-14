@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-09-11T16:57:51Z",
+  "as_of": "2026-09-14T18:27:26Z",
   "rates": {
     "SOFR": {
       "value": 3.62,
-      "date": "2026-09-10",
+      "date": "2026-09-11",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-09-10",
+      "date": "2026-09-11",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.19,
-      "date": "2026-09-10",
+      "value": 2.189,
+      "date": "2026-09-11",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7296,
-      "date": "09 Sep 2026",
+      "value": 3.7305,
+      "date": "10 Sep 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -53,74 +53,116 @@
   },
   "news": [
     {
-      "time": "2026-09-10T12:15:00Z",
-      "currency": "EUR",
-      "title": "Main Refinancing Rate",
-      "forecast": "2.65%",
-      "previous": "2.40%"
+      "time": "2026-09-14T12:30:00Z",
+      "currency": "CAD",
+      "title": "CPI m/m",
+      "forecast": "-0.1%",
+      "previous": "0.5%"
     },
     {
-      "time": "2026-09-10T12:15:00Z",
-      "currency": "EUR",
+      "time": "2026-09-14T12:30:00Z",
+      "currency": "CAD",
+      "title": "Median CPI y/y",
+      "forecast": "2.0%",
+      "previous": "2.0%"
+    },
+    {
+      "time": "2026-09-14T12:30:00Z",
+      "currency": "CAD",
+      "title": "Trimmed CPI y/y",
+      "forecast": "1.9%",
+      "previous": "1.9%"
+    },
+    {
+      "time": "2026-09-15T06:00:00Z",
+      "currency": "GBP",
+      "title": "Claimant Count Change",
+      "forecast": "8.3K",
+      "previous": "-11.0K"
+    },
+    {
+      "time": "2026-09-16T06:00:00Z",
+      "currency": "GBP",
+      "title": "CPI y/y",
+      "forecast": "3.1%",
+      "previous": "2.9%"
+    },
+    {
+      "time": "2026-09-16T18:00:00Z",
+      "currency": "USD",
+      "title": "Federal Funds Rate",
+      "forecast": "4.00%",
+      "previous": "3.75%"
+    },
+    {
+      "time": "2026-09-16T18:00:00Z",
+      "currency": "USD",
+      "title": "FOMC Economic Projections",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-09-16T18:00:00Z",
+      "currency": "USD",
+      "title": "FOMC Statement",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-09-16T18:30:00Z",
+      "currency": "USD",
+      "title": "FOMC Press Conference",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-09-16T22:45:00Z",
+      "currency": "NZD",
+      "title": "GDP q/q",
+      "forecast": "0.1%",
+      "previous": "0.8%"
+    },
+    {
+      "time": "2026-09-17T11:00:00Z",
+      "currency": "GBP",
+      "title": "Monetary Policy Summary",
+      "forecast": "",
+      "previous": ""
+    },
+    {
+      "time": "2026-09-17T11:00:00Z",
+      "currency": "GBP",
+      "title": "MPC Official Bank Rate Votes",
+      "forecast": "3-0-6",
+      "previous": "3-0-6"
+    },
+    {
+      "time": "2026-09-17T11:00:00Z",
+      "currency": "GBP",
+      "title": "Official Bank Rate",
+      "forecast": "3.75%",
+      "previous": "3.75%"
+    },
+    {
+      "time": "2026-09-18T02:30:00Z",
+      "currency": "JPY",
+      "title": "BOJ Policy Rate",
+      "forecast": "<1.25%",
+      "previous": "<1.00%"
+    },
+    {
+      "time": "2026-09-18T02:30:00Z",
+      "currency": "JPY",
       "title": "Monetary Policy Statement",
       "forecast": "",
       "previous": ""
     },
     {
-      "time": "2026-09-10T12:30:00Z",
-      "currency": "USD",
-      "title": "Core PPI m/m",
-      "forecast": "0.3%",
-      "previous": "0.2%"
-    },
-    {
-      "time": "2026-09-10T12:30:00Z",
-      "currency": "USD",
-      "title": "PPI m/m",
-      "forecast": "0.4%",
-      "previous": "0.0%"
-    },
-    {
-      "time": "2026-09-10T12:45:00Z",
-      "currency": "EUR",
-      "title": "ECB Press Conference",
+      "time": "2026-09-18T05:30:00Z",
+      "currency": "JPY",
+      "title": "BOJ Press Conference",
       "forecast": "",
       "previous": ""
-    },
-    {
-      "time": "2026-09-11T06:00:00Z",
-      "currency": "GBP",
-      "title": "GDP m/m",
-      "forecast": "0.0%",
-      "previous": "0.3%"
-    },
-    {
-      "time": "2026-09-11T12:30:00Z",
-      "currency": "USD",
-      "title": "Core CPI m/m",
-      "forecast": "0.2%",
-      "previous": "0.2%"
-    },
-    {
-      "time": "2026-09-11T12:30:00Z",
-      "currency": "USD",
-      "title": "Core CPI y/y",
-      "forecast": "2.4%",
-      "previous": "2.5%"
-    },
-    {
-      "time": "2026-09-11T12:30:00Z",
-      "currency": "USD",
-      "title": "CPI m/m",
-      "forecast": "0.4%",
-      "previous": "0.1%"
-    },
-    {
-      "time": "2026-09-11T12:30:00Z",
-      "currency": "USD",
-      "title": "CPI y/y",
-      "forecast": "3.4%",
-      "previous": "3.4%"
     }
   ]
 }
