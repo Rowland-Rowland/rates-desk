@@ -1,51 +1,51 @@
 {
-  "as_of": "2026-09-15T17:34:46Z",
+  "as_of": "2026-09-16T17:33:46Z",
   "rates": {
     "SOFR": {
-      "value": 3.62,
-      "date": "2026-09-14",
+      "value": 3.64,
+      "date": "2026-09-15",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.63,
-      "date": "2026-09-14",
+      "date": "2026-09-15",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
       "value": 2.19,
-      "date": "2026-09-14",
+      "date": "2026-09-15",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7307,
-      "date": "11 Sep 2026",
+      "value": 3.7312,
+      "date": "14 Sep 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
     },
     "TONA": {
-      "value": 0.841,
-      "date": "2026-06-01",
+      "value": 0.977,
+      "date": "2026-08-01",
       "unit": "%",
       "source": "FRED",
       "ok": true
     },
     "WTI": {
-      "value": 97.26,
-      "date": "2026-09-09",
+      "value": 107.02,
+      "date": "2026-09-15",
       "unit": "$",
       "source": "FRED",
       "ok": true
     },
     "BRENT": {
-      "value": 109.51,
-      "date": "2026-09-09",
+      "value": 130.8,
+      "date": "2026-09-15",
       "unit": "$",
       "source": "FRED",
       "ok": true
