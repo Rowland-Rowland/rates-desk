@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-09-22T17:34:41Z",
+  "as_of": "2026-09-23T17:46:36Z",
   "rates": {
     "SOFR": {
-      "value": 3.85,
-      "date": "2026-09-21",
+      "value": 3.87,
+      "date": "2026-09-22",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.88,
-      "date": "2026-09-21",
+      "date": "2026-09-22",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
       "value": 2.44,
-      "date": "2026-09-21",
+      "date": "2026-09-22",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7301,
-      "date": "18 Sep 2026",
+      "value": 3.7303,
+      "date": "21 Sep 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -37,15 +37,15 @@
       "ok": true
     },
     "WTI": {
-      "value": 107.02,
-      "date": "2026-09-15",
+      "value": 96.41,
+      "date": "2026-09-22",
       "unit": "$",
       "source": "FRED",
       "ok": true
     },
     "BRENT": {
-      "value": 130.8,
-      "date": "2026-09-15",
+      "value": 114.89,
+      "date": "2026-09-22",
       "unit": "$",
       "source": "FRED",
       "ok": true
@@ -63,7 +63,7 @@
       "time": "2026-09-24T01:30:00Z",
       "currency": "AUD",
       "title": "Employment Change",
-      "forecast": "22.5K",
+      "forecast": "21.5K",
       "previous": "-15.8K"
     },
     {
