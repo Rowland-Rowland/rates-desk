@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-09-30T18:19:52Z",
+  "as_of": "2026-10-01T18:44:57Z",
   "rates": {
     "SOFR": {
-      "value": 3.88,
-      "date": "2026-09-29",
+      "value": 3.9,
+      "date": "2026-09-30",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.88,
-      "date": "2026-09-29",
+      "date": "2026-09-30",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.439,
-      "date": "2026-09-29",
+      "value": 2.437,
+      "date": "2026-09-30",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7302,
-      "date": "28 Sep 2026",
+      "value": 3.7321,
+      "date": "29 Sep 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -112,7 +112,7 @@
       "time": "2026-10-02T12:30:00Z",
       "currency": "USD",
       "title": "Non-Farm Employment Change",
-      "forecast": "90K",
+      "forecast": "89K",
       "previous": "162K"
     },
     {
