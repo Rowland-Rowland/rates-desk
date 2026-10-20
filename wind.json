@@ -1,19 +1,19 @@
 {
-  "updated": "2026-10-19",
+  "updated": "2026-10-20",
   "yields": {
     "series": "DFII10",
-    "value": 2.78,
-    "asof": "2026-10-15",
+    "value": 2.74,
+    "asof": "2026-10-16",
     "dir": "falling",
-    "change": -0.14,
+    "change": -0.13,
     "lookback": 5
   },
   "dollar": {
     "series": "DTWEXBGS",
-    "value": 121.6023,
-    "asof": "2026-10-09",
-    "dir": "rising",
-    "change": 0.2175,
+    "value": 121.4048,
+    "asof": "2026-10-16",
+    "dir": "flat",
+    "change": -0.0421,
     "lookback": 5,
     "note": "Broad trade-weighted USD proxy for DXY; FRED H.10 lags ~1 week."
   }
