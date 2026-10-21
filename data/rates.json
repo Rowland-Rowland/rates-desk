@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-10-20T17:51:11Z",
+  "as_of": "2026-10-21T17:57:03Z",
   "rates": {
     "SOFR": {
-      "value": 3.87,
-      "date": "2026-10-19",
+      "value": 3.88,
+      "date": "2026-10-20",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.88,
-      "date": "2026-10-19",
+      "date": "2026-10-20",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.441,
-      "date": "2026-10-19",
+      "value": 2.44,
+      "date": "2026-10-20",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7344,
-      "date": "16 Oct 2026",
+      "value": 3.7337,
+      "date": "19 Oct 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -34,21 +34,21 @@
       "date": "2026-09-01",
       "unit": "%",
       "source": "FRED",
-      "ok": true
+      "ok": false
     },
     "WTI": {
       "value": 101.91,
       "date": "2026-10-14",
       "unit": "$",
       "source": "FRED",
-      "ok": true
+      "ok": false
     },
     "BRENT": {
       "value": 126.55,
       "date": "2026-10-14",
       "unit": "$",
       "source": "FRED",
-      "ok": true
+      "ok": false
     }
   },
   "news": [
@@ -88,5 +88,5 @@
       "previous": "1.5%"
     }
   ],
-  "news_as_of": "2026-10-20T17:51:11Z"
+  "news_as_of": "2026-10-21T17:57:03Z"
 }
