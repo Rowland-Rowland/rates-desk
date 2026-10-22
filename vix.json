@@ -1,16 +1,16 @@
 {
-  "updated": "2026-10-21",
+  "updated": "2026-10-22",
   "vix": {
     "series": "VIXCLS",
-    "value": 18.44,
-    "asof": "2026-10-19"
+    "value": 17.31,
+    "asof": "2026-10-20"
   },
   "vix3m": {
     "series": "VXVCLS",
-    "value": 19.6,
-    "asof": "2026-10-19"
+    "value": 18.99,
+    "asof": "2026-10-20"
   },
-  "ratio": 0.9408,
+  "ratio": 0.9115,
   "structure": "contango",
   "regime": "calm-pin",
   "play": "fade"
