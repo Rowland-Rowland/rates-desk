@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-11-04T20:20:41Z",
+  "as_of": "2026-11-05T20:30:25Z",
   "rates": {
     "SOFR": {
-      "value": 3.97,
-      "date": "2026-11-03",
+      "value": 3.94,
+      "date": "2026-11-04",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.88,
-      "date": "2026-11-03",
+      "date": "2026-11-04",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.445,
-      "date": "2026-11-03",
+      "value": 2.442,
+      "date": "2026-11-04",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7352,
-      "date": "02 Nov 2026",
+      "value": 3.7342,
+      "date": "03 Nov 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -186,5 +186,5 @@
       "previous": ""
     }
   ],
-  "news_as_of": "2026-11-04T20:20:41Z"
+  "news_as_of": "2026-11-05T20:30:25Z"
 }
