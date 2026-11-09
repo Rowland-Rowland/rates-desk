@@ -1,30 +1,30 @@
 {
-  "as_of": "2026-11-06T19:53:46Z",
+  "as_of": "2026-11-09T22:55:31Z",
   "rates": {
     "SOFR": {
-      "value": 3.92,
-      "date": "2026-11-05",
+      "value": 3.89,
+      "date": "2026-11-06",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "EFFR": {
       "value": 3.88,
-      "date": "2026-11-05",
+      "date": "2026-11-06",
       "unit": "%",
       "source": "NY Fed",
       "ok": true
     },
     "ESTR": {
-      "value": 2.442,
-      "date": "2026-11-05",
+      "value": 2.443,
+      "date": "2026-11-06",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.7335,
-      "date": "04 Nov 2026",
+      "value": 3.9824,
+      "date": "05 Nov 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -53,138 +53,40 @@
   },
   "news": [
     {
-      "time": "2026-11-03T03:30:00Z",
-      "currency": "AUD",
-      "title": "Cash Rate",
-      "forecast": "4.85%",
-      "previous": "4.60%"
-    },
-    {
-      "time": "2026-11-03T03:30:00Z",
-      "currency": "AUD",
-      "title": "RBA Monetary Policy Statement",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-11-03T03:30:00Z",
-      "currency": "AUD",
-      "title": "RBA Rate Statement",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-11-03T04:30:00Z",
-      "currency": "AUD",
-      "title": "RBA Press Conference",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-11-03T15:16:00Z",
+      "time": "2026-11-10T13:30:00Z",
       "currency": "USD",
-      "title": "Congressional Elections",
-      "forecast": "",
-      "previous": ""
+      "title": "Core CPI m/m",
+      "forecast": "0.2%",
+      "previous": "0.3%"
     },
     {
-      "time": "2026-11-03T21:45:00Z",
-      "currency": "NZD",
-      "title": "Employment Change q/q",
-      "forecast": "0.4%",
-      "previous": "0.5%"
-    },
-    {
-      "time": "2026-11-03T21:45:00Z",
-      "currency": "NZD",
-      "title": "Unemployment Rate",
-      "forecast": "5.5%",
-      "previous": "5.6%"
-    },
-    {
-      "time": "2026-11-05T12:00:00Z",
-      "currency": "GBP",
-      "title": "BOE Monetary Policy Report",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-11-05T12:00:00Z",
-      "currency": "GBP",
-      "title": "Monetary Policy Summary",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-11-05T12:00:00Z",
-      "currency": "GBP",
-      "title": "MPC Official Bank Rate Votes",
-      "forecast": "7-0-2",
-      "previous": "3-0-6"
-    },
-    {
-      "time": "2026-11-05T12:00:00Z",
-      "currency": "GBP",
-      "title": "Official Bank Rate",
-      "forecast": "4.00%",
-      "previous": "3.75%"
-    },
-    {
-      "time": "2026-11-05T12:30:00Z",
-      "currency": "GBP",
-      "title": "BOE Gov Bailey Speaks",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-11-06T13:30:00Z",
-      "currency": "CAD",
-      "title": "Employment Change",
-      "forecast": "14.6K",
-      "previous": "-68.3K"
-    },
-    {
-      "time": "2026-11-06T13:30:00Z",
-      "currency": "CAD",
-      "title": "Unemployment Rate",
-      "forecast": "6.5%",
-      "previous": "6.5%"
-    },
-    {
-      "time": "2026-11-06T13:30:00Z",
+      "time": "2026-11-10T13:30:00Z",
       "currency": "USD",
-      "title": "Average Hourly Earnings m/m",
+      "title": "CPI m/m",
       "forecast": "0.3%",
+      "previous": "0.6%"
+    },
+    {
+      "time": "2026-11-12T07:00:00Z",
+      "currency": "GBP",
+      "title": "GDP m/m",
+      "forecast": "0.0%",
       "previous": "0.1%"
     },
     {
-      "time": "2026-11-06T13:30:00Z",
+      "time": "2026-11-13T13:30:00Z",
       "currency": "USD",
-      "title": "Non-Farm Employment Change",
-      "forecast": "65K",
-      "previous": "29K"
+      "title": "Core PPI m/m",
+      "forecast": "0.3%",
+      "previous": "0.7%"
     },
     {
-      "time": "2026-11-06T13:30:00Z",
+      "time": "2026-11-13T13:30:00Z",
       "currency": "USD",
-      "title": "Unemployment Rate",
-      "forecast": "4.2%",
-      "previous": "4.2%"
-    },
-    {
-      "time": "2026-11-06T16:00:00Z",
-      "currency": "JPY",
-      "title": "BOJ Gov Ueda Speaks",
-      "forecast": "",
-      "previous": ""
-    },
-    {
-      "time": "2026-11-06T21:45:00Z",
-      "currency": "NZD",
-      "title": "Parliamentary Elections",
-      "forecast": "",
-      "previous": ""
+      "title": "PPI m/m",
+      "forecast": "0.4%",
+      "previous": "1.3%"
     }
   ],
-  "news_as_of": "2026-11-06T19:53:46Z"
+  "news_as_of": "2026-11-09T22:55:31Z"
 }
