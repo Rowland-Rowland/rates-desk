@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-10T20:21:25Z",
+  "as_of": "2026-11-11T20:04:34Z",
   "rates": {
     "SOFR": {
       "value": 3.88,
@@ -17,14 +17,14 @@
     },
     "ESTR": {
       "value": 2.442,
-      "date": "2026-11-09",
+      "date": "2026-11-10",
       "unit": "%",
       "source": "ECB",
       "ok": true
     },
     "SONIA": {
-      "value": 3.9852,
-      "date": "06 Nov 2026",
+      "value": 3.9842,
+      "date": "09 Nov 2026",
       "unit": "%",
       "source": "BoE",
       "ok": true
@@ -88,5 +88,5 @@
       "previous": "1.3%"
     }
   ],
-  "news_as_of": "2026-11-10T20:21:25Z"
+  "news_as_of": "2026-11-11T20:04:34Z"
 }
