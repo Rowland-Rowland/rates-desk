@@ -1,11 +1,11 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "yields": {
     "series": "DFII10",
-    "value": 2.66,
-    "asof": "2026-11-09",
+    "value": 2.78,
+    "asof": "2026-11-10",
     "dir": "rising",
-    "change": 0.04,
+    "change": 0.13,
     "lookback": 5
   },
   "dollar": {
