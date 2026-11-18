@@ -1,16 +1,16 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "vix": {
     "series": "VIXCLS",
-    "value": 22.91,
-    "asof": "2026-11-16"
+    "value": 25.46,
+    "asof": "2026-11-17"
   },
   "vix3m": {
     "series": "VXVCLS",
-    "value": 23.02,
-    "asof": "2026-11-16"
+    "value": 24.98,
+    "asof": "2026-11-17"
   },
-  "ratio": 0.9952,
+  "ratio": 1.0192,
   "structure": "flat",
   "regime": "stressed-trend",
   "play": "follow"
